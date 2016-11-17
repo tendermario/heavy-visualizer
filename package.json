@@ -1,0 +1,33 @@
+{
+  "name": "heavy-visualizer",
+  "version": "1.0.0",
+  "description": "audio visualizer",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tendermario/heavy-visualizer.git"
+  },
+  "keywords": [
+    "audio",
+    "visualizer",
+    "threejs"
+  ],
+  "author": "Mario Viens, Nic Adams",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tendermario/heavy-visualizer/issues"
+  },
+  "homepage": "https://github.com/tendermario/heavy-visualizer#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "dotenv": "^2.0.0",
+    "ejs": "^2.5.2",
+    "express": "^4.14.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}
