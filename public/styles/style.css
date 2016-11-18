@@ -38,12 +38,14 @@
     top: 80px;
     width: 20%;
     background-color: #282828;
+    overflow: hidden;
   }
 
   .content-primary iframe {
     bottom: 0;
     position: absolute;
     padding-left: 10px;
+
     }
 
   .container-fluid .content-secondary {
