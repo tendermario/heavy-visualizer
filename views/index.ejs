@@ -21,7 +21,7 @@
     </style>
 </head>
 <body>
-  <iframe src="https://embed.spotify.com/?uri=spotify%3Atrack%3A0BTsc6W83oHVuzaaxlXqY8" width="300" height="80" frameborder="0" allowtransparency="true"></iframe>
+  <iframe src="https://embed.spotify.com/?uri=spotify%3Auser%3Ay2kunaal%3Aplaylist%3A2H6sVnTe637TxyTEWQ6Dcd" width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
   <canvas></canvas>
   <div class="container">
     <div id="login">
@@ -29,6 +29,7 @@
       <a href="/login" class="btn btn-primary">Log in with Spotify</a>
     </div>
     <div id="loggedin">
+      <div id="playlists"></div>
       <div id="user-profile">
       </div>
       <div id="oauth">
@@ -55,6 +56,15 @@
           </dl>
         </div>
       </div>
+    </script>
+
+    <script id="playlists-template" type="text/x-handlebars-template">
+      <h2>{{display_name}}'s Playlists</h2>
+      <dl class="dl-horizontal">
+      https://api.spotify.com/v1/users/{{id}}/playlists
+        <dt>Access token</dt><dd class="text-overflow">{{access_token}}</dd>
+        <dt>Refresh token</dt><dd class="text-overflow">{{refresh_token}}></dd>
+      </dl>
     </script>
 
     <script id="oauth-template" type="text/x-handlebars-template">
