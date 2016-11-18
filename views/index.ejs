@@ -2,13 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>HELLO</title>
+  <title>HEAVY VISUALIZER</title>
   <script src="//cdn.rawgit.com/mrdoob/three.js/master/build/three.min.js"></script>
   <script src="/scripts/app.js"></script>
   <link rel="stylesheet" type="text/css" href="./styles/style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" integrity="sha384-2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj" crossorigin="anonymous">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
 </head>
 <body>
-<iframe src="https://embed.spotify.com/?uri=spotify%3Atrack%3A0BTsc6W83oHVuzaaxlXqY8" width="300" height="80" frameborder="0" allowtransparency="true"></iframe>
-  <canvas></canvas>
+  <div class="container-fluid">
+
+    <nav id="nav-bar">
+      <span>HEAVY VISUALIZER</span>
+      <!-- <img class="logo" src=""> -->
+      <button type="submit" class="btn btn-secondary">SAVE</button>
+    </nav>
+
+
+    <main class="content-primary">
+       <iframe src="https://embed.spotify.com/?uri=spotify%3Atrack%3A0BTsc6W83oHVuzaaxlXqY8" width="300" height="80" frameborder="0" allowtransparency="true"></iframe>
+    </main>
+
+    <canvas class="content-secondary">
+    </canvas>
+  </div>
 </body>
 </html>
