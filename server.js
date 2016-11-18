@@ -27,5 +27,5 @@ app.get("/", (req, res) => {
 
 // Start Server
 app.listen(PORT, () => {
-  console.log(`ordr app listening on port ${PORT}`);
+  console.log(`VIS app listening on port ${PORT}`);
 } );
