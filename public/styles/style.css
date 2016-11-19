@@ -10,6 +10,7 @@
     background-color: #000000;
     margin: auto;
     padding: 0 2em;
+    opacity: 0.6;
   }
 
   #nav-bar span {
@@ -39,6 +40,7 @@
     width: 20%;
     background-color: #282828;
     overflow: hidden;
+    opacity: 0.6;
   }
 
   .content-primary iframe {
@@ -54,6 +56,7 @@
     right: 0;
     top: 80px;
     width: 80%;
+    height: 100%;
   }
 
 

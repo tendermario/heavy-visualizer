@@ -8,7 +8,7 @@
 THREE.TrackballControls = function ( object, domElement ) {
 
   var _this = this;
-  var STATE = { NONE: - 1, ROTATE: 0, ZOOM: 1, PAN: 2, TOUCH_ROTATE: 3, TOUCH_ZOOM_PAN: 4 };
+  var STATE = { NONE: - 1, ROTATE: 0, ZOOM: 1, PAN: 3, TOUCH_ROTATE: 10, TOUCH_ZOOM_PAN: 4 };
 
   this.object = object;
   this.domElement = ( domElement !== undefined ) ? domElement : document;
@@ -19,7 +19,7 @@ THREE.TrackballControls = function ( object, domElement ) {
 
   this.screen = { left: 0, top: 0, width: 0, height: 0 };
 
-  this.rotateSpeed = 1.0;
+  this.rotateSpeed = 5.0;
   this.zoomSpeed = 1.2;
   this.panSpeed = 0.3;
 
