@@ -1,0 +1,36 @@
+{"meta": { meta.txt },
+
+// whole note, like a normal bar
+"bars": { bars.txt },
+
+//4ths, like a beat normally is
+"beats": { beats.txt},
+
+// 8ths
+"tatums":[{"start": positive float in seconds,
+           "duration": positive float in seconds,
+           "confidence": positive float from 0 to 1}]
+
+// Lots of info over a 15-30 second period
+"sections":
+[
+start,duration,confidence,loudness,tempo,tempo_confidence,key,key_confidence,mode,mode_confidence,time_signature,time_signature_confidence
+0.00000,23.33163,1.000,-21.610,98.015,0.782,7,0.609,0,0.600,4,1.000
+23.33163,17.14712,0.415,-17.202,97.964,0.663,7,0.677,0,0.699,4,1.000
+40.47876,29.99227,0.038,-16.201,98.024,0.813,7,0.477,0,0.568,4,1.000
+70.47103,30.61968,0.505,-11.154,97.973,0.748,1,0.164,1,0.511,4,1.000
+101.09071,36.12971,0.632,-11.252,97.995,0.729,10,0.425,0,0.295,4,1.000
+137.22043,38.56723,0.864,-9.757,98.057,0.704,0,0.086,1,0.407,4,1.000
+175.78766,21.43059,0.584,-8.272,97.985,0.839,1,0.001,1,0.126,4,1.000
+197.21825,18.98807,0.109,-9.246,98.019,0.837,10,0.073,0,0.053,4,1.000
+216.20631,20.81724,0.195,-9.876,98.181,0.576,0,0.730,1,0.440,4,1.000
+237.02356,18.32542,1.000,-20.074,98.253,0.767,5,0.327,1,0.566,4,1.000
+]
+
+// Lots of info over smaller sections
+"segments": {
+  "start": positive float in seconds,
+  "duration": positive float in seconds,
+  "confidence": positive float from 0 to 1}]
+"start":,duration,confidence,loudness_start,loudness_max_time,loudness_max,pitches,timbre
+252.15601,3.19297,0.522,-23.356,0.06971,-18.121,-60.000, "pitches":[0.709, 0.092, 0.196, 0.084, 0.352, 0.134, 0.161, 1.000, 0.170, 0.161, 0.2.150], "timbre":[23.312, -7.374, -45.719, 294.874, 51.869, -79.384, -89.048, 143.322, -4.676, -51.303, -33.274-19.037]}]}

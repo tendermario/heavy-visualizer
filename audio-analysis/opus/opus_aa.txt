@@ -1,0 +1,13 @@
+{
+"meta":{ meta.txt },
+// extra info
+"bars":[ bars.txt ],
+// whole note, like a normal bar
+"beats":[ beats.txt ],
+// quarter note, 4 beats in a bar
+"tatums":[ tatums.txt ],
+// eighth note, 8 beats in a bar
+"sections":[ sections.txt ],
+// infrequent changes... maybe different sections of the song
+"segments":[ segments.txt ]}
+// lots of data for chunks that look like beats
