@@ -1,29 +1,30 @@
-const audio_analysis = require('audio-analysis/6Ggtd1UBsm8GzMdDeEZOvO.json');
+const audio_analysis = require('./audio-analysis/6Ggtd1UBsm8GzMdDeEZOvO');
 
 var x,
-    position_in_segments = 0,
+    position_in_segments = 1,
     loudness,
-    this_time = 0;
+    duration = 0;
 
 function loadFirstBeat () {
   loudness = audio_analysis.segments[0].loudness_start;
-  position_in_segments++;
 }
 
-function beatPlayed() {
-  //load next beat
+function playBeat() {
+  if (position_in_segments >= audio_analysis.segments.length - 1) {
+    return;
+  }
+  // change value
+  x = loudness;
+  // load next beat
   loudness = audio_analysis.segments[position_in_segments].loudness_start;
+  duration = audio_analysis.segments[position_in_segments].duration;
+  duration *= 1000;
   position_in_segments++;
+  console.log(duration);
+  setTimeout(playBeat, duration);
 }
 
-function updateObject() {
-  //at time interval of this_time, this function is called
-  //load x with new loudness exactly at that time.
-
-
-  beatPlayed();
-}
-
-//insert this into the threejs objects
-
-this_value = 0.489
+// universe begins, loads loudness for first instance.
+loadFirstBeat();
+playBeat();
+// music started
