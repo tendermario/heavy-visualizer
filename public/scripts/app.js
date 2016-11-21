@@ -101,13 +101,6 @@ function sceneRender() {
     renderer.render(scene, camera);
 }
 
-// on load render scene
-document.addEventListener('DOMContentLoaded', function() {
-    init(properties);
-    animate(properties);
-    sceneRender();
-});
-
 // on music play, render scene
 function musicImpact(x) {
   // properties.circle.realXsizeCircle += x * 500;
@@ -128,3 +121,10 @@ function musicImpact(x) {
     // mesh.rotation.y += 0.02;
     // animate(properties);
 }
+
+// on load render scene
+document.addEventListener('DOMContentLoaded', function() {
+    init(properties);
+    animate(properties);
+    sceneRender();
+});

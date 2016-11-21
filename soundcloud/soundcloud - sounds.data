@@ -1,0 +1,126 @@
+sounds: [
+{"artwork_url":"https://i1.sndcdn.com/artworks-000182689155-0ktdwc-large.jpg"
+"commentable":true
+"comment_count":2
+"created_at":"2016-09-15T09:06:37Z"
+"description":"Taken from \"Glass Bird Movement\" -  CD/Digital/LP+7\" \nOut Oct. 14th on morr music\n\nOn their first album in six years, ISAN once more weave together electronic soundscapes, delicate rhythms and the occasional odd sound into a pulsating, ever-morphing whole. Glass Bird Movement is Antony Ryan and Robin Saville’s eighth studio album since they have started the project two decades ago. Exchanging ideas between England and Denmark, where Ryan currently resides, ISAN have crafted an album which is reminiscent of heyday Boards Of Canada productions, the friendlier ventures of Aphex Twin or the most focused moments of Ulrich Schnauss, if you will. However, this album (as well their impressive back catalogue, as subtle it may seem) displays a strong signature. ISAN constantly move forwards without leaving their respective studios. And why should they - it’s warm and dry in there and the kettle is always boiling. \n"
+"downloadable":false
+"download_count":0
+"download_url":null
+"duration":318697
+"full_duration":318697
+"embeddable_by":"all"
+"genre":"Electronic"
+"has_downloads_left":true
+"id":283004502
+"kind":"track"
+"label_name":null
+"last_modified":"2016-09-21T12:46:48Z"
+"license":"all-rights-reserved"
+"likes_count":92
+"permalink":"parley-glove"
+"permalink_url":"https://soundcloud.com/morrmusic/parley-glove"
+"playback_count":2372
+"public":true
+"publisher_metadata":{"urn":"soundcloud:tracks:283004502"
+  "artist":"ISAN"
+  "album_title":"Glass Bird Movement"}
+"purchase_title":"Buy The Album"
+"purchase_url":"http://bit.ly/2dgG5sU"
+"release_date":"2016-10-14T00:00:00Z"
+"reposts_count":16
+"secret_token":null
+"sharing":"public"
+"state":"finished"
+"streamable":true
+"tag_list":"ISAN \"Morr Music\""
+"title":"ISAN: Parley Glove"
+"uri":"https://api.soundcloud.com/tracks/283004502"
+"urn":"soundcloud:tracks:283004502"
+"user_id":240370
+"visuals":null
+"waveform_url":"https://wis.sndcdn.com/KFCFCtYWkP5m_m.json"
+"domain_lockings":[]
+"monetization_model":"NOT_APPLICABLE"
+"policy":"ALLOW"
+"user":{"avatar_url":"https://i1.sndcdn.com/avatars-000153293058-23nly6-large.jpg"
+  "first_name":"morr"
+  "full_name":"morr music"
+  "id":240370
+  "kind":"user"
+  "last_modified":"2016-10-28T14:57:41Z"
+  "last_name":"music"
+  "permalink":"morrmusic"
+  "permalink_url":"https://soundcloud.com/morrmusic"
+  "uri":"https://api.soundcloud.com/users/240370"
+  "urn":"soundcloud:users:240370"
+  "username":"morrmusic"
+  "verified":false
+  "city":"berlin"
+  "country_code":"DE"}
+  "playable":true
+  "_resource_id":283004502
+  "_resource_type":"sound"},
+{"artwork_url":"https://i1.sndcdn.com/artworks-000169429070-6b14m3-large.jpg"
+"commentable":true
+"comment_count":3
+"created_at":"2016-06-29T12:08:24Z"
+"description":"Amparo Remix EP\nSpotify: http://smarturl.it/MariaURemixEPSpotify\nApple: http://smarturl.it/MariaUREmixEPApple\n\nAmparo LP\nSpotify: smarturl.it/MariaUsbeckSpotify\nApple: smarturl.it/AmparoApple\n___\n\nMontreal's @projectpablo applies his patient touch to \"Moai Y Yo
+\" the lead single from Maria Usbeck's debut solo album. \n\nSince his breakout LP (I Want To Believe) last year on 1080p
+ Project Pablo has become something of a cult hero with an easy aesthetic that's unhurried and engaging. His chemistry is a natural fit for Maria's material that sources a year she recently spent in South America revisiting the textures of her youth. \n___\n\nCascine on FB: bit.ly/1QTpyHQ"
+ "downloadable":false
+"download_count":0
+"download_url":null
+"duration":269503
+"full_duration":269503
+"embeddable_by":"all"
+"genre":""
+"has_downloads_left":true
+"id":271384285
+"kind":"track"
+"label_name":null
+"last_modified":"2016-10-28T16:41:15Z"
+"license":"all-rights-reserved"
+"likes_count":438
+"permalink":"maria-usbeck-moai-y-yo-project-pablo-remix-1"
+"permalink_url":"https://soundcloud.com/cascine/maria-usbeck-moai-y-yo-project-pablo-remix-1"
+"playback_count":10951
+"public":true
+"publisher_metadata":{"urn":"soundcloud:tracks:271384285"}
+"purchase_title":null
+"purchase_url":null
+"release_date":null
+"reposts_count":65
+"secret_token":null
+"sharing":"public"
+"state":"finished"
+"streamable":true
+"tag_list":"\"Maria Usbeck\" \"Project Pablo\""
+"title":"Maria Usbeck - Moai Y Yo (Project Pablo Remix)"
+"uri":"https://api.soundcloud.com/tracks/271384285"
+"urn":"soundcloud:tracks:271384285"
+"user_id":1802675
+"visuals":null
+"waveform_url":"https://wis.sndcdn.com/1p6OgVMpnqSp_m.json"
+"domain_lockings":[]
+"monetization_model":"NOT_APPLICABLE"
+"policy":"ALLOW"
+"user":{"avatar_url":"https://i1.sndcdn.com/avatars-000140848346-3cupiq-large.jpg"
+  "first_name":""
+  "full_name":""
+  "id":1802675
+  "kind":"user"
+  "last_modified":"2016-11-02T13:59:19Z"
+  "last_name":""
+  "permalink":"cascine"
+  "permalink_url":"https://soundcloud.com/cascine"
+  "uri":"https://api.soundcloud.com/users/1802675"
+  "urn":"soundcloud:users:1802675"
+  "username":"CASCINE"
+  "verified":false
+  "city":"NY"
+  "country_code":null}
+  "playable":true
+  "_resource_id":271384285
+  "_resource_type":"sound"},
+repeat for each song in the playlist.

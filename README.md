@@ -4,6 +4,7 @@ As a user:
   I want to view a visualizer with a song - so I can look good, feel good.
   I want to create my own visualizer using the libraries available - to have a custom experience.
   I want to play songs from Spotify - for ease of use.
+  If not Spotify, I want to be able to add a soundcloud link, upload a file, or use my mic to get the song.
   I want to save my visualizers - so I can use it again.
 
 Stretch:
@@ -18,11 +19,10 @@ As a user:
 researching other audio sources where we can take in the audio node and extract the audio information using fft and Web Audio API
 
 
-//// SYNC DILEMMA - PLAY/PAUSE
+//// SPOTIFY - SYNC DILEMMA - PLAY/PAUSE
 
 play button pressed
 check current time (1:01)
 check beat that is after +1s that time (1:02) -> 1:02.30
 when next 1s elaspes, wait the difference of 0.30s and then play on that beat.
-
-audio and video are now synced.
+- We cannot watch the div inside the iframe to get this information.
