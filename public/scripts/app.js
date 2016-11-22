@@ -89,23 +89,6 @@ function init(properties) {
   scene.background = refractionCube;
 
 
-  // var imagePrefix = "textures/";
-  // var directions  = ["posx", "negx", "posy", "negy", "posz", "negz"];
-  // var imageSuffix = ".jpg";
-  // var skyGeometry = new THREE.CubeGeometry( 5000, 5000, 5000 );
-
-  // var materialArray = [];
-  // var loader = new THREE.TextureLoader();
-  // for (var i = 0; i < 6; i++)
-  //   materialArray.push( new THREE.MeshLambertMaterial({
-  //     map: loader.load( imagePrefix + directions[i] + imageSuffix ),
-  //     side: THREE.BackSide
-  //   }));
-  // var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
-  // var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
-  // scene.add( skyBox );
-
-
 /////// THIS IS SHIT TO DO A LIGHT //////////////
 
   var light = new THREE.PointLight(0xffffff);
@@ -115,16 +98,9 @@ function init(properties) {
   scene.add(lightAmb);
 
 
+  makeBox();
 
-
-
-
-
-
-
-    makeBox();
-
-    makeCircle();
+  makeCircle();
 
   /////// GUI //////////////
   var gui = new dat.GUI({ autoPlace: false, preset: properties });
