@@ -15,7 +15,7 @@ var properties = {
     },
     circle: {
         color: '#eee',
-        quantity: 7,
+        quantity: 3,
         x_size: 6,
         y_size: 2,
         z_size: 4,
@@ -70,18 +70,6 @@ function init(properties) {
 
 
 
-
-
-
-  // gui.add(obj, 'displayOutline');
-  // gui.add(obj, 'explode');
-  // gui.add(obj, 'maxSize').min(-10).max(10).step(0.25);
-  // gui.add(obj, 'height').step(5); // Increment amount
-  // // Choose from accepted values
-  // gui.add(obj, 'type', [ 'one', 'two', 'three' ] );
-  // // Choose from named values
-  // gui.add(obj, 'speed', { Stopped: 0, Slow: 0.1, Fast: 5 } );
-
   // var names = ["posz","negz","posy","negy","posx","negx"];
 
   // var i;
@@ -112,7 +100,102 @@ function init(properties) {
   // scene.add(lightAmb);
 
 
-    // BOX /////////////////////
+
+    // console.log(boxes);
+
+    makeBox();
+
+    makeCircle();
+
+  /////// GUI //////////////
+  var gui = new dat.GUI({ autoPlace: false, preset: properties });
+
+  var customContainer = document.getElementById('my-gui-container');
+  customContainer.appendChild(gui.domElement);
+  gui.remember(properties);
+
+  var boxColor = gui.addColor(properties.box, 'color').name('Color').listen();
+  var boxQuantity = gui.add(properties.box, 'quantity', 0, 15);
+  var boxWireframe = gui.add(properties.box, 'wireframe');
+
+  var circleColor = gui.addColor(properties.circle, 'color').name('Color').listen();
+  var circleQuantity = gui.add(properties.circle, 'quantity', 0, 15);
+  var circleWireframe = gui.add(properties.circle, 'wireframe');
+
+
+  boxColor.onChange(function(value) {
+    box.material.color.setHex( value.replace("#", "0x") );
+  });
+
+  boxQuantity.onChange(function(value) {
+    boxes.forEach(function(box) {
+      scene.remove(box);
+    });
+    makeBox(value);
+  });
+
+  boxWireframe.onChange(function(value) {
+    boxes.forEach(function(box) {
+      scene.remove(box);
+    });
+    makeBox(box.quantity);
+  });
+
+  circleColor.onChange(function(value)  {
+    circle.material.color.setHex( value.replace("#", "0x") );
+  });
+
+  circleQuantity.onChange(function(value) {
+    circles.forEach(function(circle) {
+      scene.remove(circle);
+    });
+    makeCircle(value);
+  });
+
+  circleWireframe.onChange(function(value) {
+    circles.forEach(function(circle) {
+      scene.remove(circle);
+    });
+    makeCircle(circle.quantity);
+  });
+
+
+   // gui.add(obj, 'displayOutline');
+  // gui.add(obj, 'explode');
+  // gui.add(obj, 'maxSize').min(-10).max(10).step(0.25);
+  // gui.add(obj, 'height').step(5); // Increment amount
+  // // Choose from accepted values
+  // gui.add(obj, 'type', [ 'one', 'two', 'three' ] );
+  // // Choose from named values
+  // gui.add(obj, 'speed', { Stopped: 0, Slow: 0.1, Fast: 5 } );
+
+
+
+  gui.open();
+
+
+
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // universe begins, loads loudness for first instance.
+    loadFirstBeat();
+    playBeat();
+    // music started
+
+
+}
+
+
+function wireFrame() {
+  box.wireframe = value;
+  animate();
+}
+
+
+function makeBox() {
+      // BOX /////////////////////
     var realXsize = properties.box.x_size * 100;
     var realYsize = properties.box.y_size * 100;
     var realZsize = properties.box.z_size * 100;
@@ -133,9 +216,10 @@ function init(properties) {
         // console.log(box);
         boxes.push(box);
     }
-    // console.log(boxes);
+}
 
-    // CIRCLE /////////////////
+function makeCircle() {
+      // CIRCLE /////////////////
     properties.circle.realXsizeCircle = properties.circle.x_size * 100;
     properties.circle.realYsizeCircle = properties.circle.y_size * 100;
     properties.circle.realZsizeCircle = properties.circle.z_size * 100;
@@ -156,64 +240,8 @@ function init(properties) {
         circles.push(circle);
 
     }
-
-
-  /////// GUI //////////////
-  var gui = new dat.GUI({ autoPlace: false, preset: properties });
-
-  var customContainer = document.getElementById('my-gui-container');
-  customContainer.appendChild(gui.domElement);
-  gui.remember(properties);
-
-  var boxColor = gui.addColor(properties.box, 'color').name('Color').listen();
-  gui.add(properties.box, 'quantity', 0, 15);
-  gui.add(properties.box, 'wireframe');
-
-  var circleColor = gui.addColor(properties.circle, 'color').name('Color').listen();
-  gui.add(properties.circle, 'quantity', 0, 15);
-  gui.add(properties.circle, 'wireframe');
-
-
-  boxColor.onChange(function(value) {
-    console.log("box color changed:" + value)
-    box.material.color.setHex( value.replace("#", "0x") );
-  });
-
-  circleColor.onChange(function(value)  {
-    properties.circle.color.setHex( value );
-  });
-
-  // properties.box.color.setHex( properties.box.color );
-
-
-  gui.open();
-
-
-
-
-
-
-
-
-
-
-
-    renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
-
-    // universe begins, loads loudness for first instance.
-    loadFirstBeat();
-    playBeat();
-    // music started
-
-
-
-
-
-
-
 }
+
 
 function animate(properties) {
     requestAnimationFrame(animate);
