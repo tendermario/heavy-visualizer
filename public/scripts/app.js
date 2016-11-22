@@ -20,7 +20,8 @@ var properties = {
         y_size: 3,
         z_size: 4,
         wireframe: false,
-        opacity: 1
+        opacity: 0.5,
+        transparent: true
     },
     circle: {
         color: '#eee',
@@ -29,7 +30,8 @@ var properties = {
         y_size: 2,
         z_size: 4,
         wireframe: true,
-        opacity: 0.6
+        opacity: 0.6,
+        transparent: true
     }
 }
 
@@ -122,13 +124,14 @@ function init(properties) {
   var boxColor = folder1.addColor(properties.box, 'color').name('Color').listen();
   var boxQuantity = folder1.add(properties.box, 'quantity', 0, 15).name('Quantity');
   var boxWireframe = folder1.add(properties.box, 'wireframe').name('Wireframe');
-  var boxOpacity = folder1.add(properties.box, 'opacity' ).min(0).max(1).step(0.01).name('Opacity').listen();
+  var boxOpacity = folder1.add(properties.box, 'opacity' ).min(0).max(1).step(0.01).name('Opacity');
   // folder1.open();
 
   var folder2 = gui.addFolder('Circles');
   var circleColor = folder2.addColor(properties.circle, 'color').name('Color').listen();
   var circleQuantity = folder2.add(properties.circle, 'quantity', 0, 15).name('Quantity').step(1);
   var circleWireframe = folder2.add(properties.circle, 'wireframe').name('Wireframe');
+  var circleOpacity = folder2.add(properties.circle, 'opacity' ).min(0).max(1).step(0.01).name('Opacity');
   // folder2.open();
 
   boxColor.onChange(function(value) {
@@ -150,11 +153,7 @@ function init(properties) {
   });
 
   boxOpacity.onChange(function(value) {
-    console.log(box.material.opacity);
     box.material.opacity = value;
-    console.log(box.material.opacity);
-    console.log(properties.box)
-
   });
 
   circleColor.onChange(function(value)  {
@@ -175,6 +174,10 @@ function init(properties) {
     makeCircle(circle.quantity);
   });
 
+  circleOpacity.onChange(function(value) {
+    circle.material.opacity = value;
+  });
+
   gui.open();
 
 
@@ -192,12 +195,6 @@ function init(properties) {
 }
 
 
-function wireFrame() {
-  box.wireframe = value;
-  animate();
-}
-
-
 function makeBox() {
       // BOX /////////////////////
     var realXsize = properties.box.x_size * 100;
@@ -209,7 +206,8 @@ function makeBox() {
     boxMaterial = new THREE.MeshBasicMaterial({
         color: properties.box.color,
         wireframe: properties.box.wireframe,
-        opacity: properties.box.opacity
+        opacity: properties.box.opacity,
+        transparent: properties.box.transparent
     });
 
     for (var i = 0; i < properties.box.quantity; i++) {
@@ -235,6 +233,8 @@ function makeCircle() {
     circleMaterial = new THREE.MeshBasicMaterial({
         color: properties.circle.color,
         wireframe: properties.circle.wireframe,
+        opacity: properties.box.opacity,
+        transparent: properties.box.transparent
     });
     for (var i = 0; i < properties.circle.quantity; i++) {
         circle = new THREE.Mesh(circleGeometry, circleMaterial);
