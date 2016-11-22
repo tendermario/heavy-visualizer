@@ -60,5 +60,11 @@
     height: 100%;
   }
 
+  #upload-music {
+    padding: 30px;
+    color: white;
+    display: none;
+  }
+
 
 }
