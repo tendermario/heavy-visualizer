@@ -10,7 +10,7 @@ var camera, scene, renderer, boxes = [],
     circles = [],
     boxGeometry,
     boxMaterial,
-    mesh, controls, fog;
+    mesh, controls, fog, light1;
 
 var properties = {
     box: {
@@ -26,7 +26,7 @@ var properties = {
     circle: {
         color: '#eee',
         quantity: 3,
-        x_size: 6,
+        x_size: 1,
         y_size: 2,
         z_size: 4,
         wireframe: true,
@@ -67,44 +67,42 @@ function init(properties) {
   controls = new THREE.TrackballControls(camera, document.getElementById('threeCanvas'));
   controls.addEventListener('change', sceneRender);
 
-  scene = new THREE.Scene();
   // scene.fog = new THREE.Fog( 0x71757a, 10, 200 );
   // scene.fog = new THREE.FogExp2( 0x71757a, 0.0007 );
 
 
+////// BACKGROUND IMGS //////////////
 
-///// THIS IS SHIT TO IMPLEMENT A BACKGROUND ///////////////
+    var path = "./textures/";
+    var format = ".jpg";
+    var urls = [
+ path + 'posx' + format, path + 'negx' + format,
+ path + 'posy' + format, path + 'negy' + format,
+ path + 'posz' + format, path + 'negz' + format
+     ];
 
-  // var names = ["posz","negz","posy","negy","posx","negx"];
+    var refractionCube = new THREE.CubeTextureLoader().load( urls );
+    refractionCube.mapping = THREE.CubeRefractionMapping;
+    refractionCube.format = THREE.RGBFormat;
 
-  // var i;
-  // for (i = 0; i < 6; i++) {
-  //   urls[i] = "textures/" + names[i] + ".jpg";
-  //   skyTextures[i] = THREE.TextureLoader(urls[i]);
-  // }
 
-  // var skyMaterials = [];
-  // skyMaterials.push(new THREE.MeshBasicMaterial({ map: skyTextures[0] }));
-  // skyMaterials.push(new THREE.MeshBasicMaterial({ map: skyTextures[1] }));
-  // skyMaterials.push(new THREE.MeshBasicMaterial({ map: skyTextures[2] }));
-  // skyMaterials.push(new THREE.MeshBasicMaterial({ map: skyTextures[3] }));
-  // skyMaterials.push(new THREE.MeshBasicMaterial({ map: skyTextures[4] }));
-  // skyMaterials.push(new THREE.MeshBasicMaterial({ map: skyTextures[5] }));
 
-  // console.log(urls);
-  // dome = new THREE.Mesh( new THREE.BoxGeometry( 9000, 9000, 9000, 1, 1,1, skyMaterials,true), new THREE.MeshBasicMaterial() );
-  // scene.add(dome);
-
-  // cubeMap = new THREE.CubeTextureLoader(urls);
+  scene = new THREE.Scene();
+  scene.background = refractionCube;
 
 
 /////// THIS IS SHIT TO DO A LIGHT //////////////
 
-  // var light = new THREE.PointLight(0xffffff);
-  // light.position.set(60, 0, 20);
-  // scene.add(light);
-  // var lightAmb = new THREE.AmbientLight(0xffffff);
-  // scene.add(lightAmb);
+  var light = new THREE.PointLight(0xffffff);
+  light.position.set(60, 0, 20);
+  scene.add(light);
+  var lightAmb = new THREE.AmbientLight(0xffffff);
+  scene.add(lightAmb);
+
+
+
+
+
 
 
 
@@ -203,7 +201,7 @@ function makeBox() {
 
     boxGeometry = new THREE.BoxGeometry(realXsize, realYsize, realZsize);
 
-    boxMaterial = new THREE.MeshBasicMaterial({
+    boxMaterial = new THREE.MeshLambertMaterial({
         color: properties.box.color,
         wireframe: properties.box.wireframe,
         opacity: properties.box.opacity,
@@ -230,7 +228,7 @@ function makeCircle() {
 
     circleGeometry = new THREE.CircleGeometry(properties.circle.realXsizeCircle, properties.circle.realYsizeCircle, properties.circle.realZsizeCircle);
 
-    circleMaterial = new THREE.MeshBasicMaterial({
+    circleMaterial = new THREE.MeshLambertMaterial({
         color: properties.circle.color,
         wireframe: properties.circle.wireframe,
         opacity: properties.box.opacity,
