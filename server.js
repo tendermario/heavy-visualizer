@@ -5,7 +5,10 @@ var cookieParser = require('cookie-parser');
 const PORT = process.env.SERVER_PORT || 8888;
 
 //// Routes
-const spotifyApi = require('./routes/spotify');
+
+// This is for the uploader
+// const musicApi = require('./routes/music');
+
 //// Server
 
 const app = express();
@@ -18,8 +21,6 @@ app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //// Routes
-
-app.use("/", spotifyApi());
 
 app.get("/", (req, res) => {
   res.render("index");

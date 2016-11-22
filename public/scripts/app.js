@@ -217,7 +217,7 @@ $(function(){
     // mesh.rotation.x += + x;
     // mesh.rotation.y += 0.02;
     // animate(properties);
-}
+// }
 
 // on load render scene
 document.addEventListener('DOMContentLoaded', function() {

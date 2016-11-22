@@ -60,5 +60,7 @@
     height: 100%;
   }
 
-
+  #upload-message {
+    /*display: none;*/
+  }
 }
