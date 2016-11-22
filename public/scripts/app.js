@@ -26,7 +26,7 @@ var properties = {
     circle: {
         color: '#eee',
         quantity: 3,
-        x_size: 1,
+        x_size: 9,
         y_size: 2,
         z_size: 4,
         wireframe: true,
@@ -61,7 +61,7 @@ function playBeat() {
 
 function init(properties) {
 
-  camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 9000);
+  camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 12000);
   camera.position.z = 1400;
 
   controls = new THREE.TrackballControls(camera, document.getElementById('threeCanvas'));
@@ -76,19 +76,34 @@ function init(properties) {
     var path = "./textures/";
     var format = ".jpg";
     var urls = [
- path + 'posx' + format, path + 'negx' + format,
- path + 'posy' + format, path + 'negy' + format,
- path + 'posz' + format, path + 'negz' + format
+     path + 'posz' + format, path + 'negz' + format,
+     path + 'posy' + format, path + 'negy' + format,
+     path + 'posx' + format, path + 'negx' + format
      ];
 
     var refractionCube = new THREE.CubeTextureLoader().load( urls );
     refractionCube.mapping = THREE.CubeRefractionMapping;
     refractionCube.format = THREE.RGBFormat;
 
-
-
   scene = new THREE.Scene();
   scene.background = refractionCube;
+
+
+  // var imagePrefix = "textures/";
+  // var directions  = ["posx", "negx", "posy", "negy", "posz", "negz"];
+  // var imageSuffix = ".jpg";
+  // var skyGeometry = new THREE.CubeGeometry( 5000, 5000, 5000 );
+
+  // var materialArray = [];
+  // var loader = new THREE.TextureLoader();
+  // for (var i = 0; i < 6; i++)
+  //   materialArray.push( new THREE.MeshLambertMaterial({
+  //     map: loader.load( imagePrefix + directions[i] + imageSuffix ),
+  //     side: THREE.BackSide
+  //   }));
+  // var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
+  // var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
+  // scene.add( skyBox );
 
 
 /////// THIS IS SHIT TO DO A LIGHT //////////////
@@ -180,7 +195,8 @@ function init(properties) {
 
 
 
-    renderer = new THREE.WebGLRenderer();
+    renderer = new THREE.WebGLRenderer({alpha: true});
+    renderer.setClearColor( 0x000000, 0 );
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
