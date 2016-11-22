@@ -61,6 +61,8 @@
   }
 
   #upload-message {
-    /*display: none;*/
+    position fixed;
+    padding: 30px;
+    color: white;
   }
 }
