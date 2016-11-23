@@ -108,7 +108,6 @@ var Visualizer = {
       Visualizer.circles.forEach(function(circle) {
         Visualizer.scene.remove(circle);
       });
-      console.log(value);
       visualizer_properties.circle.quantity = value;
       Visualizer.makeCircle(visualizer_properties);
     });
@@ -117,7 +116,7 @@ var Visualizer = {
       Visualizer.circles.forEach(function(circle) {
         Visualizer.scene.remove(circle);
       });
-      Visualizer.makeCircle(circle.quantity);
+      Visualizer.makeCircle(properties);
     });
 
     circleOpacity.onChange(function(value) {

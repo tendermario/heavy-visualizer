@@ -1,5 +1,5 @@
 $(function(){
-  // AudioContext.init();
+  Audio.init();
 
   // SPOTIFY, DEFUNCT
   Spotify.loadFirstBeat();
