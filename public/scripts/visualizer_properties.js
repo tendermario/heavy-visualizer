@@ -10,7 +10,7 @@ visualizer_properties = {
     transparent: true
   },
   circle: {
-    color: '#eaff00',
+    color: '#cb00ff',
     quantity: 3,
     x_size: 9,
     y_size: 2,
