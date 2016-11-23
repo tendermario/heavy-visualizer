@@ -39,7 +39,7 @@ var Visualizer = {
     // adds rendered to DOM
     document.body.appendChild(this.renderer.domElement);
   },
- initCamera: function() {
+  initCamera: function() {
     this.camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 1, 10000);
     this.camera.position.z = 1400;
   },
@@ -82,17 +82,18 @@ var Visualizer = {
     });
 
     boxQuantity.onChange(function(value) {
-      boxes.forEach(function(box) {
-        scene.remove(box);
+      Visualizer.boxes.forEach(function(box) {
+        Visualizer.scene.remove(box);
       });
-      makeBox(properties);
+      visualizer_properties.box.quantity = value;
+      Visualizer.makeBox(properties);
     });
 
     boxWireframe.onChange(function(value) {
-      boxes.forEach(function(box) {
-        scene.remove(box);
+      Visualizer.boxes.forEach(function(box) {
+        Visualizer.scene.remove(box);
       });
-      makeBox(properties);
+      Visualizer.makeBox(properties);
     });
 
     boxOpacity.onChange(function(value) {
@@ -104,17 +105,19 @@ var Visualizer = {
     });
 
     circleQuantity.onChange(function(value) {
-      circles.forEach(function(circle) {
-        scene.remove(circle);
+      Visualizer.circles.forEach(function(circle) {
+        Visualizer.scene.remove(circle);
       });
-      makeCircle(value);
+      console.log(value);
+      visualizer_properties.circle.quantity = value;
+      Visualizer.makeCircle(visualizer_properties);
     });
 
     circleWireframe.onChange(function(value) {
-      circles.forEach(function(circle) {
-        scene.remove(circle);
+      Visualizer.circles.forEach(function(circle) {
+        Visualizer.scene.remove(circle);
       });
-      makeCircle(circle.quantity);
+      Visualizer.makeCircle(circle.quantity);
     });
 
     circleOpacity.onChange(function(value) {
@@ -148,9 +151,9 @@ var Visualizer = {
     this.scene.add(lightAmb);
   },
   makeBox: function(properties) {
-    var realXsize = properties.box.x_size * 100;
-    var realYsize = properties.box.y_size * 100;
-    var realZsize = properties.box.z_size * 100;
+    var realXsize = properties.box.x_size * 100,
+      realYsize = properties.box.y_size * 100,
+      realZsize = properties.box.z_size * 100;
 
     boxGeometry = new THREE.BoxGeometry(realXsize, realYsize, realZsize);
 
@@ -171,12 +174,12 @@ var Visualizer = {
     }
   },
   makeCircle: function(properties) {
-    properties.circle.realXsizeCircle = properties.circle.x_size * 100;
-    properties.circle.realYsizeCircle = properties.circle.y_size * 100;
-    properties.circle.realZsizeCircle = properties.circle.z_size * 100;
+    var realXsizeCircle = properties.circle.x_size * 100;
+    var realYsizeCircle = properties.circle.y_size * 100;
+    var realZsizeCircle = properties.circle.z_size * 100;
 
 
-    circleGeometry = new THREE.CircleGeometry(properties.circle.realXsizeCircle, properties.circle.realYsizeCircle, properties.circle.realZsizeCircle);
+    circleGeometry = new THREE.CircleGeometry(realXsizeCircle, realYsizeCircle, realZsizeCircle);
 
     circleMaterial = new THREE.MeshLambertMaterial({
       color: properties.circle.color,
