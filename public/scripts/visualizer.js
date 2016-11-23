@@ -9,12 +9,14 @@ var Visualizer = {
   scene: null,
   renderer: null,
   boxes: [],
+  circles: [],
+  spheres: [],
   box: null,
   circle: null,
+  sphere: null,
   urls: [],
   skyTextures: [],
   cubeMap: null,
-  circles: [],
   boxGeometry: null,
   boxMaterial: null,
   mesh: null,
@@ -33,9 +35,10 @@ var Visualizer = {
     this.makeAmbientLight();
     this.makeBox(properties);
     this.makeCircle(properties);
+    this.makeSphere(properties);
 
-    // scene.fog = new THREE.Fog( 0x71757a, 10, 200 );
-    // scene.fog = new THREE.FogExp2( 0x71757a, 0.0007 );
+    // this.scene.fog = new THREE.Fog( 0x71757a, 10, 200 );
+    // this.scene.fog = new THREE.FogExp2( 0x71757a, 0.0007 );
     // adds rendered to DOM
     document.body.appendChild(this.renderer.domElement);
   },
@@ -77,48 +80,76 @@ var Visualizer = {
     // Uncomment below line to have circles folder open by default
     // circlesFolder.open();
 
+    var spheresFolder = gui.addFolder('Spheres');
+    var sphereColor = spheresFolder.addColor(properties.sphere, 'color').name('Color').listen();
+    var sphereQuantity = spheresFolder.add(properties.sphere, 'quantity', 0, 15).name('Quantity').step(1);
+    var sphereWireframe = spheresFolder.add(properties.sphere, 'wireframe').name('Wireframe');
+    var sphereOpacity = spheresFolder.add(properties.sphere, 'opacity' ).min(0).max(1).step(0.01).name('Opacity');
+    ////////// BOXES /////////////////
     boxColor.onChange(function(value) {
       box.material.color.setHex( value.replace("#", "0x") );
     });
 
     boxQuantity.onChange(function(value) {
-      boxes.forEach(function(box) {
-        scene.remove(box);
+      Visualizer.boxes.forEach(function(box) {
+        Visualizer.scene.remove(box);
       });
-      makeBox(properties);
+      Visualizer.makeBox(properties);
     });
 
     boxWireframe.onChange(function(value) {
-      boxes.forEach(function(box) {
-        scene.remove(box);
+      Visualizer.boxes.forEach(function(box) {
+        Visualizer.scene.remove(box);
       });
-      makeBox(properties);
+      Visualizer.makeBox(properties);
     });
 
     boxOpacity.onChange(function(value) {
       box.material.opacity = value;
     });
-
+    ////////// CIRCLES /////////////////
     circleColor.onChange(function(value)  {
       circle.material.color.setHex( value.replace("#", "0x") );
     });
 
     circleQuantity.onChange(function(value) {
-      circles.forEach(function(circle) {
-        scene.remove(circle);
+      Visualizer.circles.forEach(function(circle) {
+        Visualizer.scene.remove(circle);
       });
-      makeCircle(value);
+      Visualizer.makeCircle(value);
     });
 
     circleWireframe.onChange(function(value) {
-      circles.forEach(function(circle) {
-        scene.remove(circle);
+      Visualizer.circles.forEach(function(circle) {
+        Visualizer.scene.remove(circle);
       });
-      makeCircle(circle.quantity);
+      Visualizer.makeCircle(circle.quantity);
     });
 
     circleOpacity.onChange(function(value) {
       circle.material.opacity = value;
+    });
+    ////////// SPHERES /////////////////
+    sphereColor.onChange(function(value)  {
+      sphere.material.color.setHex( value.replace("#", "0x") );
+    });
+
+    sphereQuantity.onChange(function(value) {
+      Visualizer.spheres.forEach(function(sphere) {
+        Visualizer.scene.remove(sphere);
+      });
+      Visualizer.makeSphere(value);
+    });
+
+    sphereWireframe.onChange(function(value) {
+      Visualizer.spheres.forEach(function(sphere) {
+        Visualizer.scene.remove(sphere);
+      });
+      Visualizer.makeSphere(sphere.quantity);
+    });
+
+    sphereOpacity.onChange(function(value) {
+      sphere.material.opacity = value;
     });
 
     gui.open();
@@ -181,8 +212,8 @@ var Visualizer = {
     circleMaterial = new THREE.MeshLambertMaterial({
       color: properties.circle.color,
       wireframe: properties.circle.wireframe,
-      opacity: properties.box.opacity,
-      transparent: properties.box.transparent
+      opacity: properties.circle.opacity,
+      transparent: properties.circle.transparent
     });
     for (var i = 0; i < properties.circle.quantity; i++) {
       circle = new THREE.Mesh(circleGeometry, circleMaterial);
@@ -193,6 +224,29 @@ var Visualizer = {
       this.circles.push(circle);
     }
   },
+  makeSphere: function(properties) {
+  properties.sphere.realXsizeSphere = properties.sphere.x_size * 100;
+  properties.sphere.realYsizeSphere = properties.sphere.y_size * 100;
+  properties.sphere.realZsizeSphere = properties.sphere.z_size * 100;
+
+
+  sphereGeometry = new THREE.SphereGeometry(properties.sphere.realXsizeSphere, properties.sphere.realYsizeSphere, properties.sphere.realZsizeSphere);
+
+  sphereMaterial = new THREE.MeshLambertMaterial({
+    color: properties.sphere.color,
+    wireframe: properties.sphere.wireframe,
+    opacity: properties.sphere.opacity,
+    transparent: properties.sphere.transparent
+  });
+  for (var i = 0; i < properties.sphere.quantity; i++) {
+    sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+    sphere.position.x = (Math.random() - 0.5) * 3000;
+    sphere.position.y = (Math.random() - 0.5) * 1200;
+    sphere.position.z = (Math.random() - 0.5) * 500;
+    this.scene.add(sphere);
+    this.spheres.push(sphere);
+  }
+},
   animate: function() {
 
     // Dragging the mouse to move the scene
