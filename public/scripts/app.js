@@ -5,8 +5,6 @@ $(function(){
   Spotify.loadFirstBeat();
   Spotify.playBeat();
 
-
-
   $('#my-gui-container').on('click', function(e) {
     Visualizer.sceneRender();
   });
@@ -20,7 +18,3 @@ $(function(){
   Visualizer.animate();
 
 });
-
-
-
-
