@@ -1,7 +1,7 @@
 visualizer_properties = {
   box: {
     color: '#ff0000',
-    quantity: 2,
+    quantity: 12,
     x_size: 50,
     y_size: 30,
     z_size: 40,
@@ -11,7 +11,7 @@ visualizer_properties = {
   },
   circle: {
     color: '#cb00ff',
-    quantity: 2,
+    quantity: 12,
     x_size: 90,
     y_size: 20,
     z_size: 40,
@@ -22,10 +22,10 @@ visualizer_properties = {
   sphere: {
     color: '#eee',
     quantity: 3,
-    x_size: 5,
-    y_size: 2,
-    z_size: 4,
-    wireframe: true,
+    x_size: 50,
+    y_size: 20,
+    z_size: 40,
+    wireframe: false,
     opacity: 0.6,
     transparent: true
     }
