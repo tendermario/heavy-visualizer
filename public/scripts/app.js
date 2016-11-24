@@ -9,6 +9,7 @@ $(function(){
     Visualizer.sceneRender();
   });
 
+
   // Music Preparation
   // _prepareAPI();
   // _addEventListener();

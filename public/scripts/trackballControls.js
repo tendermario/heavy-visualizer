@@ -8,7 +8,7 @@
 THREE.TrackballControls = function ( object, domElement ) {
 
   var _this = this;
-  var STATE = { NONE: - 1, ROTATE: 0, ZOOM: 1, PAN: 3, TOUCH_ROTATE: 10, TOUCH_ZOOM_PAN: 4 };
+  var STATE = { NONE: - 1, ROTATE: 0, ZOOM: 0, PAN: 3, TOUCH_ROTATE: 10, TOUCH_ZOOM_PAN: 4 };
 
   this.object = object;
   this.domElement = ( domElement !== undefined ) ? domElement : document;

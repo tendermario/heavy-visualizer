@@ -9,12 +9,14 @@ var Visualizer = {
   scene: null,
   renderer: null,
   boxes: [],
+  circles: [],
+  spheres: [],
   box: null,
   circle: null,
+  sphere: null,
   urls: [],
   skyTextures: [],
   cubeMap: null,
-  circles: [],
   boxGeometry: null,
   boxMaterial: null,
   mesh: null,
@@ -36,15 +38,16 @@ var Visualizer = {
     this.makeAmbientLight();
     this.makeBox(properties);
     this.makeCircle(properties);
+    this.makeSphere(properties);
 
-    // scene.fog = new THREE.Fog( 0x71757a, 10, 200 );
-    // scene.fog = new THREE.FogExp2( 0x71757a, 0.0007 );
+    // this.scene.fog = new THREE.Fog( 0x71757a, 10, 200 );
+    // this.scene.fog = new THREE.FogExp2( 0x71757a, 0.0007 );
     // adds rendered to DOM
     document.body.appendChild(this.renderer.domElement);
   },
   initCamera: function() {
     this.camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 1, 10000);
-    this.camera.position.z = 1400;
+    this.camera.position.z = 3000;
   },
   initScene: function() {
     this.scene = new THREE.Scene();
@@ -80,6 +83,12 @@ var Visualizer = {
     // Uncomment below line to have circles folder open by default
     // circlesFolder.open();
 
+    var spheresFolder = gui.addFolder('Spheres');
+    var sphereColor = spheresFolder.addColor(properties.sphere, 'color').name('Color').listen();
+    var sphereQuantity = spheresFolder.add(properties.sphere, 'quantity', 0, 3).name('Quantity').step(1);
+    var sphereWireframe = spheresFolder.add(properties.sphere, 'wireframe').name('Wireframe');
+    var sphereOpacity = spheresFolder.add(properties.sphere, 'opacity' ).min(0).max(1).step(0.01).name('Opacity');
+    ////////// BOXES /////////////////
     boxColor.onChange(function(value) {
       box.material.color.setHex( value.replace("#", "0x") );
     });
@@ -96,7 +105,7 @@ var Visualizer = {
     boxOpacity.onChange(function(value) {
       box.material.opacity = value;
     });
-
+    ////////// CIRCLES /////////////////
     circleColor.onChange(function(value)  {
       circle.material.color.setHex( value.replace("#", "0x") );
     });
@@ -112,6 +121,29 @@ var Visualizer = {
 
     circleOpacity.onChange(function(value) {
       circle.material.opacity = value;
+    });
+    ////////// SPHERES /////////////////
+    sphereColor.onChange(function(value)  {
+      sphere.material.color.setHex( value.replace("#", "0x") );
+    });
+
+    sphereQuantity.onChange(function(value) {
+      Visualizer.spheres.forEach(function(sphere) {
+        Visualizer.scene.remove(sphere);
+      });
+      visualizer_properties.sphere.quantity = value;
+      Visualizer.makeSphere(visualizer_properties);
+    });
+
+    sphereWireframe.onChange(function(value) {
+      Visualizer.spheres.forEach(function(sphere) {
+        Visualizer.scene.remove(sphere);
+      });
+      Visualizer.makeSphere(properties);
+    });
+
+    sphereOpacity.onChange(function(value) {
+      sphere.material.opacity = value;
     });
 
     gui.open();
@@ -199,8 +231,8 @@ var Visualizer = {
     circleMaterial = new THREE.MeshLambertMaterial({
       color: properties.circle.color,
       wireframe: properties.circle.wireframe,
-      opacity: properties.box.opacity,
-      transparent: properties.box.transparent
+      opacity: properties.circle.opacity,
+      transparent: properties.circle.transparent
     });
     for (var i = 0; i < properties.circle.quantity; i++) {
       circle = new THREE.Mesh(circleGeometry, circleMaterial);
@@ -231,6 +263,30 @@ var Visualizer = {
       }
       this.perf.frameCounter = 0;
       this.perf.currSecond = currSecond;
+    }
+  },
+  makeSphere: function(properties) {
+    console.log(properties);
+    var realXsizeSphere = properties.sphere.x_size * 100;
+    var realYsizeSphere = properties.sphere.y_size * 100;
+    var realZsizeSphere = properties.sphere.z_size * 100;
+
+
+    sphereGeometry = new THREE.SphereGeometry(realXsizeSphere, realYsizeSphere, realZsizeSphere);
+
+    sphereMaterial = new THREE.MeshLambertMaterial({
+      color: properties.sphere.color,
+      wireframe: properties.sphere.wireframe,
+      opacity: properties.sphere.opacity,
+      transparent: properties.sphere.transparent
+    });
+    for (var i = 0; i < properties.sphere.quantity; i++) {
+      sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+      sphere.position.x = (Math.random() - 0.5) * 3000;
+      sphere.position.y = (Math.random() - 0.5) * 1200;
+      sphere.position.z = (Math.random() - 0.5) * 500;
+      this.scene.add(sphere);
+      this.spheres.push(sphere);
     }
   },
   animate: function() {
