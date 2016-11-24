@@ -42,9 +42,9 @@ var Visualizer = {
     // adds rendered to DOM
     document.body.appendChild(this.renderer.domElement);
   },
- initCamera: function() {
+  initCamera: function() {
     this.camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 1, 10000);
-    this.camera.position.z = 1400;
+    this.camera.position.z = 3000;
   },
   initScene: function() {
     this.scene = new THREE.Scene();
@@ -82,7 +82,7 @@ var Visualizer = {
 
     var spheresFolder = gui.addFolder('Spheres');
     var sphereColor = spheresFolder.addColor(properties.sphere, 'color').name('Color').listen();
-    var sphereQuantity = spheresFolder.add(properties.sphere, 'quantity', 0, 15).name('Quantity').step(1);
+    var sphereQuantity = spheresFolder.add(properties.sphere, 'quantity', 0, 3).name('Quantity').step(1);
     var sphereWireframe = spheresFolder.add(properties.sphere, 'wireframe').name('Wireframe');
     var sphereOpacity = spheresFolder.add(properties.sphere, 'opacity' ).min(0).max(1).step(0.01).name('Opacity');
     ////////// BOXES /////////////////
@@ -94,6 +94,7 @@ var Visualizer = {
       Visualizer.boxes.forEach(function(box) {
         Visualizer.scene.remove(box);
       });
+      visualizer_properties.box.quantity = value;
       Visualizer.makeBox(properties);
     });
 
@@ -116,14 +117,15 @@ var Visualizer = {
       Visualizer.circles.forEach(function(circle) {
         Visualizer.scene.remove(circle);
       });
-      Visualizer.makeCircle(value);
+      visualizer_properties.circle.quantity = value;
+      Visualizer.makeCircle(visualizer_properties);
     });
 
     circleWireframe.onChange(function(value) {
       Visualizer.circles.forEach(function(circle) {
         Visualizer.scene.remove(circle);
       });
-      Visualizer.makeCircle(circle.quantity);
+      Visualizer.makeCircle(properties);
     });
 
     circleOpacity.onChange(function(value) {
@@ -138,14 +140,15 @@ var Visualizer = {
       Visualizer.spheres.forEach(function(sphere) {
         Visualizer.scene.remove(sphere);
       });
-      Visualizer.makeSphere(value);
+      visualizer_properties.sphere.quantity = value;
+      Visualizer.makeSphere(visualizer_properties);
     });
 
     sphereWireframe.onChange(function(value) {
       Visualizer.spheres.forEach(function(sphere) {
         Visualizer.scene.remove(sphere);
       });
-      Visualizer.makeSphere(sphere.quantity);
+      Visualizer.makeSphere(properties);
     });
 
     sphereOpacity.onChange(function(value) {
@@ -179,9 +182,9 @@ var Visualizer = {
     this.scene.add(lightAmb);
   },
   makeBox: function(properties) {
-    var realXsize = properties.box.x_size * 100;
-    var realYsize = properties.box.y_size * 100;
-    var realZsize = properties.box.z_size * 100;
+    var realXsize = properties.box.x_size * 100,
+      realYsize = properties.box.y_size * 100,
+      realZsize = properties.box.z_size * 100;
 
     boxGeometry = new THREE.BoxGeometry(realXsize, realYsize, realZsize);
 
@@ -202,12 +205,12 @@ var Visualizer = {
     }
   },
   makeCircle: function(properties) {
-    properties.circle.realXsizeCircle = properties.circle.x_size * 100;
-    properties.circle.realYsizeCircle = properties.circle.y_size * 100;
-    properties.circle.realZsizeCircle = properties.circle.z_size * 100;
+    var realXsizeCircle = properties.circle.x_size * 100;
+    var realYsizeCircle = properties.circle.y_size * 100;
+    var realZsizeCircle = properties.circle.z_size * 100;
 
 
-    circleGeometry = new THREE.CircleGeometry(properties.circle.realXsizeCircle, properties.circle.realYsizeCircle, properties.circle.realZsizeCircle);
+    circleGeometry = new THREE.CircleGeometry(realXsizeCircle, realYsizeCircle, realZsizeCircle);
 
     circleMaterial = new THREE.MeshLambertMaterial({
       color: properties.circle.color,
@@ -225,28 +228,29 @@ var Visualizer = {
     }
   },
   makeSphere: function(properties) {
-  properties.sphere.realXsizeSphere = properties.sphere.x_size * 100;
-  properties.sphere.realYsizeSphere = properties.sphere.y_size * 100;
-  properties.sphere.realZsizeSphere = properties.sphere.z_size * 100;
+    console.log(properties);
+    var realXsizeSphere = properties.sphere.x_size * 100;
+    var realYsizeSphere = properties.sphere.y_size * 100;
+    var realZsizeSphere = properties.sphere.z_size * 100;
 
 
-  sphereGeometry = new THREE.SphereGeometry(properties.sphere.realXsizeSphere, properties.sphere.realYsizeSphere, properties.sphere.realZsizeSphere);
+    sphereGeometry = new THREE.SphereGeometry(realXsizeSphere, realYsizeSphere, realZsizeSphere);
 
-  sphereMaterial = new THREE.MeshLambertMaterial({
-    color: properties.sphere.color,
-    wireframe: properties.sphere.wireframe,
-    opacity: properties.sphere.opacity,
-    transparent: properties.sphere.transparent
-  });
-  for (var i = 0; i < properties.sphere.quantity; i++) {
-    sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-    sphere.position.x = (Math.random() - 0.5) * 3000;
-    sphere.position.y = (Math.random() - 0.5) * 1200;
-    sphere.position.z = (Math.random() - 0.5) * 500;
-    this.scene.add(sphere);
-    this.spheres.push(sphere);
-  }
-},
+    sphereMaterial = new THREE.MeshLambertMaterial({
+      color: properties.sphere.color,
+      wireframe: properties.sphere.wireframe,
+      opacity: properties.sphere.opacity,
+      transparent: properties.sphere.transparent
+    });
+    for (var i = 0; i < properties.sphere.quantity; i++) {
+      sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+      sphere.position.x = (Math.random() - 0.5) * 3000;
+      sphere.position.y = (Math.random() - 0.5) * 1200;
+      sphere.position.z = (Math.random() - 0.5) * 500;
+      this.scene.add(sphere);
+      this.spheres.push(sphere);
+    }
+  },
   animate: function() {
 
     // Dragging the mouse to move the scene

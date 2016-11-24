@@ -1,6 +1,6 @@
 visualizer_properties = {
   box: {
-    color: '#35a7af',
+    color: '#ff0000',
     quantity: 10,
     x_size: 5,
     y_size: 3,
@@ -10,7 +10,7 @@ visualizer_properties = {
     transparent: true
   },
   circle: {
-    color: '#eee',
+    color: '#eaff00',
     quantity: 3,
     x_size: 9,
     y_size: 2,

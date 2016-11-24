@@ -5,11 +5,10 @@ $(function(){
   Spotify.loadFirstBeat();
   Spotify.playBeat();
 
-
-
   $('#my-gui-container').on('click', function(e) {
     Visualizer.sceneRender();
   });
+
 
   // Music Preparation
   // _prepareAPI();
@@ -20,7 +19,3 @@ $(function(){
   Visualizer.animate();
 
 });
-
-
-
-
