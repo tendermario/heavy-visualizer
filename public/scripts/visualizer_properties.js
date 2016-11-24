@@ -1,20 +1,20 @@
 visualizer_properties = {
   box: {
     color: '#ff0000',
-    quantity: 10,
-    x_size: 5,
-    y_size: 3,
-    z_size: 4,
+    quantity: 20,
+    x_size: 50,
+    y_size: 30,
+    z_size: 40,
     wireframe: false,
     opacity: 0.5,
     transparent: true
   },
   circle: {
-    color: '#eaff00',
-    quantity: 3,
-    x_size: 9,
-    y_size: 2,
-    z_size: 4,
+    color: '#cb00ff',
+    quantity: 20,
+    x_size: 90,
+    y_size: 20,
+    z_size: 40,
     wireframe: true,
     opacity: 0.6,
     transparent: true

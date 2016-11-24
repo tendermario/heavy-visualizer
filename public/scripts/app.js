@@ -1,9 +1,9 @@
 $(function(){
-  // AudioContext.init();
+  Audio.init();
 
   // SPOTIFY, DEFUNCT
-  Spotify.loadFirstBeat();
-  Spotify.playBeat();
+  // Spotify.loadFirstBeat();
+  // Spotify.playBeat();
 
   $('#my-gui-container').on('click', function(e) {
     Visualizer.sceneRender();
