@@ -1,7 +1,7 @@
 visualizer_properties = {
   box: {
     color: '#ff0000',
-    quantity: 12,
+    quantity: 100,
     x_size: 50,
     y_size: 30,
     z_size: 40,
@@ -11,7 +11,7 @@ visualizer_properties = {
   },
   circle: {
     color: '#cb00ff',
-    quantity: 12,
+    quantity: 51,
     x_size: 90,
     y_size: 20,
     z_size: 40,
@@ -20,6 +20,16 @@ visualizer_properties = {
     transparent: true
   },
   sphere: {
+    color: '#eee',
+    quantity: 3,
+    x_size: 50,
+    y_size: 20,
+    z_size: 40,
+    wireframe: false,
+    opacity: 0.6,
+    transparent: true
+    },
+  gradientsquare: {
     color: '#eee',
     quantity: 3,
     x_size: 50,

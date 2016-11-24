@@ -11,6 +11,7 @@ var Audio = {
   allCapsReachBottom: false,
   audioDataArray: [],
   analyser: null,
+  frequencies: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], // 40 positions
 
   init: function() {
     this._prepareAPI();
@@ -148,12 +149,16 @@ var Audio = {
     this._updateInfo('Playing ' + this.fileName, false);
     this.info = 'Playing ' + this.fileName;
     document.getElementById('upload-music').style.opacity = 0.2;
-    this._drawSpectrum();
+    this._drawFrequencies(this.analyser);
   },
-  _drawSpectrum: function() {
-    audioDataArray = new Uint8Array(this.analyser.frequencyBinCount);
-    this.analyser.getByteFrequencyData(audioDataArray);
-    Visualizer.musicImpact(audioDataArray)
+  _drawFrequencies: function(analyser) {
+    // 51 things in frequencies array, not using top 11.
+    audioDataArray = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(audioDataArray);
+    for (var i = 0; i < 51; i++) {
+      Audio.frequencies[i] = audioDataArray[i*20];
+      Visualizer.musicImpact(Audio.frequencies);
+    }
   },
   _audioEnd: function(instance) {
     if (this.forceStop) {

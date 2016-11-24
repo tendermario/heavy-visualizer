@@ -24,6 +24,7 @@ var Visualizer = {
   fog: null,
   nextAnimation: null,
   perf: {},
+  userInput: 1,
 
   init: function(properties) {
     this.initCamera();
@@ -39,6 +40,7 @@ var Visualizer = {
     this.makeBox(properties);
     this.makeCircle(properties);
     this.makeSphere(properties);
+    this.makeGradientCube(properties);
 
     // this.scene.fog = new THREE.Fog( 0x71757a, 10, 200 );
     // this.scene.fog = new THREE.FogExp2( 0x71757a, 0.0007 );
@@ -249,6 +251,7 @@ var Visualizer = {
     });
     for (var i = 0; i < properties.circle.quantity; i++) {
       circle = new THREE.Mesh(circleGeometry, circleMaterial);
+      // Create the circles in the negative and positive direction
       if (i % 2) {
         circle.position.x = i * 30 + 10;
         circle.position.y = i * 30;
@@ -266,7 +269,6 @@ var Visualizer = {
     }
   },
   makeSphere: function(properties) {
-    console.log(properties);
     var realXsizeSphere = properties.sphere.x_size;
     var realYsizeSphere = properties.sphere.y_size;
     var realZsizeSphere = properties.sphere.z_size;
@@ -287,17 +289,53 @@ var Visualizer = {
       sphere.position.z = (Math.random() - 0.5) * 500;
       this.scene.add(sphere);
       this.spheres.push(sphere);
+      console.log(this.spheres);
     }
+  },
+  makeGradientCube: function(properties) {
+    // geometry
+    var geometry = new THREE.CubeGeometry(100, 100, 100, 4, 4, 4);
+
+    // image
+    // var texture = new THREE.Texture(this.generateTexture());
+    // textureImage = texture.image
+
+    // material texture
+    var texture = new THREE.Texture(this.generateTexture());
+    texture.needsUpdate = true; // important!
+
+    // material
+      var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+
+    // mesh
+    mesh = new THREE.Mesh(geometry, material);
+    this.scene.add(mesh);
+  },
+  generateTexture: function() {
+    var size = 512;
+    // create canvas
+    var canvas = document.createElement( 'canvas' );
+    canvas.width = size;
+    canvas.height = size;
+    // get context
+    var context = canvas.getContext( '2d' );
+    // draw gradient
+    context.rect( 0, 0, size, size );
+    var gradient = context.createLinearGradient( 0, 0, size, size );
+    gradient.addColorStop(0, '#99ddff'); // light blue
+    gradient.addColorStop(Audio.frequencies[10]/256, 'transparent'); // dark blue
+    context.fillStyle = gradient;
+    context.fill();
+    return canvas;
   },
   animate: function() {
     if (this.perf.active) {
       this.perfLogFrame();
     }
-
     // Dragging the mouse to move the scene
     this.controls.update();
     if (Audio.isPlaying) {
-      Audio._drawSpectrum();
+      Audio._drawFrequencies(Audio.analyser);
     } else {
       // stops animation when the song ends. Prevents memory leak?
       cancelAnimationFrame(Visualizer.nextAnimation);
@@ -310,26 +348,19 @@ var Visualizer = {
     Visualizer.renderer.render(Visualizer.scene, Visualizer.camera);
   },
   // on music play, render scene
-  musicImpact: function(audioDataArray) {
-    var frequencies = []
-    // 51 things in frequencies array
-    for (var i = 0; i < 40; i++) {
-      frequencies[i] = audioDataArray[i*20];
-    }
-    // var new_properties = visualizer_properties;
-    // new_properties.box.x_size = 100 + x;
-    // new_properties.box.y_size = 100 + x;
-    // new_properties.box.z_size = 100 + x;
-    // Visualizer.makeBox(new_properties);
+  musicImpact: function(frequencies) {
 
-    visualizer_properties.box.x_size = frequencies[10];
-    visualizer_properties.box.y_size = frequencies[10];
-    visualizer_properties.box.z_size = frequencies[10];
-
-    visualizer_properties.circle.x_size = frequencies[20] + 1;
-    visualizer_properties.circle.y_size = frequencies[20] + 1;
-    visualizer_properties.circle.z_size = frequencies[20] + 1;
-    this.makeBox(visualizer_properties);
-    this.makeCircle(visualizer_properties);
+    Visualizer.circles.forEach(function(mesh, index) {
+      var newMeasure = frequencies[20] + 1;
+      mesh.scale.x = newMeasure;
+      mesh.scale.y = newMeasure;
+      mesh.scale.z = newMeasure;
+    })
+    Visualizer.boxes.forEach(function(mesh, index) {
+      mesh.scale.x = frequencies[index]/100*Visualizer.userInput + 1;
+    })
+    // this.makeBox(visualizer_properties);
+    // this.makeCircle(visualizer_properties);
+    // this.makeGradientCube(visualizer_properties);
   }
 }
