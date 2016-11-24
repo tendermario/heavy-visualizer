@@ -20,6 +20,7 @@ var Visualizer = {
   mesh: null,
   controls: null,
   fog: null,
+  nextAnimation: null,
 
   init: function(properties) {
     this.initCamera();
@@ -212,11 +213,14 @@ var Visualizer = {
     // Dragging the mouse to move the scene
     this.controls.update();
     if (Audio.isPlaying) {
-      Audio._drawSpectrum(); // not actually drawing...
+      Audio._drawSpectrum();
+    } else {
+      // stops animation when the song ends. Prevents memory leak?
+      cancelAnimationFrame(Visualizer.nextAnimation);
     }
     Visualizer.sceneRender();
     // Run animate when browser says it's time for next frame
-    requestAnimationFrame(this.animate.bind(this));
+    Visualizer.nextAnimation = requestAnimationFrame(this.animate.bind(this));
   },
   sceneRender: function() {
     Visualizer.renderer.render(Visualizer.scene, Visualizer.camera);
