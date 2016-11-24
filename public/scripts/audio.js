@@ -6,9 +6,11 @@ var Audio = {
   info: null,
   infoUpdateId: null, //to store the setTimeout ID and clear the interval
   animationId: null,
-  status: 0, //flag for sound is playing 1 or stopped 0
+  isPlaying: false, //flag for sound is playing 1 or stopped 0
   forceStop: false,
   allCapsReachBottom: false,
+  audioDataArray: [],
+  analyser: null,
 
   init: function() {
     this._prepareAPI();
@@ -31,7 +33,7 @@ var Audio = {
     console.log("we are in addeventlistener");
     var that = this,
       audioInput = document.getElementById('uploadedFile'),
-      dropContainer = document.getElementsByTagName("canvas")[0];
+      dropContainer = document.getElementsByTagName("body")[0];
     //listen the file upload
     audioInput.onchange = function() {
       if (that.audioContext===null) {return;};
@@ -89,6 +91,7 @@ var Audio = {
     var that = this,
       file = this.file,
       fr = new FileReader();
+    // After file is loaded, event
     fr.onload = function(e) {
       var fileResult = e.target.result;
       var audioContext = that.audioContext;
@@ -115,28 +118,29 @@ var Audio = {
   _visualize: function(audioContext, buffer) {
     console.log("we are in visualize");
     var audioBufferSouceNode = audioContext.createBufferSource(),
-      analyser = audioContext.createAnalyser(),
       that = this;
-    //connect the source to the analyser
-    audioBufferSouceNode.connect(analyser);
-    //connect the analyser to the destination(the speaker), or we won't hear the sound
-    analyser.connect(audioContext.destination);
-    //then assign the buffer to the buffer source node
+    this.analyser = audioContext.createAnalyser();
+    // connect the source to the analyser
+    audioBufferSouceNode.connect(this.analyser);
+    // connect the analyser to the destination(the speaker), or we won't hear the sound
+    this.analyser.connect(audioContext.destination);
+    // then assign the buffer to the buffer source node
     audioBufferSouceNode.buffer = buffer;
-    //play the source
+    // conditional for old browsers
     if (!audioBufferSouceNode.start) {
       audioBufferSouceNode.start = audioBufferSouceNode.noteOn //in old browsers use noteOn method
       audioBufferSouceNode.stop = audioBufferSouceNode.noteOff //in old browsers use noteOff method
     };
-    //stop the previous sound if any
+    // stop the previous animation frame and sound if they are still happening
     if (this.animationId !== null) {
       cancelAnimationFrame(this.animationId);
     }
     if (this.source !== null) {
       this.source.stop(0);
     }
+    // play the source, start of audio for the first time
     audioBufferSouceNode.start(0);
-    this.status = 1;
+    this.isPlaying = true;
     this.source = audioBufferSouceNode;
     audioBufferSouceNode.onended = function() {
       that._audioEnd(that);
@@ -144,74 +148,80 @@ var Audio = {
     this._updateInfo('Playing ' + this.fileName, false);
     this.info = 'Playing ' + this.fileName;
     document.getElementById('upload-music').style.opacity = 0.2;
-    this._drawSpectrum(analyser);
+    this._drawSpectrum();
   },
-  _drawSpectrum: function(analyser) {
-    var that = this,
-      canvas = document.getElementById('threeCanvas'),
-      cwidth = canvas.width,
-      cheight = canvas.height - 2,
-      meterWidth = 10, //width of the meters in the spectrum
-      gap = 2, //gap between meters
-      capHeight = 2,
-      capStyle = '#fff',
-      meterNum = 800 / (10 + 2), //count of the meters
-      capYPositionArray = []; //store the vertical position of the caps for the previous frame
-    ctx = canvas.getContext('2d'),
-    gradient = ctx.createLinearGradient(0, 0, 0, 300);
-    gradient.addColorStop(1, '#0f0');
-    gradient.addColorStop(0.5, '#ff0');
-    gradient.addColorStop(0, '#f00');
-    var drawMeter = function() {
-      var array = new Uint8Array(analyser.frequencyBinCount);
-      console.log(analyser);
-      analyser.getByteFrequencyData(array);
-      if (that.status === 0) {
-        //fix when some sounds end the value still not back to zero
-        for (var i = array.length - 1; i >= 0; i--) {
-          array[i] = 0;
-        };
-        allCapsReachBottom = true;
-        for (var i = capYPositionArray.length - 1; i >= 0; i--) {
-          allCapsReachBottom = allCapsReachBottom && (capYPositionArray[i] === 0);
-        };
-        if (allCapsReachBottom) {
-          cancelAnimationFrame(that.animationId); //since the sound is stopped and animation finished, stop the requestAnimation to prevent potential memory leak, THIS IS VERY IMPORTANT!
-          return;
-        };
-      };
-      var step = Math.round(array.length / meterNum); //sample limited data from the total array
-      ctx.clearRect(0, 0, cwidth, cheight);
-      for (var i = 0; i < meterNum; i++) {
-        var value = array[i * step];
-        if (capYPositionArray.length < Math.round(meterNum)) {
-          capYPositionArray.push(value);
-        };
-        ctx.fillStyle = capStyle;
-        //draw the cap, with transition effect
-        if (value < capYPositionArray[i]) {
-          ctx.fillRect(i * 12, cheight - (--capYPositionArray[i]), meterWidth, capHeight);
-        } else {
-          ctx.fillRect(i * 12, cheight - value, meterWidth, capHeight);
-          capYPositionArray[i] = value;
-        };
-        ctx.fillStyle = gradient; //set the fillStyle to gradient for a better look
-        ctx.fillRect(i * 12 /*meterWidth+gap*/ , cheight - value + capHeight, meterWidth, cheight); //the meter
-      }
-      that.animationId = requestAnimationFrame(drawMeter);
-    }
-    this.animationId = requestAnimationFrame(drawMeter);
+  _drawSpectrum: function() {
+    // audioDataArray = new Uint8Array(analyser.frequencyBinCount);
+    // analyser.getByteFrequencyData(audioDataArray);
+
+    //alter a field, so that rerender makes things different
+    // console.log(this.analyser);
+    audioDataArray = new Uint8Array(this.analyser.frequencyBinCount);
+    this.analyser.getByteFrequencyData(audioDataArray);
+    Visualizer.musicImpact(audioDataArray)
+    // Visualizer.audioAlterVisualizer(this.analyser); // TEST CODE
+    // var that = this,
+    //   canvas = document.getElementById('threeCanvas'),
+    //   cwidth = canvas.width,
+    //   cheight = (canvas.height - 2),
+    //   meterWidth = 10, //width of the meters in the spectrum
+    //   gap = 2, //gap between meters
+    //   capHeight = 2,
+    //   capStyle = '#fff',
+    //   meterNum = canvas.width / (meterWidth + gap), //count of the meters
+    //   capYPositionArray = []; //store the vertical position of the caps for the previous frame
+    // ctx = canvas.getContext('2d'),
+    // gradient = ctx.createLinearGradient(0, 0, 0, 300);
+    // gradient.addColorStop(1, '#0f0');
+    // gradient.addColorStop(0.5, '#ff0');
+    // gradient.addColorStop(0, '#f00');
+    // var audioAlterVisualizer = function() {
+
+      // if (that.isPlaying === false) {
+      //   // fix when some sounds end the value still not back to zero
+      //   for (var i = audioDataArray.length - 1; i >= 0; i--) {
+      //     audioDataArray[i] = 0;
+      //   };
+      //   allCapsReachBottom = true;
+      //   for (var i = capYPositionArray.length - 1; i >= 0; i--) {
+      //     allCapsReachBottom = allCapsReachBottom && (capYPositionArray[i] === 0);
+      //   };
+      //   if (allCapsReachBottom) {
+      //     cancelAnimationFrame(that.animationId); //since the sound is stopped and animation finished, stop the requestAnimation to prevent potential memory leak, THIS IS VERY IMPORTANT!
+      //     return;
+      //   };
+      // };
+      // var step = Math.round(audioDataArray.length / meterNum); //sample limited data from the total array
+      // ctx.clearRect(0, 0, cwidth, cheight);
+      // for (var i = 0; i < meterNum; i++) {
+      //   var value = audioDataArray[i * step];
+      //   if (capYPositionArray.length < Math.round(meterNum)) {
+      //     capYPositionArray.push(value);
+      //   };
+      //   ctx.fillStyle = capStyle;
+      //   //draw the cap, with transition effect
+      //   if (value < capYPositionArray[i]) {
+      //     ctx.fillRect(i * 12, cheight - (--capYPositionArray[i]), meterWidth, capHeight);
+      //   } else {
+      //     ctx.fillRect(i * 12, cheight - value, meterWidth, capHeight);
+      //     capYPositionArray[i] = value;
+      //   };
+      //   ctx.fillStyle = gradient; //set the fillStyle to gradient for a better look
+      //   ctx.fillRect(i * 12 /*meterWidth+gap*/ , cheight - value + capHeight, meterWidth, cheight); //the meter
+      // }
+      // that.animationId = requestAnimationFrame(audioAlterVisualizer);
+    // }
+    // audioAlterVisualizer();
+    // this.animationId = requestAnimationFrame(audioAlterVisualizer);
   },
   _audioEnd: function(instance) {
     if (this.forceStop) {
       this.forceStop = false;
-      this.status = 1;
+      this.isPlaying = true;
       return;
     };
-    this.status = 0;
-    var text = 'HTML5 Audio API showcase | An Audio Visualizer';
+    this.isPlaying = false;
     document.getElementById('upload-music').style.opacity = 1;
-    document.getElementById('info').innerHTML = text;
     instance.info = text;
     document.getElementById('uploadedFile').value = '';
   },

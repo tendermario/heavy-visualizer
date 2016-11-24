@@ -150,9 +150,9 @@ var Visualizer = {
     this.scene.add(lightAmb);
   },
   makeBox: function(properties) {
-    var realXsize = properties.box.x_size * 100,
-      realYsize = properties.box.y_size * 100,
-      realZsize = properties.box.z_size * 100;
+    var realXsize = properties.box.x_size * 10,
+      realYsize = properties.box.y_size * 10,
+      realZsize = properties.box.z_size * 10;
 
     boxGeometry = new THREE.BoxGeometry(realXsize, realYsize, realZsize);
 
@@ -165,9 +165,12 @@ var Visualizer = {
 
     for (var i = 0; i < properties.box.quantity; i++) {
       box = new THREE.Mesh(boxGeometry, boxMaterial);
-      box.position.x = (Math.random() - 0.5) * 3000;
-      box.position.y = (Math.random() - 0.5) * 1200;
-      box.position.z = (Math.random() - 0.5) * 500;
+      // box.position.x = (Math.random() - 0.5) * 3000;
+      // box.position.y = (Math.random() - 0.5) * 1200;
+      // box.position.z = (Math.random() - 0.5) * 500;
+      box.position.x = i * 100;
+      box.position.y = i * 200;
+      box.position.z = i * 500;
       this.scene.add(box);
       this.boxes.push(box);
     }
@@ -199,18 +202,31 @@ var Visualizer = {
 
     // Dragging the mouse to move the scene
     this.controls.update();
+    if (Audio.isPlaying) {
+      Audio._drawSpectrum(); // not actually drawing...
+    }
     Visualizer.sceneRender();
-
     // Run animate when browser says it's time for next frame
     requestAnimationFrame(this.animate.bind(this));
   },
   sceneRender: function() {
-    Visualizer.renderer.render(this.scene, this.camera);
+    Visualizer.renderer.render(Visualizer.scene, Visualizer.camera);
   },
   // on music play, render scene
-  musicImpact: function(x) {
-    this.boxes.forEach(function(box){
-      box.scale.set(x, x, x)
+  musicImpact: function(audioDataArray) {
+    var x = audioDataArray[20];
+    // var new_properties = visualizer_properties;
+    // new_properties.box.x_size = 100 + x;
+    // new_properties.box.y_size = 100 + x;
+    // new_properties.box.z_size = 100 + x;
+    // Visualizer.makeBox(new_properties);
+    Visualizer.boxes.forEach(function(box) {
+      Visualizer.scene.remove(box);
     });
+
+    visualizer_properties.box.x_size = x;
+    visualizer_properties.box.y_size = x;
+    visualizer_properties.box.z_size = x;
+    this.makeBox(visualizer_properties);
   }
 }
