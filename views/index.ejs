@@ -23,8 +23,6 @@
 
   <!-- <script src="/scripts/fog.js"></script> -->
 
-  <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
-
   <link rel="stylesheet" type="text/css" href="./styles/style.css">
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" integrity="sha384-2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj" crossorigin="anonymous">
@@ -42,13 +40,14 @@
 
     <main class="content-primary">
       <div id="my-gui-container"></div>
-      <div id="upload-music">Drag and drop here to upload your music!
-        <input type="file" id="uploadedFile" />
+      <div id="upload-music">
+        <button type="file" id="uploadedFile" class="btn btn-block btn-primary">UPLOAD AUDIO</button>
       </div>
-      <div id="info">.</div>
+      <div id="music-button"></div>
     </main>
     <canvas id="threeCanvas" class="content-secondary">
     </canvas>
   </div>
+  <footer id="info">Info Section</footer>
   </body>
 </html>
