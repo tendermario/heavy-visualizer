@@ -82,17 +82,11 @@ var Visualizer = {
     });
 
     boxQuantity.onChange(function(value) {
-      Visualizer.boxes.forEach(function(box) {
-        Visualizer.scene.remove(box);
-      });
       visualizer_properties.box.quantity = value;
       Visualizer.makeBox(properties);
     });
 
     boxWireframe.onChange(function(value) {
-      Visualizer.boxes.forEach(function(box) {
-        Visualizer.scene.remove(box);
-      });
       Visualizer.makeBox(properties);
     });
 
@@ -105,17 +99,11 @@ var Visualizer = {
     });
 
     circleQuantity.onChange(function(value) {
-      Visualizer.circles.forEach(function(circle) {
-        Visualizer.scene.remove(circle);
-      });
       visualizer_properties.circle.quantity = value;
       Visualizer.makeCircle(visualizer_properties);
     });
 
     circleWireframe.onChange(function(value) {
-      Visualizer.circles.forEach(function(circle) {
-        Visualizer.scene.remove(circle);
-      });
       Visualizer.makeCircle(properties);
     });
 
@@ -150,6 +138,9 @@ var Visualizer = {
     this.scene.add(lightAmb);
   },
   makeBox: function(properties) {
+    Visualizer.boxes.forEach(function(box) {
+      Visualizer.scene.remove(box);
+    });
     var realXsize = properties.box.x_size * 10,
       realYsize = properties.box.y_size * 10,
       realZsize = properties.box.z_size * 10;
@@ -168,18 +159,27 @@ var Visualizer = {
       // box.position.x = (Math.random() - 0.5) * 3000;
       // box.position.y = (Math.random() - 0.5) * 1200;
       // box.position.z = (Math.random() - 0.5) * 500;
-      box.position.x = i * 100;
-      box.position.y = i * 200;
-      box.position.z = i * 500;
+      if (i % 2) {
+        box.position.x = i * 300;
+        box.position.y = i * 300;
+        box.position.z = i * 500;
+      } else {
+        box.position.x = (i - 1) * -300;
+        box.position.y = (i - 1) * -300;
+        box.position.z = (i - 1) * -500;
+      }
       this.scene.add(box);
       this.boxes.push(box);
     }
   },
   makeCircle: function(properties) {
-    var realXsizeCircle = properties.circle.x_size * 100;
-    var realYsizeCircle = properties.circle.y_size * 100;
-    var realZsizeCircle = properties.circle.z_size * 100;
-
+    // Removes circles first
+    Visualizer.circles.forEach(function(circle) {
+      Visualizer.scene.remove(circle);
+    });
+    var realXsizeCircle = properties.circle.x_size * 10;
+    var realYsizeCircle = properties.circle.y_size * 10;
+    var realZsizeCircle = properties.circle.z_size * 10;
 
     circleGeometry = new THREE.CircleGeometry(realXsizeCircle, realYsizeCircle, realZsizeCircle);
 
@@ -191,9 +191,18 @@ var Visualizer = {
     });
     for (var i = 0; i < properties.circle.quantity; i++) {
       circle = new THREE.Mesh(circleGeometry, circleMaterial);
-      circle.position.x = (Math.random() - 0.5) * 3000;
-      circle.position.y = (Math.random() - 0.5) * 1200;
-      circle.position.z = (Math.random() - 0.5) * 500;
+      if (i % 2) {
+        circle.position.x = i * 300 + 100;
+        circle.position.y = i * 300;
+        circle.position.z = i * 500;
+      } else {
+        circle.position.x = (i - 1) * -300 + 100;
+        circle.position.y = (i - 1) * -300;
+        circle.position.z = (i - 1) * -500;
+      }
+      // circle.position.x = (Math.random() - 0.5) * 3000;
+      // circle.position.y = (Math.random() - 0.5) * 1200;
+      // circle.position.z = (Math.random() - 0.5) * 500;
       this.scene.add(circle);
       this.circles.push(circle);
     }
@@ -214,19 +223,25 @@ var Visualizer = {
   },
   // on music play, render scene
   musicImpact: function(audioDataArray) {
-    var x = audioDataArray[20];
+    var frequencies = []
+    // 51 things in frequencies array
+    for (var i = 0; i < 40; i++) {
+      frequencies[i] = audioDataArray[i*20];
+    }
     // var new_properties = visualizer_properties;
     // new_properties.box.x_size = 100 + x;
     // new_properties.box.y_size = 100 + x;
     // new_properties.box.z_size = 100 + x;
     // Visualizer.makeBox(new_properties);
-    Visualizer.boxes.forEach(function(box) {
-      Visualizer.scene.remove(box);
-    });
 
-    visualizer_properties.box.x_size = x;
-    visualizer_properties.box.y_size = x;
-    visualizer_properties.box.z_size = x;
+    visualizer_properties.box.x_size = frequencies[10];
+    visualizer_properties.box.y_size = frequencies[10];
+    visualizer_properties.box.z_size = frequencies[10];
+
+    visualizer_properties.circle.x_size = frequencies[20];
+    visualizer_properties.circle.y_size = frequencies[20];
+    visualizer_properties.circle.z_size = frequencies[20];
     this.makeBox(visualizer_properties);
+    this.makeCircle(visualizer_properties);
   }
 }
