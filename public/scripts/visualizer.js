@@ -256,7 +256,7 @@ var Visualizer = {
     this.perf.frameCounter += 1;
     var currSecond = Date.now() / 1000;
     var numElapsedSeconds = currSecond - this.perf.currSecond;
-    if (numElapsedSeconds > 5) {
+    if (numElapsedSeconds > 2) {
       var fps = this.perf.frameCounter / numElapsedSeconds;
       if (this.perf.mode = "console") {
         console.log("fps:", Math.floor(fps));
