@@ -8,7 +8,7 @@
 THREE.TrackballControls = function ( object, domElement ) {
 
   var _this = this;
-  var STATE = { NONE: - 1, ROTATE: 0, ZOOM: 0, PAN: 3, TOUCH_ROTATE: 10, TOUCH_ZOOM_PAN: 4 };
+  var STATE = { NONE: - 1, ROTATE: 0, ZOOM: 0, PAN: 3, TOUCH_ROTATE: 10, TOUCH_ZOOM_PAN: 1 };
 
   this.object = object;
   this.domElement = ( domElement !== undefined ) ? domElement : document;
@@ -19,9 +19,9 @@ THREE.TrackballControls = function ( object, domElement ) {
 
   this.screen = { left: 0, top: 0, width: 0, height: 0 };
 
-  this.rotateSpeed = 5.0;
-  this.zoomSpeed = 0.3;
-  this.panSpeed = 0.3;
+  this.rotateSpeed = 1.0;
+  this.zoomSpeed = 0.03;
+  this.panSpeed = 0.01;
 
   this.noRotate = false;
   this.noZoom = false;
@@ -202,7 +202,6 @@ THREE.TrackballControls = function ( object, domElement ) {
 
 
   this.zoomCamera = function () {
-
     var factor;
 
     if ( _state === STATE.TOUCH_ZOOM_PAN ) {
@@ -239,7 +238,7 @@ THREE.TrackballControls = function ( object, domElement ) {
 
     var mouseChange = new THREE.Vector2(),
       objectUp = new THREE.Vector3(),
-      pan = new THREE.Vector3();
+      pan = new THREE.Vector2();
 
     return function panCamera() {
 
