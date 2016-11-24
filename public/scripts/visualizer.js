@@ -21,6 +21,7 @@ var Visualizer = {
   controls: null,
   fog: null,
   nextAnimation: null,
+  perf: {},
 
   init: function(properties) {
     this.initCamera();
@@ -29,6 +30,7 @@ var Visualizer = {
     this.initControls();
     this.initBackground();
     this.initGUI(properties);
+    this.initPerf();
 
     this.makeSpotlight();
     this.makeAmbientLight();
@@ -129,6 +131,14 @@ var Visualizer = {
 
     this.scene.background = refractionCube;
   },
+  initPerf: function() {
+    this.perf = {
+      active: true,
+      frameCounter: 0,
+      currSecond: Date.now() / 1000,
+      mode: "console",
+    };
+  },
   makeSpotlight: function() {
     var light = new THREE.PointLight(0xffffff);
     light.position.set(60, 0, 20);
@@ -142,6 +152,7 @@ var Visualizer = {
     Visualizer.boxes.forEach(function(box) {
       Visualizer.scene.remove(box);
     });
+    Visualizer.boxes = [];
     var realXsize = properties.box.x_size * 10,
       realYsize = properties.box.y_size * 10,
       realZsize = properties.box.z_size * 10;
@@ -165,12 +176,12 @@ var Visualizer = {
         box.position.y = i * 300;
         box.position.z = i * 500;
       } else {
-        box.position.x = (i - 1) * -300;
-        box.position.y = (i - 1) * -300;
-        box.position.z = (i - 1) * -500;
+        box.position.x = (i + 1) * -300;
+        box.position.y = (i + 1) * -300;
+        box.position.z = (i + 1) * -500;
       }
-      this.scene.add(box);
-      this.boxes.push(box);
+      Visualizer.scene.add(box);
+      Visualizer.boxes.push(box);
     }
   },
   makeCircle: function(properties) {
@@ -178,6 +189,7 @@ var Visualizer = {
     Visualizer.circles.forEach(function(circle) {
       Visualizer.scene.remove(circle);
     });
+    Visualizer.circles = [];
     var realXsizeCircle = properties.circle.x_size * 10;
     var realYsizeCircle = properties.circle.y_size * 10;
     var realZsizeCircle = properties.circle.z_size * 10;
@@ -197,18 +209,34 @@ var Visualizer = {
         circle.position.y = i * 300;
         circle.position.z = i * 500;
       } else {
-        circle.position.x = (i - 1) * -300 + 100;
-        circle.position.y = (i - 1) * -300;
-        circle.position.z = (i - 1) * -500;
+        circle.position.x = (i + 1) * -300 + 100;
+        circle.position.y = (i + 1) * -300;
+        circle.position.z = (i + 1) * -500;
       }
       // circle.position.x = (Math.random() - 0.5) * 3000;
       // circle.position.y = (Math.random() - 0.5) * 1200;
       // circle.position.z = (Math.random() - 0.5) * 500;
-      this.scene.add(circle);
-      this.circles.push(circle);
+      Visualizer.scene.add(circle);
+      Visualizer.circles.push(circle);
+    }
+  },
+  perfLogFrame: function() {
+    this.perf.frameCounter += 1;
+    var currSecond = Date.now() / 1000;
+    var numElapsedSeconds = currSecond - this.perf.currSecond;
+    if (numElapsedSeconds > 5) {
+      var fps = this.perf.frameCounter / numElapsedSeconds;
+      if (this.perf.mode = "console") {
+        console.log("fps:", Math.floor(fps));
+      }
+      this.perf.frameCounter = 0;
+      this.perf.currSecond = currSecond;
     }
   },
   animate: function() {
+    if (this.perf.active) {
+      this.perfLogFrame();
+    }
 
     // Dragging the mouse to move the scene
     this.controls.update();

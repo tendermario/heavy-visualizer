@@ -1,7 +1,7 @@
 visualizer_properties = {
   box: {
     color: '#ff0000',
-    quantity: 20,
+    quantity: 2,
     x_size: 50,
     y_size: 30,
     z_size: 40,
@@ -11,7 +11,7 @@ visualizer_properties = {
   },
   circle: {
     color: '#cb00ff',
-    quantity: 20,
+    quantity: 2,
     x_size: 90,
     y_size: 20,
     z_size: 40,
