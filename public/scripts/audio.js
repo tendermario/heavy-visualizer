@@ -12,13 +12,17 @@ var Audio = {
   audioDataArray: [],
   analyser: null,
   frequencies: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], // 40 positions
+  audioBufferSouceNode: null,
+  startedAt: null,
+  pausedAt: null,
+  buffer: null,
 
   init: function() {
-    this._prepareAPI();
-    this._addEventListener();
+    this.prepareAPI();
+    this.addEventListener();
     this.info = $('#info').innerHTML; //this used to upgrade the UI information
   },
-  _prepareAPI: function() {
+  prepareAPI: function() {
     //fix browser vendor for AudioContext and requestAnimationFrame
     window.AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.msAudioContext;
     window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame;
@@ -26,16 +30,16 @@ var Audio = {
     try {
       this.audioContext = new AudioContext();
     } catch (e) {
-      this._updateInfo('!Your browser does not support AudioContext', false);
+      this.updateInfo('!Your browser does not support AudioContext', false);
       console.log(e);
     }
   },
-  _addEventListener: function() {
+  addEventListener: function() {
     console.log("we are in addeventlistener");
     var that = this,
       audioInput = document.getElementById('uploadedFile'),
       dropContainer = document.getElementsByTagName("body")[0];
-    //listen the file upload
+    // when the file is uploaded by button
     audioInput.onchange = function() {
       if (that.audioContext===null) {return;};
 
@@ -49,45 +53,47 @@ var Audio = {
           that.forceStop = true;
         };
         document.getElementById('upload-music').style.opacity = 1;
-        that._updateInfo('Uploading', true);
-        //once the file is ready,start the visualizer
-        that._start();
+        that.updateInfo('Uploading', true);
+        //once the file is ready, start running the audio
+        that.start();
       };
     },
-    //listen the drag & drop
+    // drag & drop
     dropContainer.addEventListener("dragenter", function() {
       document.getElementById('upload-music').style.opacity = 1;
-      that._updateInfo('Drop it on the page', true);
+      that.updateInfo('Drop it on the page', true);
     }, false);
+    // drag over effect
     dropContainer.addEventListener("dragover", function(e) {
       e.stopPropagation();
       e.preventDefault();
-      //set the drop mode
       e.dataTransfer.dropEffect = 'copy';
     }, false);
+    // drag leave effect
     dropContainer.addEventListener("dragleave", function() {
       document.getElementById('upload-music').style.opacity = 0.2;
-      that._updateInfo(that.info, false);
+      that.updateInfo(that.info, false);
     }, false);
+    // dropped
     dropContainer.addEventListener("drop", function(e) {
       e.stopPropagation();
       e.preventDefault();
       if (that.audioContext===null) {return;};
       document.getElementById('upload-music').style.opacity = 1;
-      that._updateInfo('Uploading', true);
-      //get the dropped file
+      that.updateInfo('Uploading', true);
       that.file = e.dataTransfer.files[0];
       if (that.status === 1) {
         document.getElementById('upload-music').style.opacity = 1;
         that.forceStop = true;
       };
       that.fileName = that.file.name;
-      //once the file is ready,start the visualizer
-      that._start();
+      //once the file is ready, start running the audio
+      that.start();
     }, false);
   },
-  _start: function() {
+  start: function(startTime) {
     console.log("we are in start");
+
     //read and decode the file into audio array buffer
     var that = this,
       file = this.file,
@@ -99,38 +105,42 @@ var Audio = {
       if (audioContext === null) {
         return;
       };
-      that._updateInfo('Decoding the audio', true);
+      that.updateInfo('Decoding the audio', true);
       audioContext.decodeAudioData(fileResult, function(buffer) {
-        that._updateInfo('Decode succussfully,start the visualizer', true);
-        that._visualize(audioContext, buffer);
+        that.updateInfo('Decode succussfully,start the visualizer', true);
+        Audio.buffer = buffer;
+        that.visualize(audioContext, buffer);
       }, function(e) {
-        that._updateInfo('!Fail to decode the file', false);
+        that.updateInfo('!Fail to decode the file', false);
         console.log(e);
       });
     };
     fr.onerror = function(e) {
-      that._updateInfo('!Fail to read the file', false);
+      that.updateInfo('!Fail to read the file', false);
       console.log(e);
     };
     //assign the file to the reader
-    this._updateInfo('Starting read the file', true);
+    this.updateInfo('Starting read the file', true);
     fr.readAsArrayBuffer(file);
   },
-  _visualize: function(audioContext, buffer) {
+  visualize: function(audioContext, buffer, startedAt) {
     console.log("we are in visualize");
-    var audioBufferSouceNode = audioContext.createBufferSource(),
+    // console.log("audioContext", audioContext);
+    // console.log("buffer", buffer);
+    // console.log("startedAt", startedAt);
+    Audio.audioBufferSouceNode = audioContext.createBufferSource(),
       that = this;
     this.analyser = audioContext.createAnalyser();
     // connect the source to the analyser
-    audioBufferSouceNode.connect(this.analyser);
+    Audio.audioBufferSouceNode.connect(this.analyser);
     // connect the analyser to the destination(the speaker), or we won't hear the sound
     this.analyser.connect(audioContext.destination);
     // then assign the buffer to the buffer source node
-    audioBufferSouceNode.buffer = buffer;
+    Audio.audioBufferSouceNode.buffer = buffer;
     // conditional for old browsers
-    if (!audioBufferSouceNode.start) {
-      audioBufferSouceNode.start = audioBufferSouceNode.noteOn //in old browsers use noteOn method
-      audioBufferSouceNode.stop = audioBufferSouceNode.noteOff //in old browsers use noteOff method
+    if (!Audio.audioBufferSouceNode.start) {
+      Audio.audioBufferSouceNode.start = Audio.audioBufferSouceNode.noteOn //in old browsers use noteOn method
+      Audio.audioBufferSouceNode.stop = Audio.audioBufferSouceNode.noteOff //in old browsers use noteOff method
     };
     // stop the previous animation frame and sound if they are still happening
     if (this.animationId !== null) {
@@ -139,19 +149,26 @@ var Audio = {
     if (this.source !== null) {
       this.source.stop(0);
     }
-    // play the source, start of audio for the first time
-    audioBufferSouceNode.start(0);
-    this.isPlaying = true;
-    this.source = audioBufferSouceNode;
-    audioBufferSouceNode.onended = function() {
-      that._audioEnd(that);
-    };
-    this._updateInfo('Playing ' + this.fileName, false);
-    this.info = 'Playing ' + this.fileName;
-    document.getElementById('upload-music').style.opacity = 0.2;
-    this._drawFrequencies(this.analyser);
+    if (this.pausedAt) {
+      // resume playing song if paused
+      this.startedAt = Date.now() - this.pausedAt;
+      Audio.audioBufferSouceNode.start(0, this.pausedAt / 1000);
+    } else {
+      // play the source, start of audio for the first time
+      this.startedAt = Date.now();
+      Audio.audioBufferSouceNode.start(startedAt || 0);
+    }
+      this.isPlaying = true;
+      this.source = Audio.audioBufferSouceNode;
+      Audio.audioBufferSouceNode.onended = function() {
+        that.audioEnd(that);
+      };
+      this.updateInfo('Playing ' + this.fileName, false);
+      this.info = 'Playing ' + this.fileName;
+      document.getElementById('upload-music').style.opacity = 0.2;
+      this.drawFrequencies(this.analyser);
   },
-  _drawFrequencies: function(analyser) {
+  drawFrequencies: function(analyser) {
     // 51 things in frequencies array, not using top 11.
     audioDataArray = new Uint8Array(analyser.frequencyBinCount);
     analyser.getByteFrequencyData(audioDataArray);
@@ -160,7 +177,13 @@ var Audio = {
       Visualizer.musicImpact(Audio.frequencies);
     }
   },
-  _audioEnd: function(instance) {
+  pause: function() {
+    // pauses current song
+    this.audioBufferSouceNode.stop(0);
+    this.isPlaying = false;
+    this.pausedAt = Date.now() - this.startedAt;
+  },
+  audioEnd: function(instance) {
     if (this.forceStop) {
       this.forceStop = false;
       this.isPlaying = true;
@@ -168,10 +191,10 @@ var Audio = {
     };
     this.isPlaying = false;
     document.getElementById('upload-music').style.opacity = 1;
-    instance.info = text;
+    instance.info = "Audio Ended";
     document.getElementById('uploadedFile').value = '';
   },
-  _updateInfo: function(text, processing) {
+  updateInfo: function(text, processing) {
     var infoBar = document.getElementById('info'),
       dots = '...',
       i = 0,

@@ -289,7 +289,6 @@ var Visualizer = {
       sphere.position.z = (Math.random() - 0.5) * 500;
       this.scene.add(sphere);
       this.spheres.push(sphere);
-      console.log(this.spheres);
     }
   },
   makeGradientCube: function(properties) {
@@ -335,7 +334,7 @@ var Visualizer = {
     // Dragging the mouse to move the scene
     this.controls.update();
     if (Audio.isPlaying) {
-      Audio._drawFrequencies(Audio.analyser);
+      Audio.drawFrequencies(Audio.analyser);
     } else {
       // stops animation when the song ends. Prevents memory leak?
       cancelAnimationFrame(Visualizer.nextAnimation);
