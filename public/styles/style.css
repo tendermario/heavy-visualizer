@@ -66,6 +66,17 @@
     display: none;
   }
 
+  #upload-music p {
+    font-size: 0.9em;
+    padding: 30px;
+    padding-top: 15px;
+    color: #ffffff;
+  }
+
+  #multimedia {
+    /*display: none;*/
+  }
+
   footer {
     position: absolute;
     bottom: 0;

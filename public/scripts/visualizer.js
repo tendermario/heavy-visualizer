@@ -25,6 +25,8 @@ var Visualizer = {
   nextAnimation: null,
   perf: {},
   userInput: 1,
+  rainbow: null,
+  hex: [],
 
   init: function(properties) {
     this.initCamera();
@@ -78,8 +80,9 @@ var Visualizer = {
     // boxesFolder.open();
 
     var circlesFolder = gui.addFolder('Circles');
-    var circleColor = circlesFolder.addColor(properties.circle, 'color').name('Color').listen();
-    var circleQuantity = circlesFolder.add(properties.circle, 'quantity', 0, 15).name('Quantity').step(1);
+    var circleColor = circlesFolder.addColor(properties.circle, 'color1').name('Color').listen();
+    var circleColor1 = circlesFolder.addColor(properties.circle, 'color2').name('Color').listen();
+    var circleQuantity = circlesFolder.add(properties.circle, 'quantity', 0, 100).name('Quantity').step(1);
     var circleWireframe = circlesFolder.add(properties.circle, 'wireframe').name('Wireframe');
     var circleOpacity = circlesFolder.add(properties.circle, 'opacity' ).min(0).max(1).step(0.01).name('Opacity');
     // Uncomment below line to have circles folder open by default
@@ -109,7 +112,12 @@ var Visualizer = {
     });
     ////////// CIRCLES /////////////////
     circleColor.onChange(function(value)  {
-      circle.material.color.setHex( value.replace("#", "0x") );
+      visualizer_properties.circle.color1 = value;
+      Visualizer.makeCircle(visualizer_properties);
+    });
+    circleColor1.onChange(function(value)  {
+      visualizer_properties.circle.color2 = value;
+      Visualizer.makeCircle(visualizer_properties);
     });
 
     circleQuantity.onChange(function(value) {
@@ -122,7 +130,9 @@ var Visualizer = {
     });
 
     circleOpacity.onChange(function(value) {
-      circle.material.opacity = value;
+      Visualizer.circles.forEach(function(mesh) {
+        mesh.material.opacity = value;
+      });
     });
     ////////// SPHERES /////////////////
     sphereColor.onChange(function(value)  {
@@ -241,16 +251,27 @@ var Visualizer = {
     var realYsizeCircle = properties.circle.y_size;
     var realZsizeCircle = properties.circle.z_size;
 
-    circleGeometry = new THREE.CircleGeometry(realXsizeCircle, realYsizeCircle, realZsizeCircle);
+    var circleGeometry = new THREE.CircleGeometry(realXsizeCircle, realYsizeCircle, realZsizeCircle);
+    // makes default appearance
 
-    circleMaterial = new THREE.MeshLambertMaterial({
-      color: properties.circle.color,
-      wireframe: properties.circle.wireframe,
-      opacity: properties.circle.opacity,
-      transparent: properties.circle.transparent
-    });
+    // Set color range
+    Visualizer.rainbow = new Rainbow();
+    if (properties.circle.quantity > 1) {
+      Visualizer.rainbow.setNumberRange(0, properties.circle.quantity - 1);
+    }
+    Visualizer.rainbow.setSpectrum(properties.circle.color1, properties.circle.color2);
+
+    hex = Visualizer.hex;
     for (var i = 0; i < properties.circle.quantity; i++) {
-      circle = new THREE.Mesh(circleGeometry, circleMaterial);
+      // create each circle
+      var color = "#" + Visualizer.rainbow.colorAt(i);
+      var circleMaterial = new THREE.MeshLambertMaterial({
+        color,
+        wireframe: properties.circle.wireframe,
+        opacity: properties.circle.opacity,
+        transparent: properties.circle.transparent
+      });
+      var circle = new THREE.Mesh(circleGeometry, circleMaterial);
       // Create the circles in the negative and positive direction
       if (i % 2) {
         circle.position.x = i * 30 + 10;
@@ -261,9 +282,12 @@ var Visualizer = {
         circle.position.y = (i + 1) * -30;
         circle.position.z = (i + 1) * -50;
       }
+      // Uncomment for random positions
       // circle.position.x = (Math.random() - 0.5) * 3000;
       // circle.position.y = (Math.random() - 0.5) * 1200;
       // circle.position.z = (Math.random() - 0.5) * 500;
+
+      // hex[i] = "0x" + Visualizer.rainbow.colorAt(i);
       Visualizer.scene.add(circle);
       Visualizer.circles.push(circle);
     }
@@ -332,7 +356,7 @@ var Visualizer = {
     // Dragging the mouse to move the scene
     this.controls.update();
     if (Audio.isPlaying) {
-      Audio._drawFrequencies(Audio.analyser);
+      Audio.drawFrequencies(Audio.analyser);
     } else {
       // stops animation when the song ends. Prevents memory leak?
       cancelAnimationFrame(Visualizer.nextAnimation);
@@ -354,7 +378,7 @@ var Visualizer = {
       mesh.scale.z = newMeasure;
     })
     Visualizer.boxes.forEach(function(mesh, index) {
-      mesh.scale.x = frequencies[index]/100*Visualizer.userInput + 1;
+      mesh.scale.x = frequencies[index]*Visualizer.userInput + 1;
     })
     // this.makeBox(visualizer_properties);
     // this.makeCircle(visualizer_properties);

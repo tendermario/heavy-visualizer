@@ -10,10 +10,11 @@ visualizer_properties = {
     transparent: true
   },
   circle: {
-    color: '#cb00ff',
+    color1: '#cb00ff',
+    color2: '#00ff00',
     quantity: 51,
-    x_size: 50,
-    y_size: 50,
+    x_size: 25,
+    y_size: 50, // arms
     z_size: 20,
     wireframe: true,
     opacity: 0.6,
