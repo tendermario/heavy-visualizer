@@ -65,11 +65,11 @@ var Visualizer = {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   },
   initGUI: function(properties) {
-    var gui = new dat.GUI({ autoPlace: false, preset: properties });
+    var gui = new dat.GUI({ autoPlace: false });
 
     var customContainer = document.getElementById('my-gui-container');
     customContainer.appendChild(gui.domElement);
-    gui.remember(properties);
+    gui.remember(properties.box, properties.circle, properties.sphere);
 
     var boxesFolder = gui.addFolder('Boxes');
     var boxColor = boxesFolder.addColor(properties.box, 'color').name('Color').listen();
