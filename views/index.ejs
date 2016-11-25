@@ -7,7 +7,7 @@
 
   <script src="/vendor/three.js"></script>
   <script src="/vendor/jquery-3.1.1.min.js"></script>
-  <script src="/vendor/dat.gui.min.js"></script>
+  <script src="/vendor/dat.gui.js"></script>
   <script src="/vendor/rainbowvis.js"></script>
 
   <script src="/scripts/audio.js"></script>
@@ -41,15 +41,16 @@
     <main class="content-primary">
       <div id="my-gui-container"></div>
       <div id="upload-music">
-        <button type="file" id="uploadedFile" class="btn btn-block btn-primary">UPLOAD AUDIO</button>
+        <label class="btn btn-block btn-primary">UPLOAD AUDIO<input type="file" id="uploadedFile" style="display: none;" >
+        </label>
         <p>(OR DRAG AND DROP)</p>
         <button type="file" id="multimedia" class="btn btn-block btn-primary">⏸</button>
       </div>
-      <div id="music-button"></div>
+      <!-- <div id="music-button"></div> -->
     </main>
     <canvas id="threeCanvas" class="content-secondary">
     </canvas>
   </div>
-  <footer id="info">Info Section</footer>
+  <footer id="info">INFO SECTION</footer>
   </body>
 </html>
