@@ -3082,7 +3082,7 @@ return /******/ (function(modules) { // webpackBootstrap
   GUI.CLASS_DRAG = 'drag';
 
   GUI.DEFAULT_WIDTH = 245;
-  GUI.TEXT_CLOSED = 'Close Controls';
+  GUI.TEXT_CLOSED = 'CLOSE CONTROLS';
   GUI.TEXT_OPEN = 'Open Controls';
 
   GUI._keydownHandler = function (e) {
