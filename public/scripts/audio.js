@@ -168,7 +168,6 @@ var Audio = {
     };
     this.isPlaying = false;
     document.getElementById('upload-music').style.opacity = 1;
-    instance.info = text;
     document.getElementById('uploadedFile').value = '';
   },
   _updateInfo: function(text, processing) {

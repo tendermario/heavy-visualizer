@@ -272,8 +272,6 @@ var Visualizer = {
     var realXsizeSphere = properties.sphere.x_size;
     var realYsizeSphere = properties.sphere.y_size;
     var realZsizeSphere = properties.sphere.z_size;
-
-
     sphereGeometry = new THREE.SphereGeometry(realXsizeSphere, realYsizeSphere, realZsizeSphere);
 
     sphereMaterial = new THREE.MeshLambertMaterial({
@@ -289,7 +287,6 @@ var Visualizer = {
       sphere.position.z = (Math.random() - 0.5) * 500;
       this.scene.add(sphere);
       this.spheres.push(sphere);
-      console.log(this.spheres);
     }
   },
   makeGradientCube: function(properties) {
