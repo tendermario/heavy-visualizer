@@ -41,6 +41,6 @@ visualizer_properties = {
     transparent: true
     },
   background: {
-    name: "sky"
+    name: "sky",
     }
 }
