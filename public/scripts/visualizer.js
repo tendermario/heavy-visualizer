@@ -133,11 +133,11 @@ var Visualizer = {
     ////////// CIRCLES /////////////////
     // Display properties
     var circlesFolder = gui.addFolder('CIRCLES');
-    var circleQuantity = circlesFolder.add(properties.circle, 'quantity', 0, 100).name('Quantity').step(1);
-    var circleWireframe = circlesFolder.add(properties.circle, 'wireframe').name('Wireframe');
-    var circleOpacity = circlesFolder.add(properties.circle, 'opacity' ).min(0).max(1).step(0.01).name('Opacity');
-    var circleColor = circlesFolder.addColor(properties.circle, 'color1').name('Color').listen();
-    var circleColor1 = circlesFolder.addColor(properties.circle, 'color2').name('Color').listen();
+    var circleQuantity = circlesFolder.add(properties.circle, 'quantity', 0, 100).name('QUANTITY').step(1);
+    var circleWireframe = circlesFolder.add(properties.circle, 'wireframe').name('WIREFRAME');
+    var circleOpacity = circlesFolder.add(properties.circle, 'opacity' ).min(0).max(1).step(0.01).name('OPACITY');
+    var circleColor = circlesFolder.addColor(properties.circle, 'color1').name('COLOR').listen();
+    var circleColor1 = circlesFolder.addColor(properties.circle, 'color2').name('COLOR').listen();
     // Uncomment below line to have circles folder open by default
     circlesFolder.close();
     // Changes in display properties
