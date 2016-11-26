@@ -150,6 +150,7 @@ var Visualizer = {
     });
     circleOpacity.onChange(function(value) {
       Visualizer.circle.material.opacity = value;
+      Visualizer.makeCircle(visualizer_properties);
     });
     circleColor.onChange(function(value)  {
       visualizer_properties.circle.color1 = value;
