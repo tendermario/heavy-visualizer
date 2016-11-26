@@ -46,6 +46,8 @@ var Visualizer = {
     this.makeSphere(properties);
     this.makeGradientCube(properties);
 
+    window.addEventListener('resize', this.onWindowResize);
+
     // this.scene.fog = new THREE.Fog( 0x71757a, 10, 200 );
     // this.scene.fog = new THREE.FogExp2( 0x71757a, 0.0007 );
     // adds renderer to DOM
@@ -68,7 +70,7 @@ var Visualizer = {
       // antialiasing: true }); // blend colors better, drops performance
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     // this.renderer.setClearColor( 0x00ff00, 0.5 ); // attempt at making a color show behind background
-    document.getElementById('threeCanvas').appendChild(this.renderer.domElement);
+    document.body.appendChild(this.renderer.domElement);
   },
   initGUI: function(properties) {
     var gui = new dat.GUI({ autoPlace: false, preset: properties.background, preset: properties.camera, preset: properties.box, preset: properties.circle, preset: properties.sphere });
@@ -217,6 +219,11 @@ var Visualizer = {
       this.perf.currSecond = currSecond;
     }
   },
+  onWindowResize: function() {
+    Visualizer.camera.aspect = window.innerWidth / window.innerHeight;
+    Visualizer.camera.updateProjectionMatrix();
+    Visualizer.renderer.setSize(window.innerWidth, window.innerHeight);
+  },
   makeBackground: function(background) {
     var path = "./textures/" + background + "/";
     var format = ".jpg";
@@ -225,7 +232,7 @@ var Visualizer = {
       path + 'posy' + format, path + 'negy' + format,
       path + 'posx' + format, path + 'negx' + format
     ];
-    var refractionCube = new THREE.CubeTextureLoader().load( paths );
+    var refractionCube = new THREE.CubeTextureLoader().load(paths);
     refractionCube.mapping = THREE.CubeRefractionMapping;
     refractionCube.format = THREE.RGBFormat;
 
