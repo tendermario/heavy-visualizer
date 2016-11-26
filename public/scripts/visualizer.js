@@ -11,6 +11,7 @@ var Visualizer = {
   boxes: [],
   circles: [],
   spheres: [],
+  gradientCubes: [],
   box: null,
   circle: null,
   sphere: null,
@@ -80,21 +81,21 @@ var Visualizer = {
     boxesFolder.close();
 
     var circlesFolder = gui.addFolder('CIRCLES');
-    var circleColor = circlesFolder.addColor(properties.circle, 'color1').name('COLOR').listen();
-    var circleColor1 = circlesFolder.addColor(properties.circle, 'color2').name('COLOR').listen();
-    var circleQuantity = circlesFolder.add(properties.circle, 'quantity', 0, 100).name('QUANTITY').step(1);
-    var circleWireframe = circlesFolder.add(properties.circle, 'wireframe').name('WIREFRAME');
-    var circleOpacity = circlesFolder.add(properties.circle, 'opacity' ).min(0).max(1).step(0.01).name('OPACITY');
+    var circleColor = circlesFolder.addColor(properties.circle, 'color1').name('Color').listen();
+    var circleColor1 = circlesFolder.addColor(properties.circle, 'color2').name('Color').listen();
+    var circleQuantity = circlesFolder.add(properties.circle, 'quantity', 0, 100).name('Quantity').step(1);
+    var circleWireframe = circlesFolder.add(properties.circle, 'wireframe').name('Wireframe');
+    var circleOpacity = circlesFolder.add(properties.circle, 'opacity' ).min(0).max(1).step(0.01).name('Opacity');
     // Uncomment below line to have circles folder open by default
     circlesFolder.close();
 
     var spheresFolder = gui.addFolder('SPHERES');
-    var sphereColor = spheresFolder.addColor(properties.sphere, 'color').name('COLOR').listen();
-    var sphereQuantity = spheresFolder.add(properties.sphere, 'quantity', 0, 3).name('QUANTITY').step(1);
-    var sphereWireframe = spheresFolder.add(properties.sphere, 'wireframe').name('WIREFRAME');
-    var sphereOpacity = spheresFolder.add(properties.sphere, 'opacity' ).min(0).max(1).step(0.01).name('OPACITY');
+    var sphereColor = spheresFolder.addColor(properties.sphere, 'color').name('Color').listen();
+    var sphereQuantity = spheresFolder.add(properties.sphere, 'quantity', 0, 3).name('Quantity').step(1);
+    var sphereWireframe = spheresFolder.add(properties.sphere, 'wireframe').name('Wireframe');
+    var sphereOpacity = spheresFolder.add(properties.sphere, 'opacity' ).min(0).max(1).step(0.01).name('Opacity');
+    // Uncomment below line to have circles folder open by default
     spheresFolder.close();
-
     ////////// BOXES /////////////////
     boxColor.onChange(function(value) {
       box.material.color.setHex( value.replace("#", "0x") );
@@ -217,9 +218,7 @@ var Visualizer = {
     this.scene.add(lightAmb);
   },
   makeBox: function(properties) {
-    Visualizer.boxes.forEach(function(box) {
-      Visualizer.scene.remove(box);
-    });
+    Visualizer.removeObjects(Visualizer.boxes);
     Visualizer.boxes = [];
     var realXsize = properties.box.x_size,
       realYsize = properties.box.y_size,
@@ -254,9 +253,7 @@ var Visualizer = {
   },
   makeCircle: function(properties) {
     // Removes circles first
-    Visualizer.circles.forEach(function(circle) {
-      Visualizer.scene.remove(circle);
-    });
+    Visualizer.removeObjects(Visualizer.circles);
     Visualizer.circles = [];
     var realXsizeCircle = properties.circle.x_size;
     var realYsizeCircle = properties.circle.y_size;
@@ -304,6 +301,7 @@ var Visualizer = {
     }
   },
   makeSphere: function(properties) {
+    Visualizer.removeObjects(Visualizer.spheres);
     var realXsizeSphere = properties.sphere.x_size;
     var realYsizeSphere = properties.sphere.y_size;
     var realZsizeSphere = properties.sphere.z_size;
@@ -325,6 +323,7 @@ var Visualizer = {
     }
   },
   makeGradientCube: function(properties) {
+    Visualizer.removeObjects(Visualizer.gradientCubes);
     // geometry
     var geometry = new THREE.CubeGeometry(100, 100, 100, 4, 4, 4);
 
@@ -342,6 +341,11 @@ var Visualizer = {
     // mesh
     mesh = new THREE.Mesh(geometry, material);
     this.scene.add(mesh);
+  },
+  removeObjects(objects) {
+    objects.forEach(function(obj) {
+      Visualizer.scene.remove(obj);
+    });
   },
   generateTexture: function() {
     var size = 512;
