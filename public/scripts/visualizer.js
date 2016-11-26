@@ -88,10 +88,10 @@ var Visualizer = {
     ////////// BOXES /////////////////
     // Display properties
     var boxesFolder = gui.addFolder('BOXES');
-    var boxColor = boxesFolder.addColor(properties.box, 'color').name('COLOR').listen();
     var boxQuantity = boxesFolder.add(properties.box, 'quantity', 0, 100).name('QUANTITY');
     var boxWireframe = boxesFolder.add(properties.box, 'wireframe').name('WIREFRAME');
     var boxOpacity = boxesFolder.add(properties.box, 'opacity' ).min(0).max(1).step(0.01).name('OPACITY');
+    var boxColor = boxesFolder.addColor(properties.box, 'color').name('COLOR').listen();
     // Uncomment below line to have circles folder open by default
     boxesFolder.close();
     // Changes in display properties
@@ -112,11 +112,11 @@ var Visualizer = {
     ////////// CIRCLES /////////////////
     // Display properties
     var circlesFolder = gui.addFolder('CIRCLES');
-    var circleColor = circlesFolder.addColor(properties.circle, 'color1').name('Color').listen();
-    var circleColor1 = circlesFolder.addColor(properties.circle, 'color2').name('Color').listen();
     var circleQuantity = circlesFolder.add(properties.circle, 'quantity', 0, 100).name('Quantity').step(1);
     var circleWireframe = circlesFolder.add(properties.circle, 'wireframe').name('Wireframe');
     var circleOpacity = circlesFolder.add(properties.circle, 'opacity' ).min(0).max(1).step(0.01).name('Opacity');
+    var circleColor = circlesFolder.addColor(properties.circle, 'color1').name('Color').listen();
+    var circleColor1 = circlesFolder.addColor(properties.circle, 'color2').name('Color').listen();
     // Uncomment below line to have circles folder open by default
     circlesFolder.close();
     // Changes in display properties
@@ -143,10 +143,10 @@ var Visualizer = {
     ////////// SPHERES /////////////////
     // Display properties
     var spheresFolder = gui.addFolder('SPHERES');
-    var sphereColor = spheresFolder.addColor(properties.sphere, 'color').name('Color').listen();
     var sphereQuantity = spheresFolder.add(properties.sphere, 'quantity', 0, 3).name('Quantity').step(1);
     var sphereWireframe = spheresFolder.add(properties.sphere, 'wireframe').name('Wireframe');
     var sphereOpacity = spheresFolder.add(properties.sphere, 'opacity' ).min(0).max(1).step(0.01).name('Opacity');
+    var sphereColor = spheresFolder.addColor(properties.sphere, 'color').name('Color').listen();
     // Comment below line to have circles folder open by default
     spheresFolder.close();
     // Changes in display properties
