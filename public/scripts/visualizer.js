@@ -28,16 +28,17 @@ var Visualizer = {
   userInput: 1,
   rainbow: null,
   hex: [],
+  backgroundScenes: ['sky', 'colors'],
 
   init: function(properties) {
     this.initCamera();
     this.initScene();
     this.initRenderer();
     this.initControls();
-    this.initBackground();
     this.initGUI(properties);
     this.initPerf();
 
+    this.makeBackground(properties.background.name);
     this.makeSpotlight();
     this.makeAmbientLight();
     this.makeBox(properties);
@@ -72,6 +73,20 @@ var Visualizer = {
     customContainer.appendChild(gui.domElement);
     gui.remember(properties.box, properties.circle, properties.sphere);
 
+    ////////// BACKGROUND //////////////
+    // Display properties
+    var backgroundFolder = gui.addFolder('BACKGROUND');
+    var backgroundScene = backgroundFolder.add(properties.background, 'name', Visualizer.backgroundScenes ).name('SCENE');
+    // Uncomment below line to have circles folder open by default
+    backgroundFolder.close();
+    // Changes in display properties
+    backgroundScene.onChange(function(value) {
+      console.log(value);
+      Visualizer.makeBackground(value);
+    });
+
+    ////////// BOXES /////////////////
+    // Display properties
     var boxesFolder = gui.addFolder('BOXES');
     var boxColor = boxesFolder.addColor(properties.box, 'color').name('COLOR').listen();
     var boxQuantity = boxesFolder.add(properties.box, 'quantity', 0, 100).name('QUANTITY');
@@ -79,7 +94,23 @@ var Visualizer = {
     var boxOpacity = boxesFolder.add(properties.box, 'opacity' ).min(0).max(1).step(0.01).name('OPACITY');
     // Uncomment below line to have circles folder open by default
     boxesFolder.close();
+    // Changes in display properties
+    boxColor.onChange(function(value) {
+      box.material.color.setHex( value.replace("#", "0x") );
+    });
+    boxQuantity.onChange(function(value) {
+      visualizer_properties.box.quantity = value;
+      Visualizer.makeBox(properties);
+    });
+    boxWireframe.onChange(function(value) {
+      Visualizer.makeBox(properties);
+    });
+    boxOpacity.onChange(function(value) {
+      box.material.opacity = value;
+    });
 
+    ////////// CIRCLES /////////////////
+    // Display properties
     var circlesFolder = gui.addFolder('CIRCLES');
     var circleColor = circlesFolder.addColor(properties.circle, 'color1').name('Color').listen();
     var circleColor1 = circlesFolder.addColor(properties.circle, 'color2').name('Color').listen();
@@ -88,32 +119,7 @@ var Visualizer = {
     var circleOpacity = circlesFolder.add(properties.circle, 'opacity' ).min(0).max(1).step(0.01).name('Opacity');
     // Uncomment below line to have circles folder open by default
     circlesFolder.close();
-
-    var spheresFolder = gui.addFolder('SPHERES');
-    var sphereColor = spheresFolder.addColor(properties.sphere, 'color').name('Color').listen();
-    var sphereQuantity = spheresFolder.add(properties.sphere, 'quantity', 0, 3).name('Quantity').step(1);
-    var sphereWireframe = spheresFolder.add(properties.sphere, 'wireframe').name('Wireframe');
-    var sphereOpacity = spheresFolder.add(properties.sphere, 'opacity' ).min(0).max(1).step(0.01).name('Opacity');
-    // Uncomment below line to have circles folder open by default
-    spheresFolder.close();
-    ////////// BOXES /////////////////
-    boxColor.onChange(function(value) {
-      box.material.color.setHex( value.replace("#", "0x") );
-    });
-
-    boxQuantity.onChange(function(value) {
-      visualizer_properties.box.quantity = value;
-      Visualizer.makeBox(properties);
-    });
-
-    boxWireframe.onChange(function(value) {
-      Visualizer.makeBox(properties);
-    });
-
-    boxOpacity.onChange(function(value) {
-      box.material.opacity = value;
-    });
-    ////////// CIRCLES /////////////////
+    // Changes in display properties
     circleColor.onChange(function(value)  {
       visualizer_properties.circle.color1 = value;
       Visualizer.makeCircle(visualizer_properties);
@@ -122,26 +128,31 @@ var Visualizer = {
       visualizer_properties.circle.color2 = value;
       Visualizer.makeCircle(visualizer_properties);
     });
-
     circleQuantity.onChange(function(value) {
       visualizer_properties.circle.quantity = value;
       Visualizer.makeCircle(visualizer_properties);
     });
-
     circleWireframe.onChange(function(value) {
       Visualizer.makeCircle(properties);
     });
-
     circleOpacity.onChange(function(value) {
       Visualizer.circles.forEach(function(mesh) {
         mesh.material.opacity = value;
       });
     });
     ////////// SPHERES /////////////////
+    // Display properties
+    var spheresFolder = gui.addFolder('SPHERES');
+    var sphereColor = spheresFolder.addColor(properties.sphere, 'color').name('Color').listen();
+    var sphereQuantity = spheresFolder.add(properties.sphere, 'quantity', 0, 3).name('Quantity').step(1);
+    var sphereWireframe = spheresFolder.add(properties.sphere, 'wireframe').name('Wireframe');
+    var sphereOpacity = spheresFolder.add(properties.sphere, 'opacity' ).min(0).max(1).step(0.01).name('Opacity');
+    // Comment below line to have circles folder open by default
+    spheresFolder.close();
+    // Changes in display properties
     sphereColor.onChange(function(value)  {
       sphere.material.color.setHex( value.replace("#", "0x") );
     });
-
     sphereQuantity.onChange(function(value) {
       Visualizer.spheres.forEach(function(sphere) {
         Visualizer.scene.remove(sphere);
@@ -149,43 +160,17 @@ var Visualizer = {
       visualizer_properties.sphere.quantity = value;
       Visualizer.makeSphere(visualizer_properties);
     });
-
     sphereWireframe.onChange(function(value) {
       Visualizer.spheres.forEach(function(sphere) {
         Visualizer.scene.remove(sphere);
       });
       Visualizer.makeSphere(properties);
     });
-
     sphereOpacity.onChange(function(value) {
       sphere.material.opacity = value;
     });
 
     gui.open();
-  },
-  initBackground: function() {
-        var path = "./textures/colors/";
-    var format = ".jpg";
-    var paths = [
-      path + '1' + format, path + '2' + format,
-      path + '3' + format, path + '4' + format,
-      path + '5' + format, path + '6' + format
-    ];
-
-    // var path = "./textures/";
-    // var format = ".jpg";
-    // var paths = [
-    //   path + 'posz' + format, path + 'negz' + format,
-    //   path + 'posy' + format, path + 'negy' + format,
-    //   path + 'posx' + format, path + 'negx' + format
-    // ];
-
-    var refractionCube = new THREE.CubeTextureLoader().load( paths );
-    refractionCube.mapping = THREE.CubeRefractionMapping;
-    refractionCube.format = THREE.RGBFormat;
-
-    this.scene.background = refractionCube;
-    // Visualizer.renderer.setClearColor( 0xeee, 0.4 );
   },
   initPerf: function() {
     this.perf = {
@@ -207,6 +192,21 @@ var Visualizer = {
       this.perf.frameCounter = 0;
       this.perf.currSecond = currSecond;
     }
+  },
+  makeBackground: function(background) {
+    var path = "./textures/" + background + "/";
+    var format = ".jpg";
+    var paths = [
+      path + 'posz' + format, path + 'negz' + format,
+      path + 'posy' + format, path + 'negy' + format,
+      path + 'posx' + format, path + 'negx' + format
+    ];
+    var refractionCube = new THREE.CubeTextureLoader().load( paths );
+    refractionCube.mapping = THREE.CubeRefractionMapping;
+    refractionCube.format = THREE.RGBFormat;
+
+    this.scene.background = refractionCube;
+    // Visualizer.renderer.setClearColor( 0xeee, 0.4 );
   },
   makeSpotlight: function() {
     var light = new THREE.PointLight(0xffffff);

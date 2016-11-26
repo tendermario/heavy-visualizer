@@ -39,5 +39,8 @@ visualizer_properties = {
     wireframe: false,
     opacity: 0.6,
     transparent: true
+    },
+  background: {
+    name: "sky"
     }
 }
