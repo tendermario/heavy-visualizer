@@ -63,8 +63,12 @@ var Visualizer = {
     this.controls.addEventListener('change', this.sceneRender);
   },
   initRenderer: function() {
-    this.renderer = new THREE.WebGLRenderer();
+    this.renderer = new THREE.WebGLRenderer(
+      // { alpha: true,       // allow transparency. Doesn't seem to work
+      // antialiasing: true } // blend colors better, drops performance
+      );
     this.renderer.setSize(window.innerWidth, window.innerHeight);
+    // this.renderer.setClearColor( 0x00ff00, 0.5 ); // attempt at making a color show behind background
   },
   initGUI: function(properties) {
     var gui = new dat.GUI({ autoPlace: false, preset: properties.background, preset: properties.camera, preset: properties.box, preset: properties.circle, preset: properties.sphere });
