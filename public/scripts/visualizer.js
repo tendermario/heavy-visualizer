@@ -52,8 +52,8 @@ var Visualizer = {
     document.body.appendChild(this.renderer.domElement);
   },
   initCamera: function() {
-    this.camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 1, 10000);
-    this.camera.position.z = 3000;
+    this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 10000);
+    this.camera.position.z = visualizer_properties.camera.z;
   },
   initScene: function() {
     this.scene = new THREE.Scene();
@@ -67,11 +67,10 @@ var Visualizer = {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   },
   initGUI: function(properties) {
-    var gui = new dat.GUI({ autoPlace: false, preset: properties.box, preset: properties.circle, preset: properties.sphere });
-
+    var gui = new dat.GUI({ autoPlace: false, preset: properties.background, preset: properties.camera, preset: properties.box, preset: properties.circle, preset: properties.sphere });
     var customContainer = document.getElementById('my-gui-container');
     customContainer.appendChild(gui.domElement);
-    gui.remember(properties.box, properties.circle, properties.sphere);
+    gui.remember(properties.background, properties.camera, properties.box, properties.circle, properties.sphere);
 
     ////////// BACKGROUND //////////////
     // Display properties
@@ -85,6 +84,28 @@ var Visualizer = {
       Visualizer.makeBackground(value);
     });
 
+    ////////// CAMERA CONTROLS //////////////
+    // Camera properties
+    var cameraFolder = gui.addFolder('CAMERA');
+    var cameraX = cameraFolder.add(properties.camera, 'x', 0, 4000).name('X');
+    var cameraY = cameraFolder.add(properties.camera, 'y', 0, 4000).name('Y');
+    var cameraZ = cameraFolder.add(properties.camera, 'z', 0, 4000).name('Z');
+    // Uncomment below line to have circles folder open by default
+    cameraFolder.close();
+    // Changes in display properties
+    cameraX.onChange(function(value) {
+      Visualizer.camera.position.x = value;
+      Visualizer.camera.updatePositionMatrix();
+    });
+    cameraY.onChange(function(value) {
+      Visualizer.camera.position.y = value;
+      Visualizer.camera.updatePositionMatrix();
+    });
+    cameraZ.onChange(function(value) {
+      Visualizer.camera.position.z = value;
+      Visualizer.camera.updatePositionMatrix();
+    });
+
     ////////// BOXES /////////////////
     // Display properties
     var boxesFolder = gui.addFolder('BOXES');
@@ -95,9 +116,6 @@ var Visualizer = {
     // Uncomment below line to have circles folder open by default
     boxesFolder.close();
     // Changes in display properties
-    boxColor.onChange(function(value) {
-      box.material.color.setHex( value.replace("#", "0x") );
-    });
     boxQuantity.onChange(function(value) {
       visualizer_properties.box.quantity = value;
       Visualizer.makeBox(properties);
@@ -106,7 +124,10 @@ var Visualizer = {
       Visualizer.makeBox(properties);
     });
     boxOpacity.onChange(function(value) {
-      box.material.opacity = value;
+      Visualizer.box.material.opacity = value;
+    });
+    boxColor.onChange(function(value) {
+      Visualizer.box.material.color.setHex( value.replace("#", "0x") );
     });
 
     ////////// CIRCLES /////////////////
@@ -120,14 +141,6 @@ var Visualizer = {
     // Uncomment below line to have circles folder open by default
     circlesFolder.close();
     // Changes in display properties
-    circleColor.onChange(function(value)  {
-      visualizer_properties.circle.color1 = value;
-      Visualizer.makeCircle(visualizer_properties);
-    });
-    circleColor1.onChange(function(value)  {
-      visualizer_properties.circle.color2 = value;
-      Visualizer.makeCircle(visualizer_properties);
-    });
     circleQuantity.onChange(function(value) {
       visualizer_properties.circle.quantity = value;
       Visualizer.makeCircle(visualizer_properties);
@@ -136,9 +149,15 @@ var Visualizer = {
       Visualizer.makeCircle(properties);
     });
     circleOpacity.onChange(function(value) {
-      Visualizer.circles.forEach(function(mesh) {
-        mesh.material.opacity = value;
-      });
+      Visualizer.circle.material.opacity = value;
+    });
+    circleColor.onChange(function(value)  {
+      visualizer_properties.circle.color1 = value;
+      Visualizer.makeCircle(visualizer_properties);
+    });
+    circleColor1.onChange(function(value)  {
+      visualizer_properties.circle.color2 = value;
+      Visualizer.makeCircle(visualizer_properties);
     });
     ////////// SPHERES /////////////////
     // Display properties
@@ -234,7 +253,8 @@ var Visualizer = {
     });
 
     for (var i = 0; i < properties.box.quantity; i++) {
-      box = new THREE.Mesh(boxGeometry, boxMaterial);
+      Visualizer.box = new THREE.Mesh(boxGeometry, boxMaterial);
+      var box = Visualizer.box;
       // box.position.x = (Math.random() - 0.5) * 3000;
       // box.position.y = (Math.random() - 0.5) * 1200;
       // box.position.z = (Math.random() - 0.5) * 500;
@@ -279,7 +299,8 @@ var Visualizer = {
         opacity: properties.circle.opacity,
         transparent: properties.circle.transparent
       });
-      var circle = new THREE.Mesh(circleGeometry, circleMaterial);
+      Visualizer.circle = new THREE.Mesh(circleGeometry, circleMaterial);
+      var circle = Visualizer.circle;
       // Create the circles in the negative and positive direction
       if (i % 2) {
         circle.position.x = i * 30 + 10;
