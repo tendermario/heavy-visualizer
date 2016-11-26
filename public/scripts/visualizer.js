@@ -73,7 +73,7 @@ var Visualizer = {
 
     var boxesFolder = gui.addFolder('BOXES');
     var boxColor = boxesFolder.addColor(properties.box, 'color').name('COLOR').listen();
-    var boxQuantity = boxesFolder.add(properties.box, 'quantity', 0, 15).name('QUANTITY');
+    var boxQuantity = boxesFolder.add(properties.box, 'quantity', 0, 100).name('QUANTITY');
     var boxWireframe = boxesFolder.add(properties.box, 'wireframe').name('WIREFRAME');
     var boxOpacity = boxesFolder.add(properties.box, 'opacity' ).min(0).max(1).step(0.01).name('OPACITY');
     // Uncomment below line to have circles folder open by default
@@ -163,19 +163,28 @@ var Visualizer = {
     gui.open();
   },
   initBackground: function() {
-    var path = "./textures/";
+        var path = "./textures/colors/";
     var format = ".jpg";
     var paths = [
-      path + 'posz' + format, path + 'negz' + format,
-      path + 'posy' + format, path + 'negy' + format,
-      path + 'posx' + format, path + 'negx' + format
+      path + '1' + format, path + '2' + format,
+      path + '3' + format, path + '4' + format,
+      path + '5' + format, path + '6' + format
     ];
+
+    // var path = "./textures/";
+    // var format = ".jpg";
+    // var paths = [
+    //   path + 'posz' + format, path + 'negz' + format,
+    //   path + 'posy' + format, path + 'negy' + format,
+    //   path + 'posx' + format, path + 'negx' + format
+    // ];
 
     var refractionCube = new THREE.CubeTextureLoader().load( paths );
     refractionCube.mapping = THREE.CubeRefractionMapping;
     refractionCube.format = THREE.RGBFormat;
 
     this.scene.background = refractionCube;
+    // Visualizer.renderer.setClearColor( 0xeee, 0.4 );
   },
   initPerf: function() {
     this.perf = {
