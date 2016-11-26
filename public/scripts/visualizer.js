@@ -409,14 +409,14 @@ var Visualizer = {
   musicImpact: function(frequencies) {
 
     Visualizer.circles.forEach(function(mesh, index) {
-      var newMeasure = frequencies[20] + 1;
+      var newMeasure = frequencies[index] + 1;
       mesh.scale.x = newMeasure;
       mesh.scale.y = newMeasure;
       mesh.scale.z = newMeasure;
-    })
+    });
     Visualizer.boxes.forEach(function(mesh, index) {
       mesh.scale.x = frequencies[index]*Visualizer.userInput + 1;
-    })
+    });
     // this.makeBox(visualizer_properties);
     // this.makeCircle(visualizer_properties);
     // this.makeGradientCube(visualizer_properties);
