@@ -29,6 +29,7 @@ var Visualizer = {
   rainbow: null,
   hex: [],
   backgroundScenes: ['sky', 'colors'],
+  gui: null,
 
   init: function(properties) {
     this.initCamera();
@@ -73,7 +74,8 @@ var Visualizer = {
     document.body.appendChild(this.renderer.domElement);
   },
   initGUI: function(properties) {
-    var gui = new dat.GUI({ autoPlace: false, load: properties.load, preset: 'Jesus' });
+    this.gui = new dat.GUI({ autoPlace: false, load: properties.load, preset: 'Jesus' });
+    var gui = this.gui;
     var customContainer = document.getElementById('my-gui-container');
     customContainer.appendChild(gui.domElement);
     gui.remember(properties.background, properties.camera, properties.box, properties.circle, properties.sphere);
@@ -93,23 +95,29 @@ var Visualizer = {
     ////////// CAMERA CONTROLS //////////////
     // Camera properties
     var cameraFolder = gui.addFolder('CAMERA');
-    var cameraX = cameraFolder.add(properties.camera, 'x', 0, 4000).name('X');
-    var cameraY = cameraFolder.add(properties.camera, 'y', 0, 4000).name('Y');
-    var cameraZ = cameraFolder.add(properties.camera, 'z', 0, 4000).name('Z');
+    var cameraX = cameraFolder.add(Visualizer.camera.position, 'x', -4000, 4000).name('X');
+    var cameraY = cameraFolder.add(Visualizer.camera.position, 'y', -4000, 4000).name('Y');
+    var cameraZ = cameraFolder.add(Visualizer.camera.position, 'z', -4000, 4000).name('Z');
     // Uncomment below line to have circles folder open by default
     cameraFolder.close();
     // Changes in display properties
     cameraX.onChange(function(value) {
       Visualizer.camera.position.x = value;
-      Visualizer.camera.updatePositionMatrix();
     });
     cameraY.onChange(function(value) {
       Visualizer.camera.position.y = value;
-      Visualizer.camera.updatePositionMatrix();
     });
     cameraZ.onChange(function(value) {
       Visualizer.camera.position.z = value;
-      Visualizer.camera.updatePositionMatrix();
+    });
+    cameraX.listen(function(value) {
+      Visualizer.camera.position.x = value;
+    });
+    cameraY.listen(function(value) {
+      Visualizer.camera.position.y = value;
+    });
+    cameraZ.listen(function(value) {
+      Visualizer.camera.position.z = value;
     });
 
     ////////// BOXES /////////////////
@@ -403,6 +411,9 @@ var Visualizer = {
     }
     // Dragging the mouse to move the scene
     this.controls.update();
+    for (var i in Visualizer.gui.__controllers) {
+      Visualizer.gui.__controllers[i].updateDisplay();
+    }
     if (Audio.isPlaying) {
       Audio.drawFrequencies(Audio.analyser);
     } else {
