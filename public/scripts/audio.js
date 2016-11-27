@@ -170,12 +170,12 @@ var Audio = {
   },
   drawFrequencies: function(analyser) {
     // 51 things in frequencies array, not using top 11.
-    audioDataArray = new Uint8Array(analyser.frequencyBinCount);
-    analyser.getByteFrequencyData(audioDataArray);
-    for (var i = 0; i < 51; i++) {
-      Audio.frequencies[i] = audioDataArray[i*20];
-      Visualizer.musicImpact(Audio.frequencies);
-    }
+    Audio.audioDataArray = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(Audio.audioDataArray);
+    // for (var i = 0; i < 51; i++) {
+    //   Audio.frequencies[i] = audioDataArray[i*20];
+      Visualizer.musicImpact(Audio.audioDataArray);
+    // }
   },
   pause: function() {
     // pauses current song

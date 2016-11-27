@@ -22,8 +22,8 @@ visualizer_properties = {
   },
   sphere: {
     color: '#eee',
-    quantity: 3,
-    x_size: 50,
+    quantity: 50,
+    x_size: 100,
     y_size: 20,
     z_size: 40,
     wireframe: false,
@@ -32,7 +32,7 @@ visualizer_properties = {
     },
   gradientsquare: {
     color: '#eee',
-    quantity: 3,
+    quantity: 50,
     x_size: 50,
     y_size: 20,
     z_size: 40,

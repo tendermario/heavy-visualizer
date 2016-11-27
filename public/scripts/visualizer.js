@@ -8,28 +8,25 @@ var Visualizer = {
   camera: null,
   scene: null,
   renderer: null,
-  boxes: [],
-  circles: [],
-  spheres: [],
-  gradientCubes: [],
-  box: null,
-  circle: null,
-  sphere: null,
+  controls: null,
   urls: [],
   skyTextures: [],
-  cubeMap: null,
-  boxGeometry: null,
-  boxMaterial: null,
-  mesh: null,
-  controls: null,
-  fog: null,
   nextAnimation: null,
   perf: {},
-  userInput: 1,
+  userInput: 1, // should make this variable better
   rainbow: null,
   hex: [],
   backgroundScenes: ['sky', 'colors'],
   gui: null,
+
+  boxes: [],
+  circles: [],
+  spheres: [],
+  gradientCubes: [],
+  cubeMap: null,
+  boxGeometry: null,
+  boxMaterial: null,
+  // fog: null,
 
   init: function(properties) {
     this.initCamera();
@@ -131,7 +128,7 @@ var Visualizer = {
     boxesFolder.close();
     // Changes in display properties
     boxQuantity.onChange(function(value) {
-      visualizer_properties.box.quantity = value;
+      properties.box.quantity = value;
       Visualizer.makeBox(properties);
     });
     boxWireframe.onChange(function(value) {
@@ -156,28 +153,28 @@ var Visualizer = {
     circlesFolder.close();
     // Changes in display properties
     circleQuantity.onChange(function(value) {
-      visualizer_properties.circle.quantity = value;
-      Visualizer.makeCircle(visualizer_properties);
+      properties.circle.quantity = value;
+      Visualizer.makeCircle(properties);
     });
     circleWireframe.onChange(function(value) {
       Visualizer.makeCircle(properties);
     });
     circleOpacity.onChange(function(value) {
       Visualizer.circle.material.opacity = value;
-      Visualizer.makeCircle(visualizer_properties);
+      Visualizer.makeCircle(properties);
     });
     circleColor.onChange(function(value)  {
-      visualizer_properties.circle.color1 = value;
-      Visualizer.makeCircle(visualizer_properties);
+      properties.circle.color1 = value;
+      Visualizer.makeCircle(properties);
     });
     circleColor1.onChange(function(value)  {
-      visualizer_properties.circle.color2 = value;
-      Visualizer.makeCircle(visualizer_properties);
+      properties.circle.color2 = value;
+      Visualizer.makeCircle(properties);
     });
     ////////// SPHERES /////////////////
     // Display properties
     var spheresFolder = gui.addFolder('SPHERES');
-    var sphereQuantity = spheresFolder.add(properties.sphere, 'quantity', 0, 3).name('Quantity').step(1);
+    var sphereQuantity = spheresFolder.add(properties.sphere, 'quantity', 0, 100).name('Quantity').step(1);
     var sphereWireframe = spheresFolder.add(properties.sphere, 'wireframe').name('Wireframe');
     var sphereOpacity = spheresFolder.add(properties.sphere, 'opacity' ).min(0).max(1).step(0.01).name('Opacity');
     var sphereColor = spheresFolder.addColor(properties.sphere, 'color').name('Color').listen();
@@ -188,16 +185,10 @@ var Visualizer = {
       sphere.material.color.setHex( value.replace("#", "0x") );
     });
     sphereQuantity.onChange(function(value) {
-      Visualizer.spheres.forEach(function(sphere) {
-        Visualizer.scene.remove(sphere);
-      });
-      visualizer_properties.sphere.quantity = value;
-      Visualizer.makeSphere(visualizer_properties);
+      properties.sphere.quantity = value;
+      Visualizer.makeSphere(properties);
     });
     sphereWireframe.onChange(function(value) {
-      Visualizer.spheres.forEach(function(sphere) {
-        Visualizer.scene.remove(sphere);
-      });
       Visualizer.makeSphere(properties);
     });
     sphereOpacity.onChange(function(value) {
@@ -263,9 +254,9 @@ var Visualizer = {
       realYsize = properties.box.y_size,
       realZsize = properties.box.z_size;
 
-    boxGeometry = new THREE.BoxGeometry(realXsize, realYsize, realZsize);
+    var boxGeometry = new THREE.BoxGeometry(realXsize, realYsize, realZsize);
 
-    boxMaterial = new THREE.MeshLambertMaterial({
+    var boxMaterial = new THREE.MeshLambertMaterial({
         color: properties.box.color,
         wireframe: properties.box.wireframe,
         opacity: properties.box.opacity,
@@ -356,9 +347,9 @@ var Visualizer = {
     });
     for (var i = 0; i < properties.sphere.quantity; i++) {
       sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-      sphere.position.x = (Math.random() - 0.5) * 3000;
-      sphere.position.y = (Math.random() - 0.5) * 1200;
-      sphere.position.z = (Math.random() - 0.5) * 500;
+      sphere.position.x = (Math.random() - 0.5) * 10000;
+      sphere.position.y = (Math.random() - 0.5) * 10000;
+      sphere.position.z = (Math.random() - 0.5) * 10000;
       this.scene.add(sphere);
       this.spheres.push(sphere);
     }
@@ -380,8 +371,8 @@ var Visualizer = {
       var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
 
     // mesh
-    mesh = new THREE.Mesh(geometry, material);
-    this.scene.add(mesh);
+    var cube = new THREE.Mesh(geometry, material);
+    this.scene.add(cube);
   },
   removeObjects(objects) {
     objects.forEach(function(obj) {
@@ -429,15 +420,34 @@ var Visualizer = {
   },
   // on music play, render scene
   musicImpact: function(frequencies) {
+    // frequencies is an array of 1024 float numbers ranging from 0 to 256
 
+    var increment = frequencies.length / visualizer_properties.circle.quantity;
+    increment = Math.floor(increment);
     Visualizer.circles.forEach(function(mesh, index) {
-      var newMeasure = frequencies[index] + 1;
+      var newMeasure = frequencies[increment*index] + 1;
       mesh.scale.x = newMeasure;
       mesh.scale.y = newMeasure;
       mesh.scale.z = newMeasure;
     });
+
+    increment = frequencies.length / visualizer_properties.box.quantity;
+    increment = Math.floor(increment);
     Visualizer.boxes.forEach(function(mesh, index) {
-      mesh.scale.x = frequencies[index]*Visualizer.userInput + 1;
+      mesh.scale.x = frequencies[increment*index]*Visualizer.userInput + 1;
+    });
+
+    increment = frequencies.length / visualizer_properties.sphere.quantity;
+    increment = Math.floor(increment);
+    Visualizer.spheres.forEach(function(mesh, index) {
+      var max = 0.8;
+      var min = 0.2;
+      var range = (frequencies[400] - 60)/100 * max; //increment*index
+      if (range > max) {
+        range = max;
+      }
+      var newOpacity = min + range;
+      mesh.material.opacity = newOpacity;
     });
     // this.makeBox(visualizer_properties);
     // this.makeCircle(visualizer_properties);

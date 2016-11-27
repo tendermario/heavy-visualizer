@@ -5,7 +5,8 @@ var cookieParser = require('cookie-parser');
 const PORT = process.env.SERVER_PORT || 8888;
 
 //// Routes
-const spotifyApi = require('./routes/spotify');
+// const spotifyApi = require('./routes/spotify');
+
 //// Server
 
 const app = express();
@@ -19,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //// Routes
 
-app.use("/", spotifyApi());
+// app.use("/", spotifyApi());
 
 app.get("/", (req, res) => {
   res.render("index");
