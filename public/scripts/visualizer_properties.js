@@ -47,5 +47,108 @@ visualizer_properties = {
     x: 0,
     y: 0,
     z: 3000
+  },
+  load: {
+  "closed": false,
+  "remembered": {
+    "Default": {
+      "0": {
+        "quantity": 100,
+        "wireframe": false,
+        "opacity": 0.5,
+        "color": "#ff0000"
+      },
+      "1": {
+        "quantity": 51,
+        "wireframe": true,
+        "opacity": 0.6,
+        "color1": "#cb00ff",
+        "color2": "#00ff00"
+      },
+      "2": {
+        "quantity": 3,
+        "wireframe": false,
+        "opacity": 0.6,
+        "color": "#eee"
+      }
+    },
+    "Jesus": {
+      "0": {
+        "quantity": 100,
+        "wireframe": false,
+        "opacity": 0.5,
+        "color": "#ff0000"
+      },
+      "1": {
+        "quantity": 51,
+        "wireframe": true,
+        "opacity": 0.6,
+        "color1": "#cb00ff",
+        "color2": "#00ff00"
+      },
+      "2": {
+        "quantity": 3,
+        "wireframe": false,
+        "opacity": 0.6,
+        "color": "#eee"
+      }
+    },
+    "Jesus Again": {
+      "0": {
+        "name": "colors"
+      },
+      "1": {
+        "x": 2585.4531716045594,
+        "y": 1749.4844362433894,
+        "z": 0
+      },
+      "2": {
+        "quantity": 100,
+        "wireframe": false,
+        "opacity": 0.6,
+        "color": "#00ef26"
+      },
+      "3": {
+        "quantity": 51,
+        "wireframe": true,
+        "opacity": 0.38,
+        "color1": "#a554ba",
+        "color2": "#ff0000"
+      },
+      "4": {
+        "quantity": 3,
+        "wireframe": false,
+        "opacity": 0.6,
+        "color": "#eee"
+      }
+    }
+  },
+  "folders": {
+    "BACKGROUND": {
+      "preset": "Default",
+      "closed": true,
+      "folders": {}
+    },
+    "CAMERA": {
+      "preset": "Default",
+      "closed": true,
+      "folders": {}
+    },
+    "BOXES": {
+      "preset": "Default",
+      "closed": true,
+      "folders": {}
+    },
+    "CIRCLES": {
+      "preset": "Default",
+      "closed": true,
+      "folders": {}
+    },
+    "SPHERES": {
+      "preset": "Default",
+      "closed": true,
+      "folders": {}
+    }
   }
+}
 }
