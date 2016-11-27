@@ -78,7 +78,7 @@ var Visualizer = {
     var gui = this.gui;
     var customContainer = document.getElementById('my-gui-container');
     customContainer.appendChild(gui.domElement);
-    gui.remember(properties.background, properties.camera, properties.box, properties.circle, properties.sphere);
+    gui.remember(properties.background, Visualizer.camera.position, properties.box, properties.circle, properties.sphere);
 
     ////////// BACKGROUND //////////////
     // Display properties
