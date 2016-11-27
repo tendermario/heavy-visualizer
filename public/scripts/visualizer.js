@@ -74,7 +74,7 @@ var Visualizer = {
     document.body.appendChild(this.renderer.domElement);
   },
   initGUI: function(properties) {
-    this.gui = new dat.GUI({ autoPlace: false, load: properties.load, preset: 'Jesus' });
+    this.gui = new dat.GUI({autoPlace: false, load: properties.load});
     var gui = this.gui;
     var customContainer = document.getElementById('my-gui-container');
     customContainer.appendChild(gui.domElement);

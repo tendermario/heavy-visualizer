@@ -53,40 +53,56 @@ visualizer_properties = {
   "remembered": {
     "Default": {
       "0": {
-        "quantity": 100,
-        "wireframe": false,
-        "opacity": 0.5,
-        "color": "#ff0000"
+        "name": "colors"
       },
       "1": {
+        "x": -1087.0465038202424,
+        "y": 2389.980800991479,
+        "z": -5058.212849516118
+      },
+      "2": {
+        "quantity": 100,
+        "wireframe": false,
+        "opacity": 0.6,
+        "color": "#00ff28"
+      },
+      "3": {
         "quantity": 51,
         "wireframe": true,
+        "opacity": 0.26,
+        "color1": "#0019ff",
+        "color2": "#00d1ff"
+      },
+      "4": {
+        "quantity": 3,
+        "wireframe": false,
         "opacity": 0.6,
-        "color1": "#cb00ff",
-        "color2": "#00ff00"
+        "color": "#ff0000"
+      }
+    },
+    "Jesus": {
+      "0": {
+        "name": "colors"
+      },
+      "1": {
+        "x": 1422.2904776598573,
+        "y": 1434.0660643184895,
+        "z": 2380.295825217143
       },
       "2": {
         "quantity": 3,
         "wireframe": false,
         "opacity": 0.6,
         "color": "#eee"
-      }
-    },
-    "Jesus": {
-      "0": {
-        "quantity": 100,
-        "wireframe": false,
-        "opacity": 0.5,
-        "color": "#ff0000"
       },
-      "1": {
+      "3": {
         "quantity": 51,
         "wireframe": true,
-        "opacity": 0.6,
-        "color1": "#cb00ff",
-        "color2": "#00ff00"
+        "opacity": 0.38,
+        "color1": "#a554ba",
+        "color2": "#ff0000"
       },
-      "2": {
+      "4": {
         "quantity": 3,
         "wireframe": false,
         "opacity": 0.6,
@@ -149,6 +165,7 @@ visualizer_properties = {
       "closed": true,
       "folders": {}
     }
+  },
+  "preset": "Default"
   }
-}
 }
