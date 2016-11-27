@@ -55,7 +55,7 @@ var Visualizer = {
   },
   initCamera: function() {
     // FOV, aspect ratio, near render, far render
-    this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 10000);
+    this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 30000);
     this.camera.position.z = visualizer_properties.camera.z;
   },
   initScene: function() {
@@ -95,9 +95,9 @@ var Visualizer = {
     ////////// CAMERA CONTROLS //////////////
     // Camera properties
     var cameraFolder = gui.addFolder('CAMERA');
-    var cameraX = cameraFolder.add(Visualizer.camera.position, 'x', -4000, 4000).name('X');
-    var cameraY = cameraFolder.add(Visualizer.camera.position, 'y', -4000, 4000).name('Y');
-    var cameraZ = cameraFolder.add(Visualizer.camera.position, 'z', -4000, 4000).name('Z');
+    var cameraX = cameraFolder.add(Visualizer.camera.position, 'x', -10000, 10000).name('X');
+    var cameraY = cameraFolder.add(Visualizer.camera.position, 'y', -10000, 10000).name('Y');
+    var cameraZ = cameraFolder.add(Visualizer.camera.position, 'z', -10000, 10000).name('Z');
     // Uncomment below line to have circles folder open by default
     cameraFolder.close();
     // Changes in display properties
