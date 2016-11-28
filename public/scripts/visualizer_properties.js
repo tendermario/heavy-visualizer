@@ -53,12 +53,12 @@ visualizer_properties = {
   "remembered": {
     "Default": {
       "0": {
-        "name": "colors"
+        "name": "black"
       },
       "1": {
-        "x": -1087.0465038202424,
-        "y": 2389.980800991479,
-        "z": -5058.212849516118
+        "x": 1726.2976333910788,
+        "y": 1766.5371721115325,
+        "z": 2880.4397746576383
       },
       "2": {
         "quantity": 100,
@@ -80,14 +80,14 @@ visualizer_properties = {
         "color": "#ff0000"
       }
     },
-    "Jesus": {
+    "Sky": {
       "0": {
-        "name": "colors"
+        "name": "sky"
       },
       "1": {
-        "x": 1422.2904776598573,
-        "y": 1434.0660643184895,
-        "z": 2380.295825217143
+        "x": -1319.7664425757264,
+        "y": -1349.806735073345,
+        "z": -2486.262699358136
       },
       "2": {
         "quantity": 3,
@@ -109,7 +109,7 @@ visualizer_properties = {
         "color": "#eee"
       }
     },
-    "Jesus Again": {
+    "Colors": {
       "0": {
         "name": "colors"
       },
@@ -166,6 +166,6 @@ visualizer_properties = {
       "folders": {}
     }
   },
-  "preset": "Default"
-  }
+  "preset": "Sky"
+}
 }
