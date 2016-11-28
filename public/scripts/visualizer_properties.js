@@ -85,25 +85,25 @@ visualizer_properties = {
         "name": "sky"
       },
       "1": {
-        "x": -1319.7664425757264,
-        "y": -1349.806735073345,
-        "z": -2486.262699358136
+        "x": -1418.283897185065,
+        "y": -980.0857301582787,
+        "z": -3225.3454483307164
       },
       "2": {
-        "quantity": 3,
+        "quantity": 100,
         "wireframe": false,
         "opacity": 0.6,
         "color": "#eee"
       },
       "3": {
-        "quantity": 51,
+        "quantity": 100,
         "wireframe": true,
         "opacity": 0.38,
         "color1": "#a554ba",
         "color2": "#ff0000"
       },
       "4": {
-        "quantity": 3,
+        "quantity": 100,
         "wireframe": false,
         "opacity": 0.6,
         "color": "#eee"

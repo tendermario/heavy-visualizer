@@ -8,7 +8,6 @@ var Audio = {
   animationId: null,
   isPlaying: false, //flag for sound is playing 1 or stopped 0
   forceStop: false,
-  allCapsReachBottom: false,
   audioDataArray: [],
   analyser: null,
   frequencies: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], // 40 positions
@@ -46,9 +45,10 @@ var Audio = {
       //the if statement fixes the file selection cancel, because the onchange will trigger even if the file selection been cancelled
       if (audioInput.files.length !== 0) {
         //only process the first file
+        console.log(audioInput);
         that.file = audioInput.files[0];
         that.fileName = that.file.name;
-        if (that.status === 1) {
+        if (that.isPlaying) {
           //the sound is still playing but we upload another file, so set the forceStop flag to true
           that.forceStop = true;
         };
@@ -82,8 +82,7 @@ var Audio = {
       document.getElementById('upload-music').style.opacity = 1;
       that.updateInfo('Uploading', true);
       that.file = e.dataTransfer.files[0];
-      if (that.status === 1) {
-        document.getElementById('upload-music').style.opacity = 1;
+      if (that.isPlaying) {
         that.forceStop = true;
       };
       that.fileName = that.file.name;
@@ -158,24 +157,25 @@ var Audio = {
       this.startedAt = Date.now();
       Audio.audioBufferSouceNode.start(startedAt || 0);
     }
-      this.isPlaying = true;
-      this.source = Audio.audioBufferSouceNode;
-      Audio.audioBufferSouceNode.onended = function() {
-        that.audioEnd(that);
-      };
-      this.updateInfo('Playing ' + this.fileName, false);
-      this.info = 'Playing ' + this.fileName;
-      document.getElementById('upload-music').style.opacity = 0.2;
-      this.drawFrequencies(this.analyser);
+    this.isPlaying = true;
+    this.source = Audio.audioBufferSouceNode;
+    Audio.audioBufferSouceNode.onended = function() {
+      that.audioEnd(that);
+    };
+    this.updateInfo('Playing ' + this.fileName, false);
+    this.info = 'Playing ' + this.fileName;
+    document.getElementById('upload-music').style.opacity = 0.2;
+    // make sure last animate loop is cancelled before starting it again
+    console.log("cancelling last animation");
+    cancelAnimationFrame(Visualizer.nextAnimation);
+    console.log("starting new animation");
+    Visualizer.animate();
   },
   drawFrequencies: function(analyser) {
-    // 51 things in frequencies array, not using top 11.
+    // sends array of 1024 ffts to music impact
     Audio.audioDataArray = new Uint8Array(analyser.frequencyBinCount);
     analyser.getByteFrequencyData(Audio.audioDataArray);
-    // for (var i = 0; i < 51; i++) {
-    //   Audio.frequencies[i] = audioDataArray[i*20];
-      Visualizer.musicImpact(Audio.audioDataArray);
-    // }
+    Visualizer.musicImpact(Audio.audioDataArray);
   },
   pause: function() {
     // pauses current song
@@ -185,14 +185,15 @@ var Audio = {
   },
   audioEnd: function(instance) {
     if (this.forceStop) {
+
       this.forceStop = false;
       this.isPlaying = true;
-      return;
-    };
-    this.isPlaying = false;
-    document.getElementById('upload-music').style.opacity = 1;
-    instance.info = "Audio Ended";
-    document.getElementById('uploadedFile').value = '';
+    } else {
+      this.isPlaying = false;
+      document.getElementById('upload-music').style.opacity = 1;
+      instance.info = "Audio Ended";
+      document.getElementById('uploadedFile').value = '';
+    }
   },
   updateInfo: function(text, processing) {
     var infoBar = document.getElementById('info'),

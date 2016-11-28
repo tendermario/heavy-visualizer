@@ -16,6 +16,4 @@ $(function(){
 
   // Visuals
   Visualizer.init(visualizer_properties);
-  Visualizer.animate();
-
 });

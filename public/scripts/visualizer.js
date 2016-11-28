@@ -46,6 +46,7 @@ var Visualizer = {
 
     window.addEventListener('resize', this.onWindowResize);
 
+    this.animate();
     // this.scene.fog = new THREE.Fog( 0x71757a, 10, 200 );
     // this.scene.fog = new THREE.FogExp2( 0x71757a, 0.0007 );
     // adds renderer to DOM
@@ -407,10 +408,11 @@ var Visualizer = {
     }
     if (Audio.isPlaying) {
       Audio.drawFrequencies(Audio.analyser);
-    } else {
-      // stops animation when the song ends. Prevents memory leak?
-      cancelAnimationFrame(Visualizer.nextAnimation);
     }
+    // else {
+    //   // stops animation when the song ends. Prevents memory leak?
+    //   cancelAnimationFrame(Visualizer.nextAnimation);
+    // }
     Visualizer.sceneRender();
     // Run animate when browser says it's time for next frame
     Visualizer.nextAnimation = requestAnimationFrame(this.animate.bind(this));
