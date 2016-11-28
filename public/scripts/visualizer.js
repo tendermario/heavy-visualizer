@@ -16,7 +16,7 @@ var Visualizer = {
   userInput: 1, // should make this variable better
   rainbow: null,
   hex: [],
-  backgroundScenes: ['sky', 'colors'],
+  backgroundScenes: ['sky', 'colors', 'black'],
   gui: null,
 
   boxes: [],
