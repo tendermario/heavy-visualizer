@@ -148,8 +148,8 @@ var Visualizer = {
     var circleQuantity = circlesFolder.add(properties.circle, 'quantity', 0, 100).name('QUANTITY').step(1);
     var circleWireframe = circlesFolder.add(properties.circle, 'wireframe').name('WIREFRAME');
     var circleOpacity = circlesFolder.add(properties.circle, 'opacity' ).min(0).max(1).step(0.01).name('OPACITY');
-    var circleColor = circlesFolder.addColor(properties.circle, 'color1').name('COLOR').listen();
-    var circleColor1 = circlesFolder.addColor(properties.circle, 'color2').name('COLOR').listen();
+    var circleColor = circlesFolder.addColor(properties.circle, 'color1').name('COLOR 1').listen();
+    var circleColor1 = circlesFolder.addColor(properties.circle, 'color2').name('COLOR 2').listen();
     // Uncomment below line to have circles folder open by default
     circlesFolder.close();
     // Changes in display properties
@@ -175,10 +175,10 @@ var Visualizer = {
     ////////// SPHERES /////////////////
     // Display properties
     var spheresFolder = gui.addFolder('SPHERES');
-    var sphereQuantity = spheresFolder.add(properties.sphere, 'quantity', 0, 100).name('Quantity').step(1);
-    var sphereWireframe = spheresFolder.add(properties.sphere, 'wireframe').name('Wireframe');
-    var sphereOpacity = spheresFolder.add(properties.sphere, 'opacity' ).min(0).max(1).step(0.01).name('Opacity');
-    var sphereColor = spheresFolder.addColor(properties.sphere, 'color').name('Color').listen();
+    var sphereQuantity = spheresFolder.add(properties.sphere, 'quantity', 0, 100).name('QUANTITY').step(1);
+    var sphereWireframe = spheresFolder.add(properties.sphere, 'wireframe').name('WIREFRAME');
+    var sphereOpacity = spheresFolder.add(properties.sphere, 'opacity' ).min(0).max(1).step(0.01).name('OPACITY');
+    var sphereColor = spheresFolder.addColor(properties.sphere, 'color').name('COLOR').listen();
     // Comment below line to have circles folder open by default
     spheresFolder.close();
     // Changes in display properties

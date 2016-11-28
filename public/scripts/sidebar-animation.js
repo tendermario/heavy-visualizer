@@ -10,4 +10,8 @@ $(function() {
       $('#multimedia').text("⏸");
     }
   });
+
+  $('.close-button').on('click', function() {
+    $('#upload-music').slideToggle(350);
+  });
 });
