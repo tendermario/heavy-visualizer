@@ -35,6 +35,7 @@ var Visualizer = {
   // rotation for spheres
   sphereCenter: null,
   spherePivot: new THREE.Object3D(),
+  cameraPivot: new THREE.Object3D(),
   gravity: null,
 
 
@@ -44,7 +45,7 @@ var Visualizer = {
     this.initRenderer();
     this.initControls();
     this.initGUI(properties);
-    this.initPerf();
+    // this.initPerf();
 
     this.makeBackground(properties.background.name);
     this.makeSpotlight();
@@ -64,7 +65,7 @@ var Visualizer = {
   },
   initCamera: function() {
     // FOV, aspect ratio, near render, far render
-    this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 30000);
+    this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.001, 60000);
     this.camera.position.z = visualizer_properties.camera.z;
   },
   initScene: function() {
@@ -227,6 +228,9 @@ var Visualizer = {
     var cubeMaterial = new THREE.MeshLambertMaterial();
     Visualizer.gravity = new THREE.Mesh(cubeGeometry, cubeMaterial);
     Visualizer.scene.add(Visualizer.gravity);
+    Visualizer.gravity.add(Visualizer.spherePivot);
+    Visualizer.gravity.add(Visualizer.cameraPivot);
+    Visualizer.cameraPivot.add(Visualizer.camera);
   },
   perfLogFrame: function() {
     this.perf.frameCounter += 1;
@@ -350,7 +354,6 @@ var Visualizer = {
       // circle.position.y = (Math.random() - 0.5) * 1200;
       // circle.position.z = (Math.random() - 0.5) * 500;
 
-      // hex[i] = "0x" + Visualizer.rainbow.colorAt(i);
       Visualizer.scene.add(circle);
       Visualizer.circles.push(circle);
     }
@@ -370,7 +373,6 @@ var Visualizer = {
       opacity: properties.sphere.opacity,
       transparent: properties.sphere.transparent
     });
-    Visualizer.gravity.add(Visualizer.spherePivot);
     for (var i = 0; i < properties.sphere.quantity; i++) {
       var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
       sphere.position.x = (Math.random() - 0.5) * 15000;
@@ -444,7 +446,7 @@ var Visualizer = {
     //   cancelAnimationFrame(Visualizer.nextAnimation);
     // }
     Visualizer.sceneRender();
-
+    Visualizer.cameraPivot.rotation.y += 0.002;
     Visualizer.spherePivot.rotation.y += 0.012;
 
     // Run animate when browser says it's time for next frame
