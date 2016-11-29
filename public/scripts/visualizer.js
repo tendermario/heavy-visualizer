@@ -225,7 +225,10 @@ var Visualizer = {
   initGravity: function() {
     // center position that the spheres rotate around
     var cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
-    var cubeMaterial = new THREE.MeshLambertMaterial();
+    var cubeMaterial = new THREE.MeshLambertMaterial({
+        opacity: 0,
+        transparent: true
+      });
     Visualizer.gravity = new THREE.Mesh(cubeGeometry, cubeMaterial);
     Visualizer.scene.add(Visualizer.gravity);
     Visualizer.gravity.add(Visualizer.spherePivot);
