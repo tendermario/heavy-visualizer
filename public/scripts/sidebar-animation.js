@@ -13,5 +13,6 @@ $(function() {
 
   $('.close-button').on('click', function() {
     $('#upload-music').slideToggle(350);
+    $('#content-primary').toggleClass('shrink-div');
   });
 });
