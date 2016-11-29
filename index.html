@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HEAVY VISUALIZER</title>
+
+  <script src="./public/vendor/three.js"></script>
+  <script src="./public/vendor/jquery-3.1.1.min.js"></script>
+  <script src="./public/vendor/dat.gui.js"></script>
+  <script src="./public/vendor/rainbowvis.js"></script>
+
+  <script src="./public/scripts/audio.js"></script>
+  <script src="./public/scripts/visualizer_properties.js"></script>
+  <script src="./public/scripts/visualizer.js"></script>
+  <script src="./public/scripts/app.js"></script>
+
+  <script src="./public/scripts/sidebar-animation.js"></script>
+  <script src="./public/scripts/trackballControls.js"></script>
+  <!-- <script src="/scripts/cubeTexture.js"></script> -->
+
+  <!-- <script src="/scripts/fog.js"></script> -->
+
+  <!-- from https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700 -->
+  <link href="./public/vendor/ff-open-sans.css" rel="stylesheet">
+  <link rel="stylesheet" href="./public/vendor/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="./public/styles/style.css">
+
+</head>
+<body>
+<div class="container-fluid">
+
+    <nav id="nav-bar">
+      <span>HEAVY VISUALIZER</span>
+      <!-- <img class="logo" src=""> -->
+      <!-- <button type="submit" class="btn btn-secondary">SAVE</button>  -->
+    </nav>
+    <div class="gui-slide"></div>
+    <main class="content-primary">
+      <div id="my-gui-container"></div>
+      <div id="upload-music">
+        <label class="btn btn-block btn-primary">UPLOAD AUDIO<input type="file" id="uploadedFile" style="display: none;" >
+        </label>
+        <p>(OR DRAG AND DROP)</p>
+      </div>
+      <button type="file" id="multimedia" class="btn btn-block btn-primary">⏸</button>
+      <!-- <div id="music-button"></div> -->
+    </main>
+    <canvas id="threeCanvas" class="content-secondary">
+    </canvas>
+  </div>
+  <footer id="info">INFO SECTION</footer>
+  </body>
+</html>
