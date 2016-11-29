@@ -9,24 +9,34 @@ var Visualizer = {
   scene: null,
   renderer: null,
   controls: null,
-  urls: [],
-  skyTextures: [],
   nextAnimation: null,
+  gui: null,
   perf: {},
+
+  // background
+  cubeMap: null,
+  backgroundScenes: ['sky', 'colors', 'black'],
+  urls: [],
+
+  // TODO
   userInput: 1, // should make this variable better
+
+  // colors
   rainbow: null,
   hex: [],
-  backgroundScenes: ['sky', 'colors', 'black'],
-  gui: null,
 
+  // objects
   boxes: [],
   circles: [],
   spheres: [],
-  gradientCubes: [],
-  cubeMap: null,
-  boxGeometry: null,
-  boxMaterial: null,
+  // gradientCubes: [],
   // fog: null,
+
+  // rotation for spheres
+  sphereCenter: null,
+  spherePivot: new THREE.Object3D(),
+  gravity: null,
+
 
   init: function(properties) {
     this.initCamera();
@@ -39,10 +49,11 @@ var Visualizer = {
     this.makeBackground(properties.background.name);
     this.makeSpotlight();
     this.makeAmbientLight();
+    this.initGravity();
     this.makeBox(properties);
     this.makeCircle(properties);
+    // this.makeGradientCube(properties);
     this.makeSphere(properties);
-    this.makeGradientCube(properties);
 
     window.addEventListener('resize', this.onWindowResize);
 
@@ -136,7 +147,7 @@ var Visualizer = {
       Visualizer.makeBox(properties);
     });
     boxOpacity.onChange(function(value) {
-      Visualizer.box.material.opacity = value;
+      Visualizer.updateOpacity(Visualizer.boxes, value);
     });
     boxColor.onChange(function(value) {
       Visualizer.box.material.color.setHex( value.replace("#", "0x") );
@@ -161,8 +172,7 @@ var Visualizer = {
       Visualizer.makeCircle(properties);
     });
     circleOpacity.onChange(function(value) {
-      Visualizer.circle.material.opacity = value;
-      Visualizer.makeCircle(properties);
+      Visualizer.updateOpacity(Visualizer.circles, value);
     });
     circleColor.onChange(function(value)  {
       properties.circle.color1 = value;
@@ -183,7 +193,7 @@ var Visualizer = {
     spheresFolder.close();
     // Changes in display properties
     sphereColor.onChange(function(value)  {
-      sphere.material.color.setHex( value.replace("#", "0x") );
+      properties.sphere.material.color.setHex( value.replace("#", "0x") );
     });
     sphereQuantity.onChange(function(value) {
       properties.sphere.quantity = value;
@@ -193,10 +203,15 @@ var Visualizer = {
       Visualizer.makeSphere(properties);
     });
     sphereOpacity.onChange(function(value) {
-      sphere.material.opacity = value;
+      Visualizer.updateOpacity(Visualizer.spheres, value);
     });
 
     gui.open();
+  },
+  updateOpacity: function(objects, value) {
+    objects.forEach(function(mesh) {
+      mesh.material.opacity = value;
+    });
   },
   initPerf: function() {
     this.perf = {
@@ -205,6 +220,13 @@ var Visualizer = {
       currSecond: Date.now() / 1000,
       mode: "console",
     };
+  },
+  initGravity: function() {
+    // center position that the spheres rotate around
+    var cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+    var cubeMaterial = new THREE.MeshLambertMaterial();
+    Visualizer.gravity = new THREE.Mesh(cubeGeometry, cubeMaterial);
+    Visualizer.scene.add(Visualizer.gravity);
   },
   perfLogFrame: function() {
     this.perf.frameCounter += 1;
@@ -249,7 +271,7 @@ var Visualizer = {
     this.scene.add(lightAmb);
   },
   makeBox: function(properties) {
-    Visualizer.removeObjects(Visualizer.boxes);
+    Visualizer.removeObjects(Visualizer.boxes, Visualizer.scene);
     Visualizer.boxes = [];
     var realXsize = properties.box.x_size,
       realYsize = properties.box.y_size,
@@ -267,6 +289,7 @@ var Visualizer = {
     for (var i = 0; i < properties.box.quantity; i++) {
       Visualizer.box = new THREE.Mesh(boxGeometry, boxMaterial);
       var box = Visualizer.box;
+      // Uncomment for random positions
       // box.position.x = (Math.random() - 0.5) * 3000;
       // box.position.y = (Math.random() - 0.5) * 1200;
       // box.position.z = (Math.random() - 0.5) * 500;
@@ -285,7 +308,7 @@ var Visualizer = {
   },
   makeCircle: function(properties) {
     // Removes circles first
-    Visualizer.removeObjects(Visualizer.circles);
+    Visualizer.removeObjects(Visualizer.circles, Visualizer.scene);
     Visualizer.circles = [];
     var realXsizeCircle = properties.circle.x_size;
     var realYsizeCircle = properties.circle.y_size;
@@ -311,15 +334,14 @@ var Visualizer = {
         opacity: properties.circle.opacity,
         transparent: properties.circle.transparent
       });
-      Visualizer.circle = new THREE.Mesh(circleGeometry, circleMaterial);
-      var circle = Visualizer.circle;
+      var circle = new THREE.Mesh(circleGeometry, circleMaterial);
       // Create the circles in the negative and positive direction
       if (i % 2) {
-        circle.position.x = i * 30 + 10;
+        circle.position.x = i * 30;
         circle.position.y = i * 30;
         circle.position.z = i * 50;
       } else {
-        circle.position.x = (i + 1) * -30 + 10;
+        circle.position.x = (i + 1) * -30;
         circle.position.y = (i + 1) * -30;
         circle.position.z = (i + 1) * -50;
       }
@@ -334,29 +356,36 @@ var Visualizer = {
     }
   },
   makeSphere: function(properties) {
-    Visualizer.removeObjects(Visualizer.spheres);
+    Visualizer.removeObjects(Visualizer.spheres, Visualizer.scene);
+    Visualizer.removeObjects(Visualizer.spheres, Visualizer.spherePivot);
+    Visualizer.spheres = [];
     var realXsizeSphere = properties.sphere.x_size;
     var realYsizeSphere = properties.sphere.y_size;
     var realZsizeSphere = properties.sphere.z_size;
-    sphereGeometry = new THREE.SphereGeometry(realXsizeSphere, realYsizeSphere, realZsizeSphere);
+    var sphereGeometry = new THREE.SphereGeometry(realXsizeSphere, realYsizeSphere, realZsizeSphere);
 
-    sphereMaterial = new THREE.MeshLambertMaterial({
+    var sphereMaterial = new THREE.MeshLambertMaterial({
       color: properties.sphere.color,
       wireframe: properties.sphere.wireframe,
       opacity: properties.sphere.opacity,
       transparent: properties.sphere.transparent
     });
+    Visualizer.gravity.add(Visualizer.spherePivot);
     for (var i = 0; i < properties.sphere.quantity; i++) {
-      sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-      sphere.position.x = (Math.random() - 0.5) * 10000;
-      sphere.position.y = (Math.random() - 0.5) * 10000;
-      sphere.position.z = (Math.random() - 0.5) * 10000;
+      var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+      sphere.position.x = (Math.random() - 0.5) * 15000;
+      sphere.position.y = (Math.random() - 0.5) * 15000;
+      sphere.position.z = (Math.random() - 0.5) * 15000;
       this.scene.add(sphere);
       this.spheres.push(sphere);
+
+      // creates pivot for each sphere
+      Visualizer.spherePivot.add(sphere);
     }
   },
   makeGradientCube: function(properties) {
-    Visualizer.removeObjects(Visualizer.gradientCubes);
+    Visualizer.removeObjects(Visualizer.gradientCubes, Visualizer.scene);
+    Visualizer.gradientCubes = [];
     // geometry
     var geometry = new THREE.CubeGeometry(100, 100, 100, 4, 4, 4);
 
@@ -374,10 +403,11 @@ var Visualizer = {
     // mesh
     var cube = new THREE.Mesh(geometry, material);
     this.scene.add(cube);
+    this.gradientCubes.push(cube);
   },
-  removeObjects(objects) {
+  removeObjects(objects, container) {
     objects.forEach(function(obj) {
-      Visualizer.scene.remove(obj);
+      container.remove(obj);
     });
   },
   generateTexture: function() {
@@ -414,6 +444,9 @@ var Visualizer = {
     //   cancelAnimationFrame(Visualizer.nextAnimation);
     // }
     Visualizer.sceneRender();
+
+    Visualizer.spherePivot.rotation.y += 0.012;
+
     // Run animate when browser says it's time for next frame
     Visualizer.nextAnimation = requestAnimationFrame(this.animate.bind(this));
   },
