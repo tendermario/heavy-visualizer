@@ -179,4 +179,4 @@ visualizer_properties = {
   },
   "preset": "Sky"
 }
-}
+}}
