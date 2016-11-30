@@ -65,7 +65,7 @@ var Visualizer = {
   },
   initCamera: function() {
     // FOV, aspect ratio, near render, far render
-    this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.001, 60000);
+    this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.001, 63000);
     this.camera.position.z = visualizer_properties.camera.z;
   },
   initScene: function() {
@@ -98,7 +98,6 @@ var Visualizer = {
     backgroundFolder.close();
     // Changes in display properties
     backgroundScene.onChange(function(value) {
-      console.log(value);
       Visualizer.makeBackground(value);
     });
 
@@ -134,7 +133,11 @@ var Visualizer = {
     // Display properties
     var boxesFolder = gui.addFolder('BOXES');
     var boxQuantity = boxesFolder.add(properties.box, 'quantity', 0, 100).name('QUANTITY');
+    var boxSizeX = boxesFolder.add(properties.box, 'x_size', 10, 100).name('SIZE X').step(1);
+    var boxSizeY = boxesFolder.add(properties.box, 'y_size', 10, 100).name('SIZE Y').step(1);
+    var boxSizeZ = boxesFolder.add(properties.box, 'z_size', 10, 100).name('SIZE Z').step(1);
     var boxWireframe = boxesFolder.add(properties.box, 'wireframe').name('WIREFRAME');
+    var boxLineweight = boxesFolder.add(properties.box, 'lineweight', 1, 10).name('LINEWEIGHT').step(0.1);
     var boxOpacity = boxesFolder.add(properties.box, 'opacity' ).min(0).max(1).step(0.01).name('OPACITY');
     var boxColor = boxesFolder.addColor(properties.box, 'color').name('COLOR').listen();
     // Uncomment below line to have circles folder open by default
@@ -144,21 +147,40 @@ var Visualizer = {
       properties.box.quantity = value;
       Visualizer.makeBox(properties);
     });
+    boxSizeX.onChange(function(value) {
+      properties.box.x_size = value;
+      Visualizer.makeBox(properties);
+    });
+    boxSizeY.onChange(function(value) {
+      properties.box.y_size = value;
+      Visualizer.makeBox(properties);
+    });
+    boxSizeZ.onChange(function(value) {
+      properties.box.z_size = value;
+      Visualizer.makeBox(properties);
+    });
     boxWireframe.onChange(function(value) {
+      Visualizer.makeBox(properties);
+    });
+    boxLineweight.onChange(function(value) {
       Visualizer.makeBox(properties);
     });
     boxOpacity.onChange(function(value) {
       Visualizer.updateOpacity(Visualizer.boxes, value);
     });
     boxColor.onChange(function(value) {
-      Visualizer.box.material.color.setHex( value.replace("#", "0x") );
+      properties.box.color = value;
+      Visualizer.makeBox(properties);
     });
 
     ////////// CIRCLES /////////////////
     // Display properties
     var circlesFolder = gui.addFolder('CIRCLES');
     var circleQuantity = circlesFolder.add(properties.circle, 'quantity', 0, 100).name('QUANTITY').step(1);
+    var circleSizeX = circlesFolder.add(properties.circle, 'x_size', 10, 100).name('SIZE').step(1);
+    var circleSizeY = circlesFolder.add(properties.circle, 'y_size', 10, 100).name('RADIUSES').step(1);
     var circleWireframe = circlesFolder.add(properties.circle, 'wireframe').name('WIREFRAME');
+    var circleLineweight = circlesFolder.add(properties.circle, 'lineweight', 1, 10).name('LINEWEIGHT').step(0.1);
     var circleOpacity = circlesFolder.add(properties.circle, 'opacity' ).min(0).max(1).step(0.01).name('OPACITY');
     var circleColor = circlesFolder.addColor(properties.circle, 'color1').name('COLOR 1').listen();
     var circleColor1 = circlesFolder.addColor(properties.circle, 'color2').name('COLOR 2').listen();
@@ -169,7 +191,18 @@ var Visualizer = {
       properties.circle.quantity = value;
       Visualizer.makeCircle(properties);
     });
+    circleSizeX.onChange(function(value) {
+      properties.circle.x_size = value;
+      Visualizer.makeCircle(properties);
+    });
+    circleSizeY.onChange(function(value) {
+      properties.circle.y_size = value;
+      Visualizer.makeCircle(properties);
+    });
     circleWireframe.onChange(function(value) {
+      Visualizer.makeCircle(properties);
+    });
+    circleLineweight.onChange(function(value) {
       Visualizer.makeCircle(properties);
     });
     circleOpacity.onChange(function(value) {
@@ -193,9 +226,6 @@ var Visualizer = {
     // Comment below line to have circles folder open by default
     spheresFolder.close();
     // Changes in display properties
-    sphereColor.onChange(function(value)  {
-      properties.sphere.material.color.setHex( value.replace("#", "0x") );
-    });
     sphereQuantity.onChange(function(value) {
       properties.sphere.quantity = value;
       Visualizer.makeSphere(properties);
@@ -205,6 +235,9 @@ var Visualizer = {
     });
     sphereOpacity.onChange(function(value) {
       Visualizer.updateOpacity(Visualizer.spheres, value);
+    });
+     sphereColor.onChange(function(value)  {
+      Visualizer.sphere.material.color.setHex( value.replace("#", "0x") );
     });
 
     gui.open();
@@ -265,8 +298,7 @@ var Visualizer = {
     refractionCube.mapping = THREE.CubeRefractionMapping;
     refractionCube.format = THREE.RGBFormat;
 
-    this.scene.background = refractionCube;
-    // Visualizer.renderer.setClearColor( 0xeee, 0.4 );
+    Visualizer.scene.background = refractionCube;
   },
   makeSpotlight: function() {
     var light = new THREE.PointLight(0xffffff);
@@ -290,12 +322,13 @@ var Visualizer = {
         color: properties.box.color,
         wireframe: properties.box.wireframe,
         opacity: properties.box.opacity,
-        transparent: properties.box.transparent
+        transparent: properties.box.transparent,
+        wireframeLinewidth: properties.box.lineweight,
+        // vertexColors: '#000',
     });
 
     for (var i = 0; i < properties.box.quantity; i++) {
-      Visualizer.box = new THREE.Mesh(boxGeometry, boxMaterial);
-      var box = Visualizer.box;
+      var box = new THREE.Mesh(boxGeometry, boxMaterial);
       // Uncomment for random positions
       // box.position.x = (Math.random() - 0.5) * 3000;
       // box.position.y = (Math.random() - 0.5) * 1200;
@@ -339,7 +372,8 @@ var Visualizer = {
         color,
         wireframe: properties.circle.wireframe,
         opacity: properties.circle.opacity,
-        transparent: properties.circle.transparent
+        transparent: properties.circle.transparent,
+        wireframeLinewidth: properties.circle.lineweight
       });
       var circle = new THREE.Mesh(circleGeometry, circleMaterial);
       // Create the circles in the negative and positive direction
@@ -377,12 +411,13 @@ var Visualizer = {
       transparent: properties.sphere.transparent
     });
     for (var i = 0; i < properties.sphere.quantity; i++) {
-      var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+      Visualizer.sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+      var sphere = Visualizer.sphere;
       sphere.position.x = (Math.random() - 0.5) * 15000;
       sphere.position.y = (Math.random() - 0.5) * 15000;
       sphere.position.z = (Math.random() - 0.5) * 15000;
-      this.scene.add(sphere);
-      this.spheres.push(sphere);
+      Visualizer.scene.add(sphere);
+      Visualizer.spheres.push(sphere);
 
       // creates pivot for each sphere
       Visualizer.spherePivot.add(sphere);
@@ -450,7 +485,7 @@ var Visualizer = {
     // }
     Visualizer.sceneRender();
     Visualizer.cameraPivot.rotation.y += 0.002;
-    Visualizer.spherePivot.rotation.y += 0.012;
+    Visualizer.spherePivot.rotation.y += 0.006;
 
     // Run animate when browser says it's time for next frame
     Visualizer.nextAnimation = requestAnimationFrame(this.animate.bind(this));

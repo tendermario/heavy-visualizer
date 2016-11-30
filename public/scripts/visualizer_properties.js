@@ -2,23 +2,25 @@ visualizer_properties = {
   box: {
     color: '#ff0000',
     quantity: 100,
-    x_size: 50,
+    x_size: 100,
     y_size: 30,
     z_size: 40,
     wireframe: false,
     opacity: 0.5,
-    transparent: true
+    transparent: true,
+    lineweight: 2
   },
   circle: {
     color1: '#cb00ff',
     color2: '#00ff00',
     quantity: 51,
-    x_size: 20,
+    x_size: 90,
     y_size: 50, // arms
     z_size: 20,
     wireframe: true,
     opacity: 0.6,
-    transparent: true
+    transparent: true,
+    lineweight: 2
   },
   sphere: {
     color: '#eee',
