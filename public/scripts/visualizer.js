@@ -18,9 +18,6 @@ var Visualizer = {
   backgroundScenes: ['sky', 'colors', 'black'],
   urls: [],
 
-  // TODO
-  userInput: 1, // should make this variable better
-
   // colors
   rainbow: null,
   hex: [],
@@ -332,7 +329,6 @@ var Visualizer = {
         opacity: properties.box.opacity,
         transparent: properties.box.transparent,
         wireframeLinewidth: properties.box.lineweight,
-        // vertexColors: '#000',
     });
 
     for (var i = 0; i < properties.box.quantity; i++) {
@@ -517,7 +513,7 @@ var Visualizer = {
     increment = frequencies.length / visualizer_properties.box.quantity;
     increment = Math.floor(increment);
     Visualizer.boxes.forEach(function(mesh, index) {
-      mesh.scale.x = frequencies[increment*index]*Visualizer.userInput + 1;
+      mesh.scale.x = frequencies[increment*index] + 1;
     });
 
     increment = frequencies.length / visualizer_properties.sphere.quantity;
