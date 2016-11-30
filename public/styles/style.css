@@ -8,7 +8,7 @@ body {
     left: 0;
     z-index: 1;
     width: 100%;
-    height: 80px;
+    height: 32px;
     background-color: #000000;
     margin: auto;
     padding: 0 2em;
@@ -37,7 +37,7 @@ body {
     z-index: 1;
     left: 0;
     position: fixed;
-    top: 80px;
+    top: 32px;
     width: 240px;
     overflow: hidden;
     opacity: 0.6;
@@ -89,5 +89,28 @@ body {
     font-size: 3em;
     color: #2625a1;
     vertical-align: middle;
+  }
+
+  #nav-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    height: 80px;
+    background-color: #000000;
+    margin: auto;
+    padding: 0 2em;
+    opacity: 0.6;
+  }
+
+    .content-primary {
+    z-index: 1;
+    left: 0;
+    position: fixed;
+    top: 80px;
+    width: 240px;
+    overflow: hidden;
+    opacity: 0.6;
   }
 }

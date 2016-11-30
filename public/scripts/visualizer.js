@@ -107,6 +107,7 @@ var Visualizer = {
     var cameraX = cameraFolder.add(Visualizer.camera.position, 'x', -10000, 10000).name('X');
     var cameraY = cameraFolder.add(Visualizer.camera.position, 'y', -10000, 10000).name('Y');
     var cameraZ = cameraFolder.add(Visualizer.camera.position, 'z', -10000, 10000).name('Z');
+    var cameraRotation = cameraFolder.add(properties.camera, 'rotation', 0, 0.012).name('ROTATION').step(0.001);
     // Uncomment below line to have circles folder open by default
     cameraFolder.close();
     // Changes in display properties
@@ -128,6 +129,9 @@ var Visualizer = {
     cameraZ.listen(function(value) {
       Visualizer.camera.position.z = value;
     });
+    cameraRotation.onChange(function(value) {
+      properties.camera.rotation = value;
+    })
 
     ////////// BOXES /////////////////
     // Display properties
@@ -488,9 +492,8 @@ var Visualizer = {
     //   cancelAnimationFrame(Visualizer.nextAnimation);
     // }
     Visualizer.sceneRender();
-    Visualizer.cameraPivot.rotation.y += 0.002;
+    Visualizer.cameraPivot.rotation.y += visualizer_properties.camera.rotation;
     Visualizer.spherePivot.rotation.y += visualizer_properties.sphere.rotation;
-    console.log(Visualizer.sphereUserInput);
 
     // Run animate when browser says it's time for next frame
     Visualizer.nextAnimation = requestAnimationFrame(this.animate.bind(this));

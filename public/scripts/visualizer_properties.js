@@ -49,7 +49,8 @@ visualizer_properties = {
   camera: {
     x: 0,
     y: 0,
-    z: 3000
+    z: 3000,
+    rotation: 0.002
   },
   load: {
   "closed": false,
