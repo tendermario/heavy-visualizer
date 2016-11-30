@@ -78,7 +78,7 @@ visualizer_properties = {
         "color2": "#00d1ff"
       },
       "4": {
-        "quantity": 3,
+        "quantity": 60,
         "wireframe": false,
         "opacity": 0.6,
         "color": "#ff0000"
@@ -110,7 +110,7 @@ visualizer_properties = {
         "quantity": 100,
         "wireframe": false,
         "opacity": 0.6,
-        "color": "#eee"
+        "color": "#8900f4"
       }
     },
     "Colors": {
@@ -118,31 +118,38 @@ visualizer_properties = {
         "name": "colors"
       },
       "1": {
-        "x": 2585.4531716045594,
-        "y": 1749.4844362433894,
-        "z": 0
+        "x": 977.3310299662485,
+        "y": 26.68818548040803,
+        "z": -831.7082983545708
       },
       "2": {
         "quantity": 100,
-        "wireframe": false,
-        "opacity": 0.6,
+        "x_size": 71,
+        "y_size": 13,
+        "z_size": 18,
+        "wireframe": true,
+        "lineweight": 4.7,
+        "opacity": 0.08,
         "color": "#00ef26"
       },
       "3": {
-        "quantity": 51,
+        "quantity": 100,
+        "x_size": 30,
+        "y_size": 26,
         "wireframe": true,
-        "opacity": 0.38,
+        "lineweight": 1,
+        "opacity": 0.07,
         "color1": "#a554ba",
         "color2": "#ff0000"
       },
       "4": {
-        "quantity": 3,
+        "quantity": 86,
         "wireframe": false,
         "opacity": 0.6,
-        "color": "#eee"
+        "color": "#eee",
+        "rotation": 0.006
       }
-    }
-  },
+    },
   "folders": {
     "BACKGROUND": {
       "preset": "Default",
