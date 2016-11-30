@@ -292,7 +292,7 @@ var Visualizer = {
     Visualizer.renderer.setSize(window.innerWidth, window.innerHeight);
   },
   makeBackground: function(background) {
-    var path = "/textures/" + background + "/";
+    var path = "./public/textures/" + background + "/";
     var format = ".jpg";
     var paths = [
       path + 'posz' + format, path + 'negz' + format,
