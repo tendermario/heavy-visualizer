@@ -30,7 +30,8 @@ visualizer_properties = {
     z_size: 40,
     wireframe: false,
     opacity: 0.6,
-    transparent: true
+    transparent: true,
+    rotation: 0.006
     },
   gradientsquare: {
     color: '#eee',

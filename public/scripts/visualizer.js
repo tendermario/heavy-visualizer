@@ -223,6 +223,7 @@ var Visualizer = {
     var sphereWireframe = spheresFolder.add(properties.sphere, 'wireframe').name('WIREFRAME');
     var sphereOpacity = spheresFolder.add(properties.sphere, 'opacity' ).min(0).max(1).step(0.01).name('OPACITY');
     var sphereColor = spheresFolder.addColor(properties.sphere, 'color').name('COLOR').listen();
+    var sphereRotation = spheresFolder.add(properties.sphere, 'rotation', 0, 0.012).name('ROTATION').step(0.001);
     // Comment below line to have circles folder open by default
     spheresFolder.close();
     // Changes in display properties
@@ -236,8 +237,11 @@ var Visualizer = {
     sphereOpacity.onChange(function(value) {
       Visualizer.updateOpacity(Visualizer.spheres, value);
     });
-     sphereColor.onChange(function(value)  {
+    sphereColor.onChange(function(value)  {
       Visualizer.sphere.material.color.setHex( value.replace("#", "0x") );
+    });
+    sphereRotation.onChange(function(value)  {
+      properties.sphere.rotation = value;
     });
 
     gui.open();
@@ -485,7 +489,8 @@ var Visualizer = {
     // }
     Visualizer.sceneRender();
     Visualizer.cameraPivot.rotation.y += 0.002;
-    Visualizer.spherePivot.rotation.y += 0.006;
+    Visualizer.spherePivot.rotation.y += visualizer_properties.sphere.rotation;
+    console.log(Visualizer.sphereUserInput);
 
     // Run animate when browser says it's time for next frame
     Visualizer.nextAnimation = requestAnimationFrame(this.animate.bind(this));
