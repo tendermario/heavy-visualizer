@@ -13,7 +13,7 @@ visualizer_properties = {
   circle: {
     color1: '#cb00ff',
     color2: '#00ff00',
-    quantity: 51,
+    quantity: 100,
     x_size: 90,
     y_size: 50, // arms
     z_size: 20,
@@ -49,42 +49,14 @@ visualizer_properties = {
   camera: {
     x: 0,
     y: 0,
-    z: 3000,
+    z: 7000,
     rotation: 0.002
   },
-  load: {
+  load:  ////// PASTE BELOW
+  {
   "closed": false,
   "remembered": {
-    "Default": {
-      "0": {
-        "name": "black"
-      },
-      "1": {
-        "x": 1726.2976333910788,
-        "y": 1766.5371721115325,
-        "z": 2880.4397746576383
-      },
-      "2": {
-        "quantity": 100,
-        "wireframe": false,
-        "opacity": 0.6,
-        "color": "#00ff28"
-      },
-      "3": {
-        "quantity": 51,
-        "wireframe": true,
-        "opacity": 0.26,
-        "color1": "#0019ff",
-        "color2": "#00d1ff"
-      },
-      "4": {
-        "quantity": 60,
-        "wireframe": false,
-        "opacity": 0.6,
-        "color": "#ff0000"
-      }
-    },
-    "Sky": {
+    "Sky Preset": {
       "0": {
         "name": "sky"
       },
@@ -113,7 +85,36 @@ visualizer_properties = {
         "color": "#8900f4"
       }
     },
-    "Colors": {
+    "Black Preset": {
+      "0": {
+        "name": "black"
+      },
+      "1": {
+        "x": 1726.2976333910788,
+        "y": 1766.5371721115325,
+        "z": 2880.4397746576383
+      },
+      "2": {
+        "quantity": 100,
+        "wireframe": false,
+        "opacity": 0.6,
+        "color": "#00ff28"
+      },
+      "3": {
+        "quantity": 51,
+        "wireframe": true,
+        "opacity": 0.26,
+        "color1": "#0019ff",
+        "color2": "#00d1ff"
+      },
+      "4": {
+        "quantity": 60,
+        "wireframe": false,
+        "opacity": 0.6,
+        "color": "#ff0000"
+      }
+    },
+    "Colors Preset": {
       "0": {
         "name": "colors"
       },
@@ -149,34 +150,6 @@ visualizer_properties = {
         "color": "#eee",
         "rotation": 0.006
       }
-    },
-  "folders": {
-    "BACKGROUND": {
-      "preset": "Default",
-      "closed": true,
-      "folders": {}
-    },
-    "CAMERA": {
-      "preset": "Default",
-      "closed": true,
-      "folders": {}
-    },
-    "BOXES": {
-      "preset": "Default",
-      "closed": true,
-      "folders": {}
-    },
-    "CIRCLES": {
-      "preset": "Default",
-      "closed": true,
-      "folders": {}
-    },
-    "SPHERES": {
-      "preset": "Default",
-      "closed": true,
-      "folders": {}
-    }
-  },
-  "preset": "Sky"
+    }}}
+    ////// PASTE ABOVE don't add folder and preset
 }
-}}
