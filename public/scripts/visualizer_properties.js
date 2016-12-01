@@ -29,7 +29,7 @@ visualizer_properties = {
     y_size: 20,
     z_size: 40,
     wireframe: false,
-    opacity: 0.6,
+    opacity: 0,
     transparent: true,
     rotation: 0.006
     },
@@ -81,7 +81,7 @@ visualizer_properties = {
       "4": {
         "quantity": 100,
         "wireframe": false,
-        "opacity": 0.6,
+        "opacity": 0,
         "color": "#8900f4"
       }
     },
@@ -101,7 +101,7 @@ visualizer_properties = {
         "color": "#00ff28"
       },
       "3": {
-        "quantity": 51,
+        "quantity": 100,
         "wireframe": true,
         "opacity": 0.26,
         "color1": "#0019ff",
@@ -110,7 +110,7 @@ visualizer_properties = {
       "4": {
         "quantity": 60,
         "wireframe": false,
-        "opacity": 0.6,
+        "opacity": 0,
         "color": "#ff0000"
       }
     },
@@ -146,7 +146,7 @@ visualizer_properties = {
       "4": {
         "quantity": 86,
         "wireframe": false,
-        "opacity": 0.6,
+        "opacity": 0,
         "color": "#eee",
         "rotation": 0.006
       }
