@@ -23,13 +23,12 @@ body {
 
   #multimediaNav {
     float: right;
-    margin-top: 20px;
-    /*padding-right: 10px;*/
-    width: 100px;
+    margin-top: 10px;
+    margin-right: 10px;
+    width: 10px;
     opacity: 0;
-    font-weight: bold;
     font-size: 0.6em;
-
+    padding-right: 25px;
   }
 
   #multimediaNav.show {
@@ -96,7 +95,7 @@ body {
   }
 
 @media (min-width: 640px) {
-    #nav-bar span {
+  #nav-bar span {
     font-size: 3em;
     color: #2625a1;
     vertical-align: middle;
@@ -115,7 +114,17 @@ body {
     opacity: 0.6;
   }
 
-    .content-primary {
+  #multimediaNav {
+    float: right;
+    margin-top: 20px;
+    width: 100px;
+    opacity: 0;
+    font-weight: bold;
+    font-size: 0.6em;
+    padding-right: 10px;
+  }
+
+  .content-primary {
     z-index: 1;
     left: 0;
     position: fixed;

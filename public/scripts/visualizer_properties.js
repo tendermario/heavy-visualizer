@@ -150,6 +150,6 @@ visualizer_properties = {
         "color": "#eee",
         "rotation": 0.006
       }
-    }}}
+    }
     ////// PASTE ABOVE don't add folder and preset
-}
+}}}
