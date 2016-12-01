@@ -101,7 +101,7 @@ visualizer_properties = {
         "color": "#00ff28"
       },
       "3": {
-        "quantity": 51,
+        "quantity": 100,
         "wireframe": true,
         "opacity": 0.26,
         "color1": "#0019ff",
