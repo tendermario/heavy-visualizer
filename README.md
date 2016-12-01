@@ -12,6 +12,10 @@ Open the `index.html` file directly.
 
 The background images won't work locally.
 
+##Our Pitch:
+
+https://docs.google.com/presentation/d/14OI0oLUL5BE6HFpOKVfkbJVqbmymRIbxwr_EW2FEsNo/edit#slide=id.gd9c453428_0_16
+
 ###Stretch goals:
 
 As a user:
