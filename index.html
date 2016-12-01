@@ -24,6 +24,7 @@
   <!-- from https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700 -->
   <link href="./public/vendor/ff-open-sans.css" rel="stylesheet">
   <link rel="stylesheet" href="./public/vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
   <link rel="stylesheet" type="text/css" href="./public/styles/style.css">
 
 </head>
@@ -31,6 +32,7 @@
 <div class="container-fluid">
 
     <nav id="nav-bar">
+      <button id="multimediaNav" class="btn btn-primary multimedia">&#9614;&#9614;</button>
       <span>HEAVY VISUALIZER</span>
       <!-- <img class="logo" src=""> -->
       <!-- <button type="submit" class="btn btn-secondary">SAVE</button>  -->
@@ -38,12 +40,15 @@
     <div class="gui-slide"></div>
     <main class="content-primary">
       <div id="my-gui-container"></div>
-      <div id="upload-music">
-        <label class="btn btn-block btn-primary">UPLOAD AUDIO<input type="file" id="uploadedFile" style="display: none;" >
-        </label>
-        <p>(OR DRAG AND DROP)</p>
+      <div id="shrinkDiv">
+        <div id="upload-music">
+          <label class="btn btn-block btn-primary">UPLOAD AUDIO<input type="file" id="uploadedFile" style="display: none;" >
+          </label>
+          <p>(OR DRAG AND DROP)</p>
+
+        </div>
+        <button type="file" id="multimedia" class="btn btn-block btn-primary multimedia">&#9614;&#9614;</button>
       </div>
-      <button type="file" id="multimedia" class="btn btn-block btn-primary">⏸</button>
       <!-- <div id="music-button"></div> -->
     </main>
     <canvas id="threeCanvas" class="content-secondary">

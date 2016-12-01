@@ -21,12 +21,23 @@ body {
     vertical-align: middle;
   }
 
-  #nav-bar button {
+  #multimediaNav {
     float: right;
     margin-top: 20px;
-    color: #000000;
-    background-color: #2625a1;
+    /*padding-right: 10px;*/
+    width: 100px;
+    opacity: 0;
     font-weight: bold;
+    font-size: 0.6em;
+
+  }
+
+  #multimediaNav.show {
+    opacity: 1;
+  }
+
+  #multimedia {
+    font-size: 0.6em;
   }
 
   body {

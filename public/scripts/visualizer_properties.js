@@ -29,9 +29,9 @@ visualizer_properties = {
     y_size: 20,
     z_size: 40,
     wireframe: false,
-    opacity: 0.6,
+    opacity: 0,
     transparent: true,
-    rotation: 0.006
+    rotation: 6
     },
   gradientsquare: {
     color: '#eee',
@@ -50,7 +50,7 @@ visualizer_properties = {
     x: 0,
     y: 0,
     z: 7000,
-    rotation: 0.002
+    rotation: 2
   },
   load:  ////// PASTE BELOW
   {
@@ -81,7 +81,7 @@ visualizer_properties = {
       "4": {
         "quantity": 100,
         "wireframe": false,
-        "opacity": 0.6,
+        "opacity": 0,
         "color": "#8900f4"
       }
     },
@@ -110,7 +110,7 @@ visualizer_properties = {
       "4": {
         "quantity": 60,
         "wireframe": false,
-        "opacity": 0.6,
+        "opacity": 0,
         "color": "#ff0000"
       }
     },
@@ -146,7 +146,7 @@ visualizer_properties = {
       "4": {
         "quantity": 86,
         "wireframe": false,
-        "opacity": 0.6,
+        "opacity": 0,
         "color": "#eee",
         "rotation": 0.006
       }

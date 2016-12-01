@@ -1,18 +1,19 @@
 $(function() {
   $('#upload-music').slideToggle("slow");
 
-  $('#multimedia').on('click', function() {
+  $('.multimedia').on('click', function() {
     if (Audio.isPlaying) {
       Audio.pause();
-      $('#multimedia').text("▶");
+      $('.multimedia').text("▶");
     } else {
       Audio.visualize(Audio.audioContext, Audio.buffer, Audio.startedAt);
-      $('#multimedia').text("⏸");
+      $('.multimedia').html('&#9614;&#9614;');
     }
   });
 
   $('.close-button').on('click', function() {
-    $('#upload-music').slideToggle(350);
-    $('#content-primary').toggleClass('shrink-div');
+    // $('#upload-music').slideToggle(350);
+    $('#shrinkDiv').slideToggle(400);
+    $('#multimediaNav').toggleClass('show');
   });
 });
