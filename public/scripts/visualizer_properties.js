@@ -14,8 +14,8 @@ visualizer_properties = {
     color1: '#cb00ff',
     color2: '#00ff00',
     quantity: 100,
-    x_size: 90,
-    y_size: 50, // arms
+    x_size: 50,
+    y_size: 30, // arms
     z_size: 20,
     wireframe: true,
     opacity: 0.6,
