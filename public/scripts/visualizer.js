@@ -162,10 +162,10 @@ var Visualizer = {
     ////////// CIRCLES /////////////////
     // Display properties
     var circlesFolder = gui.addFolder('CIRCLES');
-    var circleSizeX = circlesFolder.add(properties.circle, 'x_size', 10, 100).name('SIZE').step(1);
-    var circleSizeY = circlesFolder.add(properties.circle, 'y_size', 10, 100).name('RADIUSES').step(1);
+    var circleSizeX = circlesFolder.add(properties.circle, 'x_size', 10, 50).name('SIZE').step(1);
+    var circleSizeY = circlesFolder.add(properties.circle, 'y_size', 10, 50).name('RADIUSES').step(1);
     var circleWireframe = circlesFolder.add(properties.circle, 'wireframe').name('WIREFRAME');
-    var circleLineweight = circlesFolder.add(properties.circle, 'lineweight', 1, 10).name('LINEWEIGHT').step(0.1);
+    var circleLineweight = circlesFolder.add(properties.circle, 'lineweight', 1, 5).name('LINEWEIGHT').step(0.1);
     var circleOpacity = circlesFolder.add(properties.circle, 'opacity' ).min(0).max(1).step(0.01).name('OPACITY');
     var circleColor = circlesFolder.addColor(properties.circle, 'color1').name('COLOR 1').listen();
     var circleColor1 = circlesFolder.addColor(properties.circle, 'color2').name('COLOR 2').listen();
