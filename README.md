@@ -12,14 +12,8 @@ Open the `index.html` file directly.
 
 The background images won't work locally.
 
+Ask to be invited to our Trello board! https://trello.com/b/T4T61w9l/heavy-visualizer
+
 ##Our Pitch:
 
 https://docs.google.com/presentation/d/14OI0oLUL5BE6HFpOKVfkbJVqbmymRIbxwr_EW2FEsNo/edit#slide=id.gd9c453428_0_16
-
-###Stretch goals:
-
-As a user:
-  I want to share my visualizers - so my friends can see them.
-  I want to be able to browse the list of visualizers.
-  I want to be able to log in and view my favourited and created visualizers.
-  I want to use different themes to have more customization for visualizers.
