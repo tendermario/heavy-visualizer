@@ -104,7 +104,7 @@ var Visualizer = {
     var cameraX = cameraFolder.add(Visualizer.camera.position, 'x', -10000, 10000).name('X');
     var cameraY = cameraFolder.add(Visualizer.camera.position, 'y', -10000, 10000).name('Y');
     var cameraZ = cameraFolder.add(Visualizer.camera.position, 'z', -10000, 10000).name('Z');
-    var cameraRotation = cameraFolder.add(properties.camera, 'rotation', 0, 0.012).name('ROTATION').step(0.001);
+    var cameraRotation = cameraFolder.add(properties.camera, 'rotation', 0, 8).name('ROTATION').step(0.1);
     // Uncomment below line to have circles folder open by default
     cameraFolder.close();
     // Changes in display properties
@@ -133,10 +133,7 @@ var Visualizer = {
     ////////// BOXES /////////////////
     // Display properties
     var boxesFolder = gui.addFolder('BOXES');
-    var boxQuantity = boxesFolder.add(properties.box, 'quantity', 0, 100).name('QUANTITY');
-    var boxSizeX = boxesFolder.add(properties.box, 'x_size', 10, 100).name('SIZE X').step(1);
-    var boxSizeY = boxesFolder.add(properties.box, 'y_size', 10, 100).name('SIZE Y').step(1);
-    var boxSizeZ = boxesFolder.add(properties.box, 'z_size', 10, 100).name('SIZE Z').step(1);
+    var boxSizeX = boxesFolder.add(properties.box, 'x_size', 10, 100).name('SIZE').step(1);
     var boxWireframe = boxesFolder.add(properties.box, 'wireframe').name('WIREFRAME');
     var boxLineweight = boxesFolder.add(properties.box, 'lineweight', 1, 10).name('LINEWEIGHT').step(0.1);
     var boxOpacity = boxesFolder.add(properties.box, 'opacity' ).min(0).max(1).step(0.01).name('OPACITY');
@@ -144,20 +141,8 @@ var Visualizer = {
     // Uncomment below line to have circles folder open by default
     boxesFolder.close();
     // Changes in display properties
-    boxQuantity.onChange(function(value) {
-      properties.box.quantity = value;
-      Visualizer.makeBox(properties);
-    });
     boxSizeX.onChange(function(value) {
       properties.box.x_size = value;
-      Visualizer.makeBox(properties);
-    });
-    boxSizeY.onChange(function(value) {
-      properties.box.y_size = value;
-      Visualizer.makeBox(properties);
-    });
-    boxSizeZ.onChange(function(value) {
-      properties.box.z_size = value;
       Visualizer.makeBox(properties);
     });
     boxWireframe.onChange(function(value) {
@@ -177,21 +162,16 @@ var Visualizer = {
     ////////// CIRCLES /////////////////
     // Display properties
     var circlesFolder = gui.addFolder('CIRCLES');
-    var circleQuantity = circlesFolder.add(properties.circle, 'quantity', 0, 100).name('QUANTITY').step(1);
-    var circleSizeX = circlesFolder.add(properties.circle, 'x_size', 10, 100).name('SIZE').step(1);
-    var circleSizeY = circlesFolder.add(properties.circle, 'y_size', 10, 100).name('RADIUSES').step(1);
+    var circleSizeX = circlesFolder.add(properties.circle, 'x_size', 10, 50).name('SIZE').step(1);
+    var circleSizeY = circlesFolder.add(properties.circle, 'y_size', 10, 50).name('RADIUSES').step(1);
     var circleWireframe = circlesFolder.add(properties.circle, 'wireframe').name('WIREFRAME');
-    var circleLineweight = circlesFolder.add(properties.circle, 'lineweight', 1, 10).name('LINEWEIGHT').step(0.1);
+    var circleLineweight = circlesFolder.add(properties.circle, 'lineweight', 1, 5).name('LINEWEIGHT').step(0.1);
     var circleOpacity = circlesFolder.add(properties.circle, 'opacity' ).min(0).max(1).step(0.01).name('OPACITY');
     var circleColor = circlesFolder.addColor(properties.circle, 'color1').name('COLOR 1').listen();
     var circleColor1 = circlesFolder.addColor(properties.circle, 'color2').name('COLOR 2').listen();
     // Uncomment below line to have circles folder open by default
     circlesFolder.close();
     // Changes in display properties
-    circleQuantity.onChange(function(value) {
-      properties.circle.quantity = value;
-      Visualizer.makeCircle(properties);
-    });
     circleSizeX.onChange(function(value) {
       properties.circle.x_size = value;
       Visualizer.makeCircle(properties);
@@ -224,7 +204,7 @@ var Visualizer = {
     var sphereWireframe = spheresFolder.add(properties.sphere, 'wireframe').name('WIREFRAME');
     var sphereOpacity = spheresFolder.add(properties.sphere, 'opacity' ).min(0).max(1).step(0.01).name('OPACITY');
     var sphereColor = spheresFolder.addColor(properties.sphere, 'color').name('COLOR').listen();
-    var sphereRotation = spheresFolder.add(properties.sphere, 'rotation', 0, 0.012).name('ROTATION').step(0.001);
+    var sphereRotation = spheresFolder.add(properties.sphere, 'rotation', 0, 12).name('ROTATION').step(0.1);
     // Comment below line to have circles folder open by default
     spheresFolder.close();
     // Changes in display properties
@@ -488,8 +468,8 @@ var Visualizer = {
     //   cancelAnimationFrame(Visualizer.nextAnimation);
     // }
     Visualizer.sceneRender();
-    Visualizer.cameraPivot.rotation.y += visualizer_properties.camera.rotation;
-    Visualizer.spherePivot.rotation.y += visualizer_properties.sphere.rotation;
+    Visualizer.cameraPivot.rotation.y += visualizer_properties.camera.rotation / 1000;
+    Visualizer.spherePivot.rotation.y += visualizer_properties.sphere.rotation / 1000;
 
     // Run animate when browser says it's time for next frame
     Visualizer.nextAnimation = requestAnimationFrame(this.animate.bind(this));

@@ -14,8 +14,8 @@ visualizer_properties = {
     color1: '#cb00ff',
     color2: '#00ff00',
     quantity: 100,
-    x_size: 90,
-    y_size: 50, // arms
+    x_size: 50,
+    y_size: 30, // arms
     z_size: 20,
     wireframe: true,
     opacity: 0.6,
@@ -31,7 +31,7 @@ visualizer_properties = {
     wireframe: false,
     opacity: 0,
     transparent: true,
-    rotation: 0.006
+    rotation: 6
     },
   gradientsquare: {
     color: '#eee',
@@ -50,7 +50,7 @@ visualizer_properties = {
     x: 0,
     y: 0,
     z: 7000,
-    rotation: 0.002
+    rotation: 2
   },
   load:  ////// PASTE BELOW
   {
@@ -150,6 +150,6 @@ visualizer_properties = {
         "color": "#eee",
         "rotation": 0.006
       }
-    }}}
+    }
     ////// PASTE ABOVE don't add folder and preset
-}
+}}}
