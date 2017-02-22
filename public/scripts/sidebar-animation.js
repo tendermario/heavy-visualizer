@@ -18,6 +18,6 @@ $(function() {
   });
 
   $('#demo').on('click', function() {
-    Audio.loadDemo("./public/kick-shock.mp3");
+    Audio.loadDemo("./public/kick-shock.old.mp3");
   })
 });
