@@ -16,4 +16,8 @@ $(function() {
     $('#shrinkDiv').slideToggle(400);
     $('#multimediaNav').toggleClass('show');
   });
+
+  $('#demo').on('click', function() {
+    Audio.loadDemo("./public/kick-shock.mp3");
+  })
 });

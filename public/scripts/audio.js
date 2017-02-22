@@ -90,6 +90,15 @@ var Audio = {
       that.start();
     }, false);
   },
+  loadDemo: function(url) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.responseType = 'arraybuffer';
+    xhr.onload = function(e) {
+      start(this.response); // this.response is an ArrayBuffer.
+    };
+    xhr.send();
+  },
   start: function(startTime) {
     console.log("we are in start");
 
