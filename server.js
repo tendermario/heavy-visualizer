@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser')
 var cookieParser = require('cookie-parser');
-const PORT = process.env.SERVER_PORT || 8888;
+const PORT = process.env.PORT || 8888;
 
 //// Routes
 // const spotifyApi = require('./routes/spotify');
