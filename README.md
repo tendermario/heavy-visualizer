@@ -21,3 +21,9 @@ https://docs.google.com/presentation/d/14OI0oLUL5BE6HFpOKVfkbJVqbmymRIbxwr_EW2FE
 ##Todo:
 
 Create a mic input
+Remove unnecessary files:
+  lint_loadnplaybeat.js
+  /audio-analysis
+  /lib
+  /public/authorization_code
+  
