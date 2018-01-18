@@ -11,7 +11,7 @@ var Audio = {
   audioDataArray: [],
   analyser: null,
   frequencies: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], // 40 positions
-  audioBufferSouceNode: null,
+  audioBufferSourceNode: null,
   startedAt: null,
   pausedAt: null,
   buffer: null,
@@ -127,19 +127,19 @@ var Audio = {
     // console.log("audioContext", audioContext);
     // console.log("buffer", buffer);
     // console.log("startedAt", startedAt);
-    Audio.audioBufferSouceNode = audioContext.createBufferSource(),
+    Audio.audioBufferSourceNode = audioContext.createBufferSource(),
       that = this;
     this.analyser = audioContext.createAnalyser();
     // connect the source to the analyser
-    Audio.audioBufferSouceNode.connect(this.analyser);
+    Audio.audioBufferSourceNode.connect(this.analyser);
     // connect the analyser to the destination(the speaker), or we won't hear the sound
     this.analyser.connect(audioContext.destination);
     // then assign the buffer to the buffer source node
-    Audio.audioBufferSouceNode.buffer = buffer;
+    Audio.audioBufferSourceNode.buffer = buffer;
     // conditional for old browsers
-    if (!Audio.audioBufferSouceNode.start) {
-      Audio.audioBufferSouceNode.start = Audio.audioBufferSouceNode.noteOn //in old browsers use noteOn method
-      Audio.audioBufferSouceNode.stop = Audio.audioBufferSouceNode.noteOff //in old browsers use noteOff method
+    if (!Audio.audioBufferSourceNode.start) {
+      Audio.audioBufferSourceNode.start = Audio.audioBufferSourceNode.noteOn //in old browsers use noteOn method
+      Audio.audioBufferSourceNode.stop = Audio.audioBufferSourceNode.noteOff //in old browsers use noteOff method
     };
     // stop the previous animation frame and sound if they are still happening
     if (this.animationId !== null) {
@@ -151,15 +151,15 @@ var Audio = {
     if (this.pausedAt) {
       // resume playing song if paused
       this.startedAt = Date.now() - this.pausedAt;
-      Audio.audioBufferSouceNode.start(0, this.pausedAt / 1000);
+      Audio.audioBufferSourceNode.start(0, this.pausedAt / 1000);
     } else {
       // play the source, start of audio for the first time
       this.startedAt = Date.now();
-      Audio.audioBufferSouceNode.start(startedAt || 0);
+      Audio.audioBufferSourceNode.start(startedAt || 0);
     }
     this.isPlaying = true;
-    this.source = Audio.audioBufferSouceNode;
-    Audio.audioBufferSouceNode.onended = function() {
+    this.source = Audio.audioBufferSourceNode;
+    Audio.audioBufferSourceNode.onended = function() {
       that.audioEnd(that);
     };
     this.updateInfo('Playing ' + this.fileName, false);
@@ -179,7 +179,7 @@ var Audio = {
   },
   pause: function() {
     // pauses current song
-    this.audioBufferSouceNode.stop(0);
+    this.audioBufferSourceNode.stop(0);
     this.isPlaying = false;
     this.pausedAt = Date.now() - this.startedAt;
   },
