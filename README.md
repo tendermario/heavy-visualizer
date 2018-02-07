@@ -26,4 +26,5 @@ Remove unnecessary files:
   /audio-analysis
   /lib
   /public/authorization_code
+  /routes
   /views
