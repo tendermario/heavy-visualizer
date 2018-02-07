@@ -16,4 +16,11 @@ $(function() {
     $('#shrinkDiv').slideToggle(400);
     $('#multimediaNav').toggleClass('show');
   });
+  $('#enable-mic').on('click', function () {
+    navigator.mediaDevices.getUserMedia({audio:true})
+      .then(function(stream) {
+        console.log('stream.getAudioTracks()', stream.getAudioTracks());
+      });
+  });
+
 });
