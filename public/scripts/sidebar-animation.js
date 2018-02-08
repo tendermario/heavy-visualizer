@@ -19,7 +19,9 @@ $(function() {
   $('#enable-mic').on('click', function () {
     navigator.mediaDevices.getUserMedia({audio:true})
       .then(function(stream) {
-        console.log('stream.getAudioTracks()', stream.getAudioTracks());
+        Audio.source = window.URL.createObjectURL(stream);
+        console.log('Audio.source', Audio.source);
+        Audio.visualize(Audio.audioContext, Audio.source);
       });
   });
 

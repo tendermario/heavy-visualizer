@@ -37,7 +37,8 @@ var Audio = {
     console.log("we are in addeventlistener");
     var that = this,
       audioInput = document.getElementById('uploadedFile'),
-      dropContainer = document.getElementsByTagName("body")[0];
+      dropContainer = document.getElementsByTagName("body")[0],
+      mic = document.getElementById('enable-mic');
     // when the file is uploaded by button
     audioInput.onchange = function() {
       if (that.audioContext===null) {return;};
@@ -57,7 +58,7 @@ var Audio = {
         //once the file is ready, start running the audio
         that.start();
       };
-    },
+    };
     // drag & drop
     dropContainer.addEventListener("dragenter", function() {
       document.getElementById('upload-music').style.opacity = 1;
@@ -122,11 +123,8 @@ var Audio = {
     this.updateInfo('Starting read the file', true);
     fr.readAsArrayBuffer(file);
   },
-  visualize: function(audioContext, buffer, startedAt) {
+  visualize: function(audioContext, buffer, startedAt, audioBufferSourceNode) {
     console.log("we are in visualize");
-    // console.log("audioContext", audioContext);
-    // console.log("buffer", buffer);
-    // console.log("startedAt", startedAt);
     Audio.audioBufferSourceNode = audioContext.createBufferSource(),
       that = this;
     this.analyser = audioContext.createAnalyser();
