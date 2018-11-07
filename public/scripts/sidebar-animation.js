@@ -16,4 +16,8 @@ $(function() {
     $('#shrinkDiv').slideToggle(400);
     $('#multimediaNav').toggleClass('show');
   });
+  $('#enable-mic').on('click', () => {
+    makeMic()
+  });
+
 });

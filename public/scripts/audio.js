@@ -1,3 +1,5 @@
+const getFirstFile = files => files[0]
+
 var Audio = {
   file: null, //the current file
   fileName: null, //the current file name
@@ -11,14 +13,14 @@ var Audio = {
   audioDataArray: [],
   analyser: null,
   frequencies: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], // 40 positions
-  audioBufferSouceNode: null,
+  audioBufferSourceNode: null,
   startedAt: null,
   pausedAt: null,
   buffer: null,
 
   init: function() {
     this.prepareAPI();
-    this.addEventListener();
+    this.addEventListeners();
     this.info = $('#info').innerHTML; //this used to upgrade the UI information
   },
   prepareAPI: function() {
@@ -33,20 +35,19 @@ var Audio = {
       console.log(e);
     }
   },
-  addEventListener: function() {
-    console.log("we are in addeventlistener");
+  addEventListeners: function() {
     var that = this,
       audioInput = document.getElementById('uploadedFile'),
-      dropContainer = document.getElementsByTagName("body")[0];
+      dropContainer = document.getElementsByTagName("body")[0]
     // when the file is uploaded by button
     audioInput.onchange = function() {
-      if (that.audioContext===null) {return;};
+      if (!that.audioContext) {
+        return
+      }
 
       //the if statement fixes the file selection cancel, because the onchange will trigger even if the file selection been cancelled
       if (audioInput.files.length !== 0) {
-        //only process the first file
-        console.log(audioInput);
-        that.file = audioInput.files[0];
+        that.file = getFirstFile(audioInput.files)
         that.fileName = that.file.name;
         if (that.isPlaying) {
           //the sound is still playing but we upload another file, so set the forceStop flag to true
@@ -57,7 +58,7 @@ var Audio = {
         //once the file is ready, start running the audio
         that.start();
       };
-    },
+    };
     // drag & drop
     dropContainer.addEventListener("dragenter", function() {
       document.getElementById('upload-music').style.opacity = 1;
@@ -122,24 +123,21 @@ var Audio = {
     this.updateInfo('Starting read the file', true);
     fr.readAsArrayBuffer(file);
   },
-  visualize: function(audioContext, buffer, startedAt) {
+  visualize: function(audioContext, buffer, startedAt, audioBufferSourceNode) {
     console.log("we are in visualize");
-    // console.log("audioContext", audioContext);
-    // console.log("buffer", buffer);
-    // console.log("startedAt", startedAt);
-    Audio.audioBufferSouceNode = audioContext.createBufferSource(),
+    Audio.audioBufferSourceNode = audioContext.createBufferSource(),
       that = this;
     this.analyser = audioContext.createAnalyser();
     // connect the source to the analyser
-    Audio.audioBufferSouceNode.connect(this.analyser);
+    Audio.audioBufferSourceNode.connect(this.analyser);
     // connect the analyser to the destination(the speaker), or we won't hear the sound
     this.analyser.connect(audioContext.destination);
     // then assign the buffer to the buffer source node
-    Audio.audioBufferSouceNode.buffer = buffer;
+    Audio.audioBufferSourceNode.buffer = buffer;
     // conditional for old browsers
-    if (!Audio.audioBufferSouceNode.start) {
-      Audio.audioBufferSouceNode.start = Audio.audioBufferSouceNode.noteOn //in old browsers use noteOn method
-      Audio.audioBufferSouceNode.stop = Audio.audioBufferSouceNode.noteOff //in old browsers use noteOff method
+    if (!Audio.audioBufferSourceNode.start) {
+      Audio.audioBufferSourceNode.start = Audio.audioBufferSourceNode.noteOn //in old browsers use noteOn method
+      Audio.audioBufferSourceNode.stop = Audio.audioBufferSourceNode.noteOff //in old browsers use noteOff method
     };
     // stop the previous animation frame and sound if they are still happening
     if (this.animationId !== null) {
@@ -151,15 +149,15 @@ var Audio = {
     if (this.pausedAt) {
       // resume playing song if paused
       this.startedAt = Date.now() - this.pausedAt;
-      Audio.audioBufferSouceNode.start(0, this.pausedAt / 1000);
+      Audio.audioBufferSourceNode.start(0, this.pausedAt / 1000);
     } else {
       // play the source, start of audio for the first time
       this.startedAt = Date.now();
-      Audio.audioBufferSouceNode.start(startedAt || 0);
+      Audio.audioBufferSourceNode.start(startedAt || 0);
     }
     this.isPlaying = true;
-    this.source = Audio.audioBufferSouceNode;
-    Audio.audioBufferSouceNode.onended = function() {
+    this.source = Audio.audioBufferSourceNode;
+    Audio.audioBufferSourceNode.onended = function() {
       that.audioEnd(that);
     };
     this.updateInfo('Playing ' + this.fileName, false);
@@ -179,7 +177,7 @@ var Audio = {
   },
   pause: function() {
     // pauses current song
-    this.audioBufferSouceNode.stop(0);
+    this.audioBufferSourceNode.stop(0);
     this.isPlaying = false;
     this.pausedAt = Date.now() - this.startedAt;
   },

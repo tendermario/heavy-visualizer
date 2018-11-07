@@ -17,3 +17,7 @@ Ask to be invited to our Trello board! https://trello.com/b/T4T61w9l/heavy-visua
 ##Our Pitch:
 
 https://docs.google.com/presentation/d/14OI0oLUL5BE6HFpOKVfkbJVqbmymRIbxwr_EW2FEsNo/edit#slide=id.gd9c453428_0_16
+
+##Todo:
+
+Create a mic input

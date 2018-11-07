@@ -422,7 +422,7 @@ var Visualizer = {
     texture.needsUpdate = true; // important!
 
     // material
-      var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+    var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
 
     // mesh
     var cube = new THREE.Mesh(geometry, material);
