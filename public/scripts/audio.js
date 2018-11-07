@@ -1,3 +1,5 @@
+const getFirstFile = files => files[0]
+
 var Audio = {
   file: null, //the current file
   fileName: null, //the current file name
@@ -18,7 +20,7 @@ var Audio = {
 
   init: function() {
     this.prepareAPI();
-    this.addEventListener();
+    this.addEventListeners();
     this.info = $('#info').innerHTML; //this used to upgrade the UI information
   },
   prepareAPI: function() {
@@ -33,21 +35,19 @@ var Audio = {
       console.log(e);
     }
   },
-  addEventListener: function() {
-    console.log("we are in addeventlistener");
+  addEventListeners: function() {
     var that = this,
       audioInput = document.getElementById('uploadedFile'),
-      dropContainer = document.getElementsByTagName("body")[0],
-      mic = document.getElementById('enable-mic');
+      dropContainer = document.getElementsByTagName("body")[0]
     // when the file is uploaded by button
     audioInput.onchange = function() {
-      if (that.audioContext===null) {return;};
+      if (!that.audioContext) {
+        return
+      }
 
       //the if statement fixes the file selection cancel, because the onchange will trigger even if the file selection been cancelled
       if (audioInput.files.length !== 0) {
-        //only process the first file
-        console.log(audioInput);
-        that.file = audioInput.files[0];
+        that.file = getFirstFile(audioInput.files)
         that.fileName = that.file.name;
         if (that.isPlaying) {
           //the sound is still playing but we upload another file, so set the forceStop flag to true
