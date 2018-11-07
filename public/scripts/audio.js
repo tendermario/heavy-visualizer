@@ -18,7 +18,7 @@ var Audio = {
   pausedAt: null,
   buffer: null,
 
-  init: function() {
+  init: function() { 
     this.prepareAPI();
     this.addEventListeners();
     this.info = $('#info').innerHTML; //this used to upgrade the UI information
