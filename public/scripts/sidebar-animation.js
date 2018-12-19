@@ -1,4 +1,4 @@
-$(function() {
+$(() => {
   $('#upload-music').slideToggle("slow");
 
   $('.multimedia').on('click', function() {
@@ -16,8 +16,14 @@ $(function() {
     $('#shrinkDiv').slideToggle(400);
     $('#multimediaNav').toggleClass('show');
   });
-  $('#enable-mic').on('click', () => {
+  $('#enable-mic-button').on('click', () => {
     makeMic()
+    $('#disable-mic-button').attr('hidden', false)
+    $('#enable-mic-button').attr('hidden', true)
   });
-
-});
+  $('#disable-mic-button').on('click', () => {
+    disableMic()
+    $('#enable-mic-button').attr('hidden', false)
+    $('#disable-mic-button').attr('hidden', true)
+  });
+})

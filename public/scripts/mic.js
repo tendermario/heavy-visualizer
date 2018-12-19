@@ -1,7 +1,9 @@
+var node
+
 const windowLoadedPromise = new Promise(function(resolve){
   window.addEventListener('load', resolve, false);
 });
-function Microphone (_fft) {
+function enableMic(_fft) {
   var FFT_SIZE = _fft || 1024;
   this.spectrum = [];
   this.volume = this.vol = 0;
@@ -32,7 +34,7 @@ function Microphone (_fft) {
       var analyser = context.createAnalyser();
       analyser.smoothingTimeConstant = 0.2;
       analyser.fftSize = FFT_SIZE; 
-      var node = context.createScriptProcessor(FFT_SIZE*2, 1, 1);
+      node = context.createScriptProcessor(FFT_SIZE*2, 1, 1);
       node.onaudioprocess = function () {
         // bitcount returns array which is half the FFT_SIZE
         self.spectrum = new Uint8Array(analyser.frequencyBinCount);
@@ -58,5 +60,9 @@ return this;
 
 var Mic
 const makeMic = () => {
-  Mic = new Microphone()
+  enableMic()
+}
+
+const disableMic = () => {
+  node.onaudioprocess = null;
 }
