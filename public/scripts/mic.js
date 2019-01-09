@@ -1,4 +1,5 @@
 var node
+var Mic
 
 const windowLoadedPromise = new Promise(function(resolve){
   window.addEventListener('load', resolve, false);
@@ -58,11 +59,10 @@ function enableMic(_fft) {
 return this;
 };
 
-var Mic
 const makeMic = () => {
   enableMic()
 }
 
 const disableMic = () => {
-  node.onaudioprocess = null;
+  node && (node.onaudioprocess = null)
 }
